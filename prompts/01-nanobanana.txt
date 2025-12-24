@@ -1,0 +1,4 @@
+Build an app where a user uploads their selfie, and the app uses Google's
+Nano Banana (Gemini image generation) to integrate them into a Christmas card.
+Keep it simple as an MVP.
+Use the nano-banana-builder skill.
