@@ -3,62 +3,36 @@
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
 
-export async function generateNewYearCard(
-  imageBase64: string,
-  mediaType: string,
-  cityId: string,
-  landmark: string
-): Promise<{ success: boolean; image?: string; error?: string }> {
-  try {
-    const cityDetails: Record<string, { skyline: string; vibe: string; colors: string }> = {
-      'new-york': {
-        skyline: 'Manhattan skyline with Empire State Building, One World Trade Center, Times Square ball drop',
-        vibe: 'electric energy, bright lights, urban glamour',
-        colors: 'electric blues, bright whites, champagne gold',
-      },
-      'london': {
-        skyline: 'Big Ben, London Eye, Tower Bridge with fireworks over the Thames',
-        vibe: 'elegant, historic, sophisticated',
-        colors: 'deep navy, warm gold, royal purple',
-      },
-      'paris': {
-        skyline: 'Eiffel Tower sparkling with lights, Champs-Élysées, Arc de Triomphe',
-        vibe: 'romantic, magical, luminous',
-        colors: 'champagne gold, rose pink, midnight blue',
-      },
-      'tokyo': {
-        skyline: 'Tokyo Tower, Rainbow Bridge, Shibuya Crossing with neon lights',
-        vibe: 'futuristic, vibrant, dynamic',
-        colors: 'neon pink, electric cyan, bright white',
-      },
-      'dubai': {
-        skyline: 'Burj Khalifa with spectacular fireworks show, Dubai Frame, Palm Jumeirah',
-        vibe: 'luxurious, spectacular, grandiose',
-        colors: 'gold, silver, deep blue',
-      },
-      'sydney': {
-        skyline: 'Sydney Opera House, Harbour Bridge with iconic fireworks display over the harbour',
-        vibe: 'festive, colorful, celebratory',
-        colors: 'ocean blue, sunset orange, bright gold',
-      },
-      'san-francisco': {
-        skyline: 'Golden Gate Bridge, Transamerica Pyramid, city lights on the hills',
-        vibe: 'iconic, misty, artistic',
-        colors: 'fog grey, golden orange, deep teal',
-      },
-      'singapore': {
-        skyline: 'Marina Bay Sands, Gardens by the Bay Supertrees, Singapore Flyer',
-        vibe: 'modern, garden city, innovative',
-        colors: 'emerald green, futuristic silver, warm gold',
-      },
-      'hong-kong': {
-        skyline: 'Victoria Harbour, Bank of China Tower, Symphony of Lights show',
-        vibe: 'dazzling, metropolitan, energetic',
-        colors: 'neon rainbow, midnight blue, bright gold',
-      },
-    }
+interface GenerateInvitationResult {
+  success: boolean
+  imageUrl?: string
+  error?: string
+}
 
-    const city = cityDetails[cityId] || cityDetails['new-york']
+export async function generateWeddingInvitation(
+  couplePhotoBase64: string,
+  names: { partner1: string; partner2: string },
+  weddingDate: string,
+  venue: string
+): Promise<GenerateInvitationResult> {
+  try {
+    const prompt = `You are a professional wedding invitation designer. 
+    
+I'm providing a photo of a couple. Create an elegant, romantic wedding invitation that:
+1. Naturally integrates this couple's photo into a beautiful wedding invitation layout
+2. Features an elegant floral or botanical border design
+3. Includes decorative elements like delicate script typography styling
+4. Uses a soft, romantic color palette (ivory, blush, gold accents)
+5. Has space for the following text (render it beautifully):
+   - "${names.partner1} & ${names.partner2}"
+   - "Request the pleasure of your company"
+   - "at their wedding celebration"
+   - "${weddingDate}"
+   - "${venue}"
+
+Make it look like a premium, professionally designed wedding invitation that someone would actually send. 
+The couple's photo should be the centerpiece, elegantly framed within the invitation design.
+Use classic wedding invitation typography and elegant decorative flourishes.`
 
     const result = await generateText({
       model: google('gemini-3-pro-image-preview'),
@@ -67,32 +41,12 @@ export async function generateNewYearCard(
           role: 'user',
           content: [
             {
-              type: 'text',
-              text: `Create a FLAT Happy New Year 2026 celebration card texture using this person's face.
-
-Generate a FLAT, 2D wide image with TWO SIDE-BY-SIDE PANELS (no 3D effects, no perspective, no folding appearance):
-
-LEFT HALF: New Year's Eve celebration scene featuring the person celebrating in ${landmark}. Show the iconic ${city.skyline} in the background with spectacular fireworks exploding in the night sky. Include "HAPPY NEW YEAR" and "2026" text prominently displayed in elegant typography. The person should look joyful and celebratory. Atmosphere: ${city.vibe}.
-
-RIGHT HALF: Complementary festive scene of the ${landmark} cityscape at midnight with more fireworks, champagne glasses toasting, confetti, sparklers, and party atmosphere. Include celebratory elements like countdown clock at midnight, party decorations.
-
-COLOR PALETTE: ${city.colors}. The overall feel should be glamorous, celebratory, and magical.
-
-CRITICAL REQUIREMENTS:
-- This must be a completely FLAT image like a texture or print layout
-- NO 3D perspective, NO shadows suggesting depth, NO fold lines, NO book-like appearance
-- Just two flat rectangular panels side by side
-- The image will be mapped onto a 3D model later
-- FILL THE ENTIRE 16:9 CANVAS EDGE TO EDGE - NO white space, NO margins, NO padding at top/bottom/sides
-- The festive content must extend to all four edges of the image
-- NO blank or white areas anywhere in the image
-- Night sky setting with fireworks and city lights
-- Keep the person's face clearly recognizable and place them prominently in the scene`,
+              type: 'image',
+              image: couplePhotoBase64,
             },
             {
-              type: 'image',
-              image: imageBase64,
-              mimeType: mediaType,
+              type: 'text',
+              text: prompt,
             },
           ],
         },
@@ -101,26 +55,33 @@ CRITICAL REQUIREMENTS:
         google: {
           responseModalities: ['IMAGE'],
           imageConfig: {
-            aspectRatio: '16:9',
+            aspectRatio: '3:4', // Portrait orientation for invitation
+            imageSize: '2K',     // Pro model supports 2K resolution
           },
         },
       },
     })
 
-    const generatedImage = result.files?.[0]
-    if (generatedImage?.base64) {
+    const imageFile = result.files?.[0]
+
+    if (!imageFile?.base64) {
       return {
-        success: true,
-        image: `data:${generatedImage.mimeType};base64,${generatedImage.base64}`,
+        success: false,
+        error: 'No image was generated. Please try again.',
       }
     }
 
-    return { success: false, error: 'No image was generated' }
+    const imageUrl = `data:image/png;base64,${imageFile.base64}`
+
+    return {
+      success: true,
+      imageUrl,
+    }
   } catch (error) {
-    console.error('Generation error:', error)
+    console.error('Error generating invitation:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to generate image',
+      error: error instanceof Error ? error.message : 'Failed to generate invitation',
     }
   }
 }

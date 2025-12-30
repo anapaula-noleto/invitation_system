@@ -1,29 +1,9 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, Outfit, DM_Sans } from 'next/font/google'
 import './globals.css'
 
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  display: 'swap',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
 export const metadata: Metadata = {
-  title: 'Happy New Year 2026 Card Generator',
-  description: 'Create stunning New Year celebration cards featuring iconic city skylines around the world',
+  title: 'Wedding Invitation Generator',
+  description: 'Create beautiful AI-powered wedding invitations from your photos',
 }
 
 export default function RootLayout({
@@ -32,8 +12,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${outfit.variable} ${dmSans.variable}`}>
-      <body className="antialiased font-body">{children}</body>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
+      <body>{children}</body>
     </html>
   )
 }
