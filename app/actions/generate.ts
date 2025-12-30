@@ -16,23 +16,30 @@ export async function generateWeddingInvitation(
   venue: string
 ): Promise<GenerateInvitationResult> {
   try {
-    const prompt = `You are a professional wedding invitation designer. 
-    
-I'm providing a photo of a couple. Create an elegant, romantic wedding invitation that:
-1. Naturally integrates this couple's photo into a beautiful wedding invitation layout
-2. Features an elegant floral or botanical border design
-3. Includes decorative elements like delicate script typography styling
-4. Uses a soft, romantic color palette (ivory, blush, gold accents)
-5. Has space for the following text (render it beautifully):
+    const prompt = `You are a professional wedding invitation designer tasked with creating an ultra-high-end masterpiece.
+
+I'm providing a photo of a couple. You must execute a two-phase process to achieve a flawless result.
+
+PHASE 1: PHOTO TRANSFORMATION & RETOUCHING
+First, transform the raw input photo into a world-class studio portrait.
+- Lighting & Atmosphere: Apply flattering, warm softbox studio lighting that creates gentle shadows and highlights, giving depth to the subjects.
+- Background Replacement: Replace the original background with a gently blurred, luxurious studio setting (e.g., an textured architectural wall, opulent soft drapes, with warm bokeh lights).
+- Facial & Smile Enhancement (CRITICAL): Perform photorealistic, high-end retouching. Specifically focus on ensuring smiles appear natural, genuine, and relaxed. Apply subtle, natural-looking whitening to teeth, correcting any yellowness while maintaining realistic texture so they don't look artificial. Ensure skin texture looks healthy but real.
+
+PHASE 2: INVITATION DESIGN
+Then, using this newly generated, flawless studio portrait, create an elegant, romantic wedding invitation.
+1. Integration: Naturally integrate the new professional studio portrait as the absolute centerpiece, elegantly framed within the design.
+2. Aesthetics: Feature a sophisticated floral or botanical border design with elegant decorative flourishes.
+3. Typography: Use classic wedding typography, combining delicate script for names/headers with clean serif fonts for details.
+4. Color Palette: Use a soft, luxurious romantic palette (ivory, blush, champagne gold accents).
+5. Text Content: Beautifully render the following text with appropriate spacing and hierarchy:
    - "${names.partner1} & ${names.partner2}"
    - "Request the pleasure of your company"
    - "at their wedding celebration"
    - "${weddingDate}"
    - "${venue}"
 
-Make it look like a premium, professionally designed wedding invitation that someone would actually send. 
-The couple's photo should be the centerpiece, elegantly framed within the invitation design.
-Use classic wedding invitation typography and elegant decorative flourishes.`
+The final image must look like a premium, professionally printed wedding invitation of the highest possible quality.`;
 
     const result = await generateText({
       model: google('gemini-3-pro-image-preview'),
@@ -55,12 +62,13 @@ Use classic wedding invitation typography and elegant decorative flourishes.`
         google: {
           responseModalities: ['IMAGE'],
           imageConfig: {
-            aspectRatio: '3:4', // Portrait orientation for invitation
-            imageSize: '2K',     // Pro model supports 2K resolution
+            aspectRatio: '3:4', // Retrato é perfeito para convites
+            imageSize: '4K',     // Mantém a solicitação de resolução máxima
           },
         },
       },
     })
+
 
     const imageFile = result.files?.[0]
 
