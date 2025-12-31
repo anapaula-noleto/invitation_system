@@ -16,30 +16,44 @@ export async function generateWeddingInvitation(
   venue: string
 ): Promise<GenerateInvitationResult> {
   try {
-    const prompt = `You are a professional wedding invitation designer tasked with creating an ultra-high-end masterpiece.
+    const prompt = `You are a professional wedding invitation designer tasked with creating an ultra-high-end fold-out card design.
 
-I'm providing a photo of a couple. You must execute a two-phase process to achieve a flawless result.
+I'm providing a photo of a couple. Create a FOLD-OUT WEDDING INVITATION with TWO PANELS side by side in a single image.
+
+CRITICAL LAYOUT REQUIREMENT:
+The final image must be a HORIZONTAL composition with TWO EQUAL PANELS side by side:
+- LEFT PANEL (Front Cover): This is the OUTSIDE of the card when folded
+- RIGHT PANEL (Inside): This is revealed when the card opens
+
+The panels should have a subtle vertical dividing line or fold indicator in the center.
 
 PHASE 1: PHOTO TRANSFORMATION & RETOUCHING
 First, transform the raw input photo into a world-class studio portrait.
-- Lighting & Atmosphere: Apply flattering, warm softbox studio lighting that creates gentle shadows and highlights, giving depth to the subjects.
-- Background Replacement: Replace the original background with a gently blurred, luxurious studio setting (e.g., an textured architectural wall, opulent soft drapes, with warm bokeh lights).
-- Facial & Smile Enhancement (CRITICAL): Perform photorealistic, high-end retouching. Specifically focus on ensuring smiles appear natural, genuine, and relaxed. Apply subtle, natural-looking whitening to teeth, correcting any yellowness while maintaining realistic texture so they don't look artificial. Ensure skin texture looks healthy but real.
+- Lighting & Atmosphere: Apply flattering, warm softbox studio lighting.
+- Background Replacement: Replace with a gently blurred, luxurious studio setting.
+- Facial & Smile Enhancement: Perform photorealistic retouching with natural-looking improvements.
 
-PHASE 2: INVITATION DESIGN
-Then, using this newly generated, flawless studio portrait, create an elegant, romantic wedding invitation.
-1. Integration: Naturally integrate the new professional studio portrait as the absolute centerpiece, elegantly framed within the design.
-2. Aesthetics: Feature a sophisticated floral or botanical border design with elegant decorative flourishes.
-3. Typography: Use classic wedding typography, combining delicate script for names/headers with clean serif fonts for details.
-4. Color Palette: Use a soft, luxurious romantic palette (ivory, blush, champagne gold accents).
-5. Text Content: Beautifully render the following text with appropriate spacing and hierarchy:
-   - "${names.partner1} & ${names.partner2}"
-   - "Request the pleasure of your company"
-   - "at their wedding celebration"
-   - "${weddingDate}"
-   - "${venue}"
+PHASE 2: FOLD-OUT CARD DESIGN
 
-The final image must look like a premium, professionally printed wedding invitation of the highest possible quality.`;
+LEFT PANEL (Front Cover - seen when card is closed):
+- Feature an elegant, sophisticated cover design
+- Include the couple's names "${names.partner1} & ${names.partner2}" in beautiful script
+- Add decorative floral/botanical elements framing the design
+- Use a luxurious, romantic aesthetic (ivory, blush, gold accents)
+- Keep this panel more minimal and intriguing
+
+RIGHT PANEL (Inside - revealed when opened):
+- Place the transformed couple's portrait as the centerpiece
+- Frame the photo elegantly within the design
+- Include the full invitation text beautifully arranged:
+  - "Request the pleasure of your company"
+  - "at their wedding celebration"
+  - "${weddingDate}"
+  - "${venue}"
+- Continue the floral/botanical theme from the cover
+- More detailed and informative than the cover
+
+IMPORTANT: Both panels must have matching aesthetics, color palette, and design elements that flow together as one cohesive piece. The image should be suitable for UV-mapping onto a 3D fold-out card.`;
 
     const result = await generateText({
       model: google('gemini-3-pro-image-preview'),
@@ -62,8 +76,8 @@ The final image must look like a premium, professionally printed wedding invitat
         google: {
           responseModalities: ['IMAGE'],
           imageConfig: {
-            aspectRatio: '3:4', // Retrato é perfeito para convites
-            imageSize: '4K',     // Mantém a solicitação de resolução máxima
+            aspectRatio: '16:9', // Wide aspect ratio for two-panel fold-out
+            imageSize: '2K',
           },
         },
       },

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { generateWeddingInvitation } from './actions/generate'
+import { Card3DPreview } from './components/Card3DPreview'
 
 export default function Home() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
@@ -13,6 +14,7 @@ export default function Home() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [show3DPreview, setShow3DPreview] = useState(false)
 
   const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -87,23 +89,30 @@ export default function Home() {
         <div className="floral-corner bottom-left"></div>
         <div className="floral-corner bottom-right"></div>
       </div>
+      
+      {/* Grain texture overlay */}
+      <div className="grain-overlay" aria-hidden="true"></div>
 
       <div className="content-wrapper">
         {/* Header */}
         <header className="header">
-          <h1 className="title">Wedding Invitation</h1>
-          <p className="subtitle">Generator</p>
+          <span className="brand-mark">Évora Studio</span>
+          <h1 className="title">
+            <span className="title-accent">Timeless</span> Invitations
+          </h1>
+          <p className="subtitle">crafted by AI, inspired by love</p>
           <div className="decorative-line">
             <span className="line"></span>
-            <span className="ornament">❦</span>
+            <span className="ornament">✦</span>
             <span className="line"></span>
           </div>
-          <p className="tagline">Create beautiful AI-powered invitations from your cherished photos</p>
+          <p className="tagline">Transform your cherished photos into elegant wedding announcements</p>
         </header>
 
         <div className="main-content">
           {/* Form Section */}
           <section className="form-section">
+            <h2 className="form-section-title">Your Details</h2>
             <form onSubmit={handleGenerate} className="invitation-form">
               {/* Photo Upload */}
               <div className="form-group photo-upload-group">
@@ -214,9 +223,17 @@ export default function Home() {
                     alt="Generated wedding invitation" 
                     className="generated-image"
                   />
-                  <button onClick={handleDownload} className="download-button">
-                    ⬇️ Download Invitation
-                  </button>
+                  <div className="button-group">
+                    <button onClick={handleDownload} className="download-button">
+                      ⬇️ Download Invitation
+                    </button>
+                    <button 
+                      onClick={() => setShow3DPreview(true)} 
+                      className="preview-3d-button"
+                    >
+                      🎴 View 3D Card
+                    </button>
+                  </div>
                 </>
               ) : (
                 <div className="preview-placeholder">
@@ -230,6 +247,14 @@ export default function Home() {
           </section>
         </div>
       </div>
+
+      {/* 3D Preview Modal */}
+      {show3DPreview && generatedImage && (
+        <Card3DPreview 
+          imageUrl={generatedImage} 
+          onClose={() => setShow3DPreview(false)} 
+        />
+      )}
     </main>
   )
 }
