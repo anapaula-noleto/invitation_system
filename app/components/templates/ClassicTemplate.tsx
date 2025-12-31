@@ -1,6 +1,7 @@
 'use client';
 
 import type { InvitationConfig } from '@/app/types/invitation';
+import { useInvitationTranslations } from '@/app/context/InvitationTranslationsContext';
 import './invitation.css';
 
 interface ClassicTemplateProps {
@@ -19,6 +20,7 @@ interface ClassicTemplateProps {
  */
 export function ClassicTemplate({ config }: ClassicTemplateProps) {
   const { content, theme } = config;
+  const t = useInvitationTranslations();
 
   // Convert hex to RGB for CSS variables
   const hexToRgb = (hex: string): string => {
@@ -29,6 +31,7 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
   };
 
   const accentRgb = hexToRgb(theme.primaryColor);
+  const bgRgb = hexToRgb(theme.backgroundColor);
 
   return (
     <div 
@@ -36,8 +39,11 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
       style={{
         '--inv-accent': theme.primaryColor,
         '--inv-accent-rgb': accentRgb,
-        '--inv-text': theme.secondaryColor,
-        '--inv-text-muted': `${theme.secondaryColor}99`,
+        '--inv-secondary': theme.secondaryColor,
+        '--inv-bg': theme.backgroundColor,
+        '--inv-bg-rgb': bgRgb,
+        '--inv-text': theme.textColor,
+        '--inv-text-muted': `${theme.textColor}99`,
       } as React.CSSProperties}
     >
       <div className="inv-classic">
@@ -53,7 +59,7 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
 
           {/* Introduction */}
           <p className="inv-intro inv-animate-fade-in inv-animate-delay-1">
-            Together with their families
+            {t.together}
           </p>
 
           {/* Names */}
@@ -118,7 +124,7 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
             ❧
           </div>
           <p className="inv-footer-text">
-            We look forward to celebrating with you
+            {t.footerText}
           </p>
         </footer>
       </div>

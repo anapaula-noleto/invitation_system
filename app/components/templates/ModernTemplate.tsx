@@ -1,6 +1,7 @@
 'use client';
 
 import type { InvitationConfig } from '@/app/types/invitation';
+import { useInvitationTranslations } from '@/app/context/InvitationTranslationsContext';
 import './invitation.css';
 
 interface ModernTemplateProps {
@@ -19,6 +20,7 @@ interface ModernTemplateProps {
  */
 export function ModernTemplate({ config }: ModernTemplateProps) {
   const { content, theme } = config;
+  const t = useInvitationTranslations();
 
   // Convert hex to RGB for CSS variables
   const hexToRgb = (hex: string): string => {
@@ -29,6 +31,8 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
   };
 
   const accentRgb = hexToRgb(theme.primaryColor);
+  const bgRgb = hexToRgb(theme.backgroundColor);
+  const textRgb = hexToRgb(theme.textColor);
 
   return (
     <div 
@@ -36,9 +40,12 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
       style={{
         '--inv-accent': theme.primaryColor,
         '--inv-accent-rgb': accentRgb,
-        '--inv-bg': '#0a0a0a',
-        '--inv-text': '#ffffff',
-        '--inv-text-muted': 'rgba(255, 255, 255, 0.6)',
+        '--inv-secondary': theme.secondaryColor,
+        '--inv-bg': theme.backgroundColor,
+        '--inv-bg-rgb': bgRgb,
+        '--inv-text': theme.textColor,
+        '--inv-text-rgb': textRgb,
+        '--inv-text-muted': `rgba(${textRgb}, 0.6)`,
       } as React.CSSProperties}
     >
       <div className="inv-modern">
@@ -62,7 +69,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
           <div className="inv-modern-hero-content">
             {/* Intro Badge */}
             <span className="inv-modern-intro inv-animate-fade-in">
-              Wedding Invitation
+              {t.invitationBadge}
             </span>
 
             {/* Names */}
@@ -83,7 +90,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
               <div className="inv-modern-detail">
                 <span className="inv-modern-detail-icon">📅</span>
                 <div className="inv-modern-detail-text">
-                  <strong>Save the Date</strong>
+                  <strong>{t.saveDate}</strong>
                   {content.weddingDate}
                 </div>
               </div>
@@ -91,7 +98,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
               <div className="inv-modern-detail">
                 <span className="inv-modern-detail-icon">📍</span>
                 <div className="inv-modern-detail-text">
-                  <strong>Location</strong>
+                  <strong>{t.location}</strong>
                   {content.venue}
                 </div>
               </div>
@@ -101,7 +108,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
 
         {/* Gallery Section */}
         <section className="inv-modern-gallery">
-          <h2 className="inv-modern-gallery-title">Our Story</h2>
+          <h2 className="inv-modern-gallery-title">{t.ourStory}</h2>
           <div className="inv-modern-gallery-grid">
             {content.photoUrls.map((url, index) => (
               <div key={index} className="inv-modern-photo">
@@ -124,7 +131,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
         {/* Footer */}
         <footer className="inv-modern-footer">
           <p className="inv-modern-footer-text">
-            We can&apos;t wait to celebrate with you
+            {t.footerText}
           </p>
         </footer>
       </div>

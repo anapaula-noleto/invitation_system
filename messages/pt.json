@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "Gerador de Convites de Casamento",
+    "description": "Crie lindos convites de casamento com inteligência artificial"
+  },
+  "header": {
+    "brand": "Évora Studio",
+    "titleAccent": "Convites",
+    "titleSuffix": "Atemporais",
+    "subtitle": "criados por IA, inspirados pelo amor",
+    "tagline": "Transforme suas fotos queridas em elegantes anúncios de casamento"
+  },
+  "form": {
+    "title": "Seus Dados",
+    "photo": {
+      "label": "Foto do Casal",
+      "hint": "JPG, PNG até 10MB",
+      "upload": "Enviar Foto",
+      "change": "Trocar Foto"
+    },
+    "partner1": {
+      "label": "Parceiro(a) 1",
+      "placeholder": "Primeiro nome"
+    },
+    "partner2": {
+      "label": "Parceiro(a) 2",
+      "placeholder": "Primeiro nome"
+    },
+    "date": {
+      "label": "Data do Casamento",
+      "placeholder": "Selecione a data do casamento"
+    },
+    "venue": {
+      "label": "Local",
+      "placeholder": "Ex: Salão Nobre, São Paulo",
+      "viewOnMaps": "Ver no Google Maps"
+    },
+    "template": {
+      "label": "Estilo do Template"
+    },
+    "palette": {
+      "label": "Paleta de Cores"
+    },
+    "submit": {
+      "default": "Gerar Convite",
+      "loading": "Criando seu convite..."
+    }
+  },
+  "preview": {
+    "tabs": {
+      "generated": "Gerado por IA",
+      "template": "Preview do Template"
+    },
+    "placeholder": {
+      "text": "Seu lindo convite aparecerá aqui"
+    },
+    "actions": {
+      "download": "Baixar Convite",
+      "view3d": "Ver Cartão 3D"
+    }
+  },
+  "errors": {
+    "photoRequired": "Por favor, envie uma foto primeiro",
+    "fieldsRequired": "Por favor, preencha todos os campos",
+    "generationFailed": "Falha ao gerar o convite",
+    "unexpected": "Ocorreu um erro inesperado"
+  },
+  "palettes": {
+    "olive": "Verde Oliva (Natureza)",
+    "terracotta": "Terracota (Boho)",
+    "serenity": "Azul Serenity (Clássico)",
+    "marsala": "Marsala (Romântico)",
+    "classic_gold": "Dourado & Branco (Luxo)"
+  },
+  "templates": {
+    "classic": {
+      "name": "Elegância Clássica",
+      "description": "Design atemporal com detalhes ornamentais"
+    },
+    "modern": {
+      "name": "Moderno Minimalista",
+      "description": "Linhas limpas e estilo contemporâneo"
+    }
+  },
+  "invitation": {
+    "together": "Junto com suas famílias",
+    "requestHonor": "têm a honra de convidar você",
+    "atCelebration": "para a celebração do seu casamento",
+    "saveDate": "Reserve a Data",
+    "joinUs": "Junte-se a nós no início da nossa vida juntos",
+    "when": "Quando",
+    "where": "Onde",
+    "ourStory": "Nossa História",
+    "storyText": "Desde o momento em que nos conhecemos, sabíamos que nossas vidas nunca mais seriam as mesmas. Agora, estamos prontos para começar o próximo capítulo da nossa jornada juntos.",
+    "rsvp": "Confirme até",
+    "defaultPartner1": "Seu Nome",
+    "defaultPartner2": "Nome do Par",
+    "defaultDate": "Data do Casamento",
+    "defaultVenue": "Local da Cerimônia"
+  },
+  "common": {
+    "close": "Fechar",
+    "loading": "Carregando...",
+    "error": "Erro"
+  }
+}

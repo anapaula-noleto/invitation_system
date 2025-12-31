@@ -16,6 +16,8 @@ export const AVAILABLE_TEMPLATES: TemplateMetadata[] = [
     defaultTheme: {
       primaryColor: '#c9a961',
       secondaryColor: '#2c2c2c',
+      backgroundColor: '#fdfbf7',
+      textColor: '#2c2c2c',
       fontFamily: 'playfair',
     },
   },
@@ -27,6 +29,8 @@ export const AVAILABLE_TEMPLATES: TemplateMetadata[] = [
     defaultTheme: {
       primaryColor: '#1a1a1a',
       secondaryColor: '#d4b978',
+      backgroundColor: '#0a0a0a',
+      textColor: '#ffffff',
       fontFamily: 'montserrat',
     },
   },
@@ -38,6 +42,8 @@ export const AVAILABLE_TEMPLATES: TemplateMetadata[] = [
     defaultTheme: {
       primaryColor: '#5d4e37',
       secondaryColor: '#8b9a6b',
+      backgroundColor: '#f5f1e8',
+      textColor: '#3a3a3a',
       fontFamily: 'lora',
     },
   },
@@ -49,6 +55,8 @@ export const AVAILABLE_TEMPLATES: TemplateMetadata[] = [
     defaultTheme: {
       primaryColor: '#333333',
       secondaryColor: '#999999',
+      backgroundColor: '#ffffff',
+      textColor: '#333333',
       fontFamily: 'josefin',
     },
   },
@@ -60,6 +68,8 @@ export const AVAILABLE_TEMPLATES: TemplateMetadata[] = [
     defaultTheme: {
       primaryColor: '#b76e79',
       secondaryColor: '#f5d0c5',
+      backgroundColor: '#fff5f7',
+      textColor: '#5a4a4a',
       fontFamily: 'cormorant',
     },
   },
@@ -85,6 +95,8 @@ export const MOCK_INVITATION: InvitationConfig = {
   theme: {
     primaryColor: '#c9a961',
     secondaryColor: '#2c2c2c',
+    backgroundColor: '#fdfbf7',
+    textColor: '#2c2c2c',
     fontFamily: 'playfair',
   },
   createdAt: new Date('2025-01-15T10:00:00'),
@@ -111,6 +123,8 @@ export const MOCK_INVITATION_MODERN: InvitationConfig = {
   theme: {
     primaryColor: '#1a1a1a',
     secondaryColor: '#d4b978',
+    backgroundColor: '#0a0a0a',
+    textColor: '#ffffff',
     fontFamily: 'montserrat',
   },
   createdAt: new Date('2025-01-20T14:30:00'),
@@ -144,6 +158,8 @@ export function createEmptyInvitation(templateId: TemplateId): InvitationConfig 
     theme: template?.defaultTheme ?? {
       primaryColor: '#c9a961',
       secondaryColor: '#2c2c2c',
+      backgroundColor: '#fdfbf7',
+      textColor: '#2c2c2c',
       fontFamily: 'playfair',
     },
     createdAt: now,

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { generateWeddingInvitation } from './actions/generate'
-import { Card3DPreview } from './components/Card3DPreview'
-import { InvitationRenderer } from './components/InvitationRenderer'
-import { ElegantDatePicker } from './components/ElegantDatePicker'
+import { useTranslations } from 'next-intl'
+import { generateWeddingInvitation } from '@/app/actions/generate'
+import { Card3DPreview } from '@/app/components/Card3DPreview'
+import { InvitationRenderer } from '@/app/components/InvitationRenderer'
+import { ElegantDatePicker } from '@/app/components/ElegantDatePicker'
 import {
   Button,
   FormInput,
@@ -14,11 +15,16 @@ import {
   ErrorMessage,
   ToggleButtonGroup,
   FormRow,
-} from './components/ui'
-import { AVAILABLE_TEMPLATES, getTemplateById } from './data/mock-invitations'
-import type { InvitationConfig, TemplateId } from './types/invitation'
+  PaletteSelector,
+  LanguageSelector,
+} from '@/app/components/ui'
+import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations'
+import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes'
+import type { InvitationConfig, TemplateId } from '@/app/types/invitation'
 
 export default function Home() {
+  const t = useTranslations()
+  
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [photoBase64, setPhotoBase64] = useState<string>('')
   const [partner1, setPartner1] = useState('')
@@ -27,6 +33,7 @@ export default function Home() {
   const [weddingDateFormatted, setWeddingDateFormatted] = useState('')
   const [venue, setVenue] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic')
+  const [selectedPalette, setSelectedPalette] = useState<WeddingPalette>(getDefaultPalette())
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [showTemplatePreview, setShowTemplatePreview] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -47,32 +54,38 @@ export default function Home() {
     }
   }, [venue])
 
+  // Handler para o PaletteSelector
+  const handlePaletteSelect = useCallback((palette: WeddingPalette) => {
+    setSelectedPalette(palette)
+  }, [])
+
   // Cria a configuração do convite baseada nos dados do formulário
   const invitationConfig = useMemo<InvitationConfig>(() => {
-    const template = getTemplateById(selectedTemplate)
     return {
       id: `inv_preview_${Date.now()}`,
       templateId: selectedTemplate,
       content: {
-        partner1Name: partner1 || 'Seu Nome',
-        partner2Name: partner2 || 'Nome do Par',
-        weddingDate: weddingDateFormatted || 'Data do Casamento',
-        venue: venue || 'Local da Cerimônia',
+        partner1Name: partner1 || t('invitation.defaultPartner1'),
+        partner2Name: partner2 || t('invitation.defaultPartner2'),
+        weddingDate: weddingDateFormatted || t('invitation.defaultDate'),
+        venue: venue || t('invitation.defaultVenue'),
         photoUrls: [
           photoPreview || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
           'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
           'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800',
         ],
       },
-      theme: template?.defaultTheme ?? {
-        primaryColor: '#c9a961',
-        secondaryColor: '#2c2c2c',
+      theme: {
+        primaryColor: selectedPalette.colors.primary,
+        secondaryColor: selectedPalette.colors.secondary,
+        backgroundColor: selectedPalette.colors.background,
+        textColor: selectedPalette.colors.text,
         fontFamily: 'playfair',
       },
       createdAt: new Date(),
       updatedAt: new Date(),
     }
-  }, [partner1, partner2, weddingDateFormatted, venue, selectedTemplate, photoPreview])
+  }, [partner1, partner2, weddingDateFormatted, venue, selectedTemplate, photoPreview, selectedPalette, t])
 
   // Handler para o PhotoUpload
   const handlePhotoChange = useCallback((_file: File, preview: string, base64: string) => {
@@ -89,12 +102,12 @@ export default function Home() {
     e.preventDefault()
     
     if (!photoBase64) {
-      setError('Please upload a photo first')
+      setError(t('errors.photoRequired'))
       return
     }
 
     if (!partner1 || !partner2 || !weddingDate || !venue) {
-      setError('Please fill in all fields')
+      setError(t('errors.fieldsRequired'))
       return
     }
 
@@ -113,10 +126,10 @@ export default function Home() {
       if (result.success && result.imageUrl) {
         setGeneratedImage(result.imageUrl)
       } else {
-        setError(result.error || 'Failed to generate invitation')
+        setError(result.error || t('errors.generationFailed'))
       }
     } catch (err) {
-      setError('An unexpected error occurred')
+      setError(t('errors.unexpected'))
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -134,6 +147,14 @@ export default function Home() {
     document.body.removeChild(link)
   }
 
+  // Traduz os templates dinamicamente
+  const templateOptions = AVAILABLE_TEMPLATES
+    .filter(tmpl => tmpl.id === 'classic' || tmpl.id === 'modern')
+    .map((tmpl) => ({
+      value: tmpl.id,
+      label: `${t(`templates.${tmpl.id}.name`)} — ${t(`templates.${tmpl.id}.description`)}`,
+    }))
+
   return (
     <main className="main-container">
       {/* Decorative background elements */}
@@ -148,73 +169,76 @@ export default function Home() {
       <div className="grain-overlay" aria-hidden="true"></div>
 
       <div className="content-wrapper">
+        {/* Language Selector */}
+        <LanguageSelector />
+        
         {/* Header */}
         <header className="header">
-          <span className="brand-mark">Évora Studio</span>
+          <span className="brand-mark">{t('header.brand')}</span>
           <h1 className="title">
-            <span className="title-accent">Timeless</span> Invitations
+            <span className="title-accent">{t('header.titleAccent')}</span> {t('header.titleSuffix')}
           </h1>
-          <p className="subtitle">crafted by AI, inspired by love</p>
+          <p className="subtitle">{t('header.subtitle')}</p>
           <div className="decorative-line">
             <span className="line"></span>
             <span className="ornament">✦</span>
             <span className="line"></span>
           </div>
-          <p className="tagline">Transform your cherished photos into elegant wedding announcements</p>
+          <p className="tagline">{t('header.tagline')}</p>
         </header>
 
         <div className="main-content">
           {/* Form Section */}
           <section className="form-section">
-            <h2 className="form-section-title">Your Details</h2>
+            <h2 className="form-section-title">{t('form.title')}</h2>
             <form onSubmit={handleGenerate} className="invitation-form">
               {/* Photo Upload */}
               <PhotoUpload
                 value={photoPreview}
                 onChange={handlePhotoChange}
                 onClear={handlePhotoClear}
-                label="Your Photo Together"
-                hint="JPG, PNG up to 10MB"
+                label={t('form.photo.label')}
+                hint={t('form.photo.hint')}
               />
 
               {/* Names */}
               <FormRow columns={2}>
                 <FormInput
-                  label="Partner 1"
+                  label={t('form.partner1.label')}
                   value={partner1}
                   onChange={(e) => setPartner1(e.target.value)}
-                  placeholder="First name"
+                  placeholder={t('form.partner1.placeholder')}
                 />
                 <FormInput
-                  label="Partner 2"
+                  label={t('form.partner2.label')}
                   value={partner2}
                   onChange={(e) => setPartner2(e.target.value)}
-                  placeholder="First name"
+                  placeholder={t('form.partner2.placeholder')}
                 />
               </FormRow>
 
               {/* Date */}
               <div className="form-group">
-                <label className="form-label">Wedding Date</label>
+                <label className="form-label">{t('form.date.label')}</label>
                 <ElegantDatePicker
                   value={weddingDate}
                   onChange={handleDateChange}
                   minDate={new Date().toISOString().split('T')[0]}
-                  placeholder="Select your wedding date"
+                  placeholder={t('form.date.placeholder')}
                 />
               </div>
 
               {/* Venue */}
               <FormInput
-                label="Venue"
+                label={t('form.venue.label')}
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
-                placeholder="e.g., The Grand Ballroom, New York"
+                placeholder={t('form.venue.placeholder')}
                 rightAddon={
                   venue ? (
                     <IconButton
                       icon="📍"
-                      label="View on Google Maps"
+                      label={t('form.venue.viewOnMaps')}
                       onClick={openVenueInMaps}
                       size="sm"
                       type="button"
@@ -225,16 +249,20 @@ export default function Home() {
 
               {/* Template Selection */}
               <FormSelect
-                label="Template Style"
+                label={t('form.template.label')}
                 value={selectedTemplate}
                 onChange={(e) => setSelectedTemplate(e.target.value as TemplateId)}
-                options={AVAILABLE_TEMPLATES
-                  .filter(t => t.id === 'classic' || t.id === 'modern')
-                  .map((template) => ({
-                    value: template.id,
-                    label: `${template.name} — ${template.description}`,
-                  }))}
+                options={templateOptions}
               />
+
+              {/* Color Palette Selection */}
+              <div className="form-group">
+                <label className="form-label">{t('form.palette.label')}</label>
+                <PaletteSelector
+                  value={selectedPalette.id}
+                  onSelect={handlePaletteSelect}
+                />
+              </div>
 
               {/* Error Message */}
               <ErrorMessage message={error} />
@@ -249,7 +277,7 @@ export default function Home() {
                 leftIcon={!isLoading ? '✨' : undefined}
                 className="generate-button"
               >
-                {isLoading ? 'Creating your invitation...' : 'Generate Invitation'}
+                {isLoading ? t('form.submit.loading') : t('form.submit.default')}
               </Button>
             </form>
           </section>
@@ -262,8 +290,8 @@ export default function Home() {
                 value={showTemplatePreview ? 'template' : 'generated'}
                 onChange={(v) => setShowTemplatePreview(v === 'template')}
                 options={[
-                  { value: 'generated', label: 'AI Generated', icon: '🎨' },
-                  { value: 'template', label: 'Template Preview', icon: '📋' },
+                  { value: 'generated', label: t('preview.tabs.generated'), icon: '🎨' },
+                  { value: 'template', label: t('preview.tabs.template'), icon: '📋' },
                 ]}
               />
 
@@ -281,14 +309,14 @@ export default function Home() {
                   />
                   <div className="button-group">
                     <Button onClick={handleDownload} variant="secondary" leftIcon="⬇️">
-                      Download Invitation
+                      {t('preview.actions.download')}
                     </Button>
                     <Button 
                       onClick={() => setShow3DPreview(true)} 
                       variant="secondary"
                       leftIcon="🎴"
                     >
-                      View 3D Card
+                      {t('preview.actions.view3d')}
                     </Button>
                   </div>
                 </>
@@ -296,7 +324,7 @@ export default function Home() {
                 <div className="preview-placeholder">
                   <div className="placeholder-frame">
                     <span className="placeholder-icon">💒</span>
-                    <p className="placeholder-text">Your beautiful invitation will appear here</p>
+                    <p className="placeholder-text">{t('preview.placeholder.text')}</p>
                   </div>
                 </div>
               )}

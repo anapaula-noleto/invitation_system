@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "Wedding Invitation Generator",
+    "description": "Create beautiful AI-powered wedding invitations"
+  },
+  "header": {
+    "brand": "Évora Studio",
+    "titleAccent": "Timeless",
+    "titleSuffix": "Invitations",
+    "subtitle": "crafted by AI, inspired by love",
+    "tagline": "Transform your cherished photos into elegant wedding announcements"
+  },
+  "form": {
+    "title": "Your Details",
+    "photo": {
+      "label": "Your Photo Together",
+      "hint": "JPG, PNG up to 10MB",
+      "upload": "Upload Photo",
+      "change": "Change Photo"
+    },
+    "partner1": {
+      "label": "Partner 1",
+      "placeholder": "First name"
+    },
+    "partner2": {
+      "label": "Partner 2",
+      "placeholder": "First name"
+    },
+    "date": {
+      "label": "Wedding Date",
+      "placeholder": "Select your wedding date"
+    },
+    "venue": {
+      "label": "Venue",
+      "placeholder": "e.g., The Grand Ballroom, New York",
+      "viewOnMaps": "View on Google Maps"
+    },
+    "template": {
+      "label": "Template Style"
+    },
+    "palette": {
+      "label": "Color Palette"
+    },
+    "submit": {
+      "default": "Generate Invitation",
+      "loading": "Creating your invitation..."
+    }
+  },
+  "preview": {
+    "tabs": {
+      "generated": "AI Generated",
+      "template": "Template Preview"
+    },
+    "placeholder": {
+      "text": "Your beautiful invitation will appear here"
+    },
+    "actions": {
+      "download": "Download Invitation",
+      "view3d": "View 3D Card"
+    }
+  },
+  "errors": {
+    "photoRequired": "Please upload a photo first",
+    "fieldsRequired": "Please fill in all fields",
+    "generationFailed": "Failed to generate invitation",
+    "unexpected": "An unexpected error occurred"
+  },
+  "palettes": {
+    "olive": "Olive Green (Nature)",
+    "terracotta": "Terracotta (Boho)",
+    "serenity": "Serenity Blue (Classic)",
+    "marsala": "Marsala (Romantic)",
+    "classic_gold": "Gold & White (Luxury)"
+  },
+  "templates": {
+    "classic": {
+      "name": "Classic Elegance",
+      "description": "Timeless design with ornate details"
+    },
+    "modern": {
+      "name": "Modern Minimal",
+      "description": "Clean lines and contemporary style"
+    }
+  },
+  "invitation": {
+    "together": "Together with their families",
+    "requestHonor": "request the honor of your presence",
+    "atCelebration": "at the celebration of their marriage",
+    "saveDate": "Save the Date",
+    "joinUs": "Join us as we begin our forever",
+    "when": "When",
+    "where": "Where",
+    "ourStory": "Our Story",
+    "storyText": "From the moment we met, we knew our lives would never be the same. Now, we're ready to begin the next chapter of our journey together.",
+    "rsvp": "RSVP by",
+    "defaultPartner1": "Your Name",
+    "defaultPartner2": "Partner's Name",
+    "defaultDate": "Wedding Date",
+    "defaultVenue": "Ceremony Venue"
+  },
+  "common": {
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error"
+  }
+}

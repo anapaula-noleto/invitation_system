@@ -27,3 +27,7 @@ export type { ToggleButtonGroupProps } from './ToggleButtonGroup';
 
 export { FormRow } from './FormRow';
 export type { FormRowProps } from './FormRow';
+
+export { PaletteSelector } from './PaletteSelector';
+
+export { LanguageSelector } from './LanguageSelector';

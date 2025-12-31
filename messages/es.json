@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "Generador de Invitaciones de Boda",
+    "description": "Crea hermosas invitaciones de boda con inteligencia artificial"
+  },
+  "header": {
+    "brand": "Évora Studio",
+    "titleAccent": "Invitaciones",
+    "titleSuffix": "Atemporales",
+    "subtitle": "creadas por IA, inspiradas en el amor",
+    "tagline": "Transforma tus fotos preciadas en elegantes anuncios de boda"
+  },
+  "form": {
+    "title": "Tus Datos",
+    "photo": {
+      "label": "Tu Foto Juntos",
+      "hint": "JPG, PNG hasta 10MB",
+      "upload": "Subir Foto",
+      "change": "Cambiar Foto"
+    },
+    "partner1": {
+      "label": "Pareja 1",
+      "placeholder": "Nombre"
+    },
+    "partner2": {
+      "label": "Pareja 2",
+      "placeholder": "Nombre"
+    },
+    "date": {
+      "label": "Fecha de la Boda",
+      "placeholder": "Selecciona la fecha de la boda"
+    },
+    "venue": {
+      "label": "Lugar",
+      "placeholder": "Ej: Salón Imperial, Madrid",
+      "viewOnMaps": "Ver en Google Maps"
+    },
+    "template": {
+      "label": "Estilo de Plantilla"
+    },
+    "palette": {
+      "label": "Paleta de Colores"
+    },
+    "submit": {
+      "default": "Generar Invitación",
+      "loading": "Creando tu invitación..."
+    }
+  },
+  "preview": {
+    "tabs": {
+      "generated": "Generado por IA",
+      "template": "Vista Previa"
+    },
+    "placeholder": {
+      "text": "Tu hermosa invitación aparecerá aquí"
+    },
+    "actions": {
+      "download": "Descargar Invitación",
+      "view3d": "Ver Tarjeta 3D"
+    }
+  },
+  "errors": {
+    "photoRequired": "Por favor, sube una foto primero",
+    "fieldsRequired": "Por favor, completa todos los campos",
+    "generationFailed": "Error al generar la invitación",
+    "unexpected": "Ocurrió un error inesperado"
+  },
+  "palettes": {
+    "olive": "Verde Oliva (Naturaleza)",
+    "terracotta": "Terracota (Boho)",
+    "serenity": "Azul Serenity (Clásico)",
+    "marsala": "Marsala (Romántico)",
+    "classic_gold": "Dorado & Blanco (Lujo)"
+  },
+  "templates": {
+    "classic": {
+      "name": "Elegancia Clásica",
+      "description": "Diseño atemporal con detalles ornamentales"
+    },
+    "modern": {
+      "name": "Moderno Minimalista",
+      "description": "Líneas limpias y estilo contemporáneo"
+    }
+  },
+  "invitation": {
+    "together": "Junto con sus familias",
+    "requestHonor": "tienen el honor de invitarle",
+    "atCelebration": "a la celebración de su matrimonio",
+    "saveDate": "Reserva la Fecha",
+    "joinUs": "Acompáñanos en el inicio de nuestra vida juntos",
+    "when": "Cuándo",
+    "where": "Dónde",
+    "ourStory": "Nuestra Historia",
+    "storyText": "Desde el momento en que nos conocimos, supimos que nuestras vidas nunca serían las mismas. Ahora, estamos listos para comenzar el próximo capítulo de nuestro viaje juntos.",
+    "rsvp": "Confirmar antes del",
+    "defaultPartner1": "Tu Nombre",
+    "defaultPartner2": "Nombre de tu Pareja",
+    "defaultDate": "Fecha de la Boda",
+    "defaultVenue": "Lugar de la Ceremonia"
+  },
+  "common": {
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error"
+  }
+}

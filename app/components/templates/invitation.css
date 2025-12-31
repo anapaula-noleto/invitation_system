@@ -65,12 +65,7 @@
 
 .inv-classic {
   min-height: 100vh;
-  background: linear-gradient(
-    180deg,
-    var(--inv-bg-start, #fdfbf7) 0%,
-    var(--inv-bg-mid, #f8f4ed) 50%,
-    var(--inv-bg-end, #f3ede3) 100%
-  );
+  background: var(--inv-bg, #fdfbf7);
   color: var(--inv-text, #2c2c2c);
   position: relative;
   overflow-x: hidden;

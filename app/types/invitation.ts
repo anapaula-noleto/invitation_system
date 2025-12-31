@@ -26,6 +26,10 @@ export interface InvitationTheme {
   primaryColor: string;
   /** Cor secundária (hex) - usada em detalhes e acentos */
   secondaryColor: string;
+  /** Cor de fundo (hex) - background do convite */
+  backgroundColor: string;
+  /** Cor do texto (hex) - cor principal dos textos */
+  textColor: string;
   /** Família tipográfica para o convite */
   fontFamily: 'playfair' | 'cormorant' | 'montserrat' | 'lora' | 'josefin';
 }
