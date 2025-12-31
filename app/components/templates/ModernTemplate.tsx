@@ -1,139 +1,132 @@
 'use client';
 
 import type { InvitationConfig } from '@/app/types/invitation';
+import './invitation.css';
 
 interface ModernTemplateProps {
   config: InvitationConfig;
 }
 
 /**
- * Template Moderno
- * Layout assimétrico, fontes sans-serif, design ousado e contemporâneo
+ * Modern Template - Bold & Contemporary
+ * 
+ * A striking wedding landing page featuring:
+ * - Bold sans-serif typography with dramatic sizing
+ * - Dark, sophisticated color palette
+ * - Asymmetric layouts and gradient effects
+ * - Full-bleed photography
+ * - Dynamic hover interactions
  */
 export function ModernTemplate({ config }: ModernTemplateProps) {
   const { content, theme } = config;
 
-  // Mapeia fontFamily para a classe CSS correspondente
-  const fontFamilyClass = {
-    playfair: 'font-serif',
-    cormorant: 'font-serif',
-    montserrat: 'font-sans',
-    lora: 'font-serif',
-    josefin: 'font-sans',
-  }[theme.fontFamily];
+  // Convert hex to RGB for CSS variables
+  const hexToRgb = (hex: string): string => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+      : '201, 169, 97';
+  };
+
+  const accentRgb = hexToRgb(theme.primaryColor);
 
   return (
-    <div
-      className="min-h-screen w-full"
+    <div 
+      className="invitation-scope"
       style={{
-        '--primary': theme.primaryColor,
-        '--secondary': theme.secondaryColor,
+        '--inv-accent': theme.primaryColor,
+        '--inv-accent-rgb': accentRgb,
+        '--inv-bg': '#0a0a0a',
+        '--inv-text': '#ffffff',
+        '--inv-text-muted': 'rgba(255, 255, 255, 0.6)',
       } as React.CSSProperties}
     >
-      {/* Layout assimétrico com grid */}
-      <div className={`min-h-screen bg-[var(--primary)] ${fontFamilyClass}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-          {/* Lado esquerdo - Fotos em grid dinâmico */}
-          <div className="relative h-[50vh] lg:h-screen">
-            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1">
-              {/* Foto principal - ocupa 2 linhas */}
-              <div className="row-span-2 overflow-hidden">
-                {content.photoUrls[0] ? (
-                  <img
-                    src={content.photoUrls[0]}
-                    alt="Foto principal do casal"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">Foto 1</span>
-                  </div>
-                )}
+      <div className="inv-modern">
+        {/* Hero Section - Split Layout */}
+        <section className="inv-modern-hero">
+          {/* Image Side */}
+          <div className="inv-modern-hero-image">
+            {content.photoUrls[0] ? (
+              <img
+                src={content.photoUrls[0]}
+                alt={`${content.partner1Name} & ${content.partner2Name}`}
+              />
+            ) : (
+              <div className="inv-photo-placeholder" style={{ height: '100%' }}>
+                Main Photo
               </div>
-              {/* Foto 2 */}
-              <div className="overflow-hidden">
-                {content.photoUrls[1] ? (
-                  <img
-                    src={content.photoUrls[1]}
-                    alt="Foto do casal 2"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">Foto 2</span>
-                  </div>
-                )}
-              </div>
-              {/* Foto 3 */}
-              <div className="overflow-hidden">
-                {content.photoUrls[2] ? (
-                  <img
-                    src={content.photoUrls[2]}
-                    alt="Foto do casal 3"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-600 flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">Foto 3</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Overlay com gradiente */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--primary)] opacity-30 lg:opacity-60 pointer-events-none" />
+            )}
           </div>
 
-          {/* Lado direito - Conteúdo textual */}
-          <div className="flex flex-col justify-center px-8 py-16 lg:px-16 lg:py-0">
-            {/* Linha decorativa */}
-            <div className="w-24 h-1 bg-[var(--secondary)] mb-12" />
+          {/* Content Side */}
+          <div className="inv-modern-hero-content">
+            {/* Intro Badge */}
+            <span className="inv-modern-intro inv-animate-fade-in">
+              Wedding Invitation
+            </span>
 
-            {/* Tag superior */}
-            <p className="text-[var(--secondary)] text-xs tracking-[0.4em] uppercase mb-8">
-              Save the Date
-            </p>
-
-            {/* Nomes em layout vertical */}
-            <div className="mb-12">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl text-white font-light leading-none tracking-tight">
+            {/* Names */}
+            <div className="inv-modern-names">
+              <span className="inv-modern-name inv-animate-fade-in inv-animate-delay-1">
                 {content.partner1Name}
-              </h1>
-              <div className="flex items-center gap-4 my-4">
-                <div className="h-px flex-1 bg-[var(--secondary)] opacity-30" />
-                <span className="text-[var(--secondary)] text-2xl font-light">&</span>
-                <div className="h-px flex-1 bg-[var(--secondary)] opacity-30" />
-              </div>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl text-white font-light leading-none tracking-tight">
+              </span>
+              <span className="inv-modern-ampersand inv-animate-fade-in inv-animate-delay-2">
+                &
+              </span>
+              <span className="inv-modern-name inv-animate-fade-in inv-animate-delay-2">
                 {content.partner2Name}
-              </h1>
+              </span>
             </div>
 
-            {/* Data - destaque tipográfico */}
-            <div className="mb-8">
-              <p className="text-[var(--secondary)] text-2xl md:text-3xl font-light">
-                {content.weddingDate}
-              </p>
-            </div>
+            {/* Details */}
+            <div className="inv-modern-details inv-animate-fade-in inv-animate-delay-3">
+              <div className="inv-modern-detail">
+                <span className="inv-modern-detail-icon">📅</span>
+                <div className="inv-modern-detail-text">
+                  <strong>Save the Date</strong>
+                  {content.weddingDate}
+                </div>
+              </div>
 
-            {/* Local */}
-            <div className="border-l-2 border-[var(--secondary)] pl-6">
-              <p className="text-white opacity-70 text-lg">
-                {content.venue}
-              </p>
-            </div>
-
-            {/* Elemento gráfico - círculo decorativo */}
-            <div className="mt-16 flex items-center gap-4">
-              <div className="w-3 h-3 rounded-full bg-[var(--secondary)]" />
-              <div className="w-2 h-2 rounded-full bg-[var(--secondary)] opacity-60" />
-              <div className="w-1 h-1 rounded-full bg-[var(--secondary)] opacity-30" />
+              <div className="inv-modern-detail">
+                <span className="inv-modern-detail-icon">📍</span>
+                <div className="inv-modern-detail-text">
+                  <strong>Location</strong>
+                  {content.venue}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Barra inferior com gradiente */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--secondary)] to-transparent opacity-50" />
+        {/* Gallery Section */}
+        <section className="inv-modern-gallery">
+          <h2 className="inv-modern-gallery-title">Our Story</h2>
+          <div className="inv-modern-gallery-grid">
+            {content.photoUrls.map((url, index) => (
+              <div key={index} className="inv-modern-photo">
+                {url ? (
+                  <img
+                    src={url}
+                    alt={`Photo ${index + 1}`}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="inv-photo-placeholder">
+                    Photo {index + 1}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="inv-modern-footer">
+          <p className="inv-modern-footer-text">
+            We can&apos;t wait to celebrate with you
+          </p>
+        </footer>
       </div>
     </div>
   );

@@ -1,111 +1,126 @@
 'use client';
 
 import type { InvitationConfig } from '@/app/types/invitation';
+import './invitation.css';
 
 interface ClassicTemplateProps {
   config: InvitationConfig;
 }
 
 /**
- * Template Clássico
- * Layout centralizado, fontes serifadas, elegante com ornamentos dourados
+ * Classic Template - Timeless Elegance
+ * 
+ * A sophisticated wedding landing page featuring:
+ * - Elegant serif typography with refined spacing
+ * - Decorative ornaments and frames
+ * - Warm, cream-toned color palette
+ * - Professional photo gallery
+ * - Subtle animations on scroll
  */
 export function ClassicTemplate({ config }: ClassicTemplateProps) {
   const { content, theme } = config;
 
-  // Mapeia fontFamily para a classe CSS correspondente
-  const fontFamilyClass = {
-    playfair: 'font-serif',
-    cormorant: 'font-serif',
-    montserrat: 'font-sans',
-    lora: 'font-serif',
-    josefin: 'font-sans',
-  }[theme.fontFamily];
+  // Convert hex to RGB for CSS variables
+  const hexToRgb = (hex: string): string => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+      : '201, 169, 97';
+  };
+
+  const accentRgb = hexToRgb(theme.primaryColor);
 
   return (
-    <div
-      className="min-h-screen w-full"
+    <div 
+      className="invitation-scope"
       style={{
-        '--primary': theme.primaryColor,
-        '--secondary': theme.secondaryColor,
+        '--inv-accent': theme.primaryColor,
+        '--inv-accent-rgb': accentRgb,
+        '--inv-text': theme.secondaryColor,
+        '--inv-text-muted': `${theme.secondaryColor}99`,
       } as React.CSSProperties}
     >
-      {/* Container principal com fundo gradiente suave */}
-      <div className="min-h-screen bg-gradient-to-b from-[#fdf8f3] to-[#f7e7ce] py-16 px-4">
-        {/* Card do convite */}
-        <div className="max-w-3xl mx-auto bg-white shadow-2xl rounded-sm overflow-hidden">
-          {/* Borda decorativa superior */}
-          <div className="h-2 bg-[var(--primary)]" />
+      <div className="inv-classic">
+        {/* Hero Section */}
+        <header className="inv-classic-header">
+          {/* Decorative Frame */}
+          <div className="inv-classic-frame" />
 
-          {/* Conteúdo centralizado */}
-          <div className={`text-center py-16 px-8 md:px-16 ${fontFamilyClass}`}>
-            {/* Ornamento superior */}
-            <div className="text-[var(--primary)] text-4xl mb-8 opacity-60">
-              ❧
-            </div>
-
-            {/* Texto introdutório */}
-            <p className="text-[var(--secondary)] text-sm tracking-[0.3em] uppercase mb-8">
-              Temos a honra de convidar você para celebrar o casamento de
-            </p>
-
-            {/* Nomes dos noivos */}
-            <h1 className="text-4xl md:text-6xl text-[var(--primary)] mb-2 leading-tight">
-              {content.partner1Name}
-            </h1>
-            <p className="text-[var(--primary)] text-3xl md:text-4xl italic my-4">&</p>
-            <h1 className="text-4xl md:text-6xl text-[var(--primary)] mb-8 leading-tight">
-              {content.partner2Name}
-            </h1>
-
-            {/* Linha decorativa */}
-            <div className="flex items-center justify-center gap-4 my-10">
-              <div className="h-px w-16 bg-[var(--primary)] opacity-40" />
-              <span className="text-[var(--primary)] text-xl">✦</span>
-              <div className="h-px w-16 bg-[var(--primary)] opacity-40" />
-            </div>
-
-            {/* Data e local */}
-            <div className="space-y-4 mb-12">
-              <p className="text-[var(--secondary)] text-xl md:text-2xl">
-                {content.weddingDate}
-              </p>
-              <p className="text-[var(--secondary)] text-lg opacity-80">
-                {content.venue}
-              </p>
-            </div>
-
-            {/* Grid de fotos */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
-              {content.photoUrls.map((url, index) => (
-                <div
-                  key={index}
-                  className="aspect-[3/4] overflow-hidden rounded-sm shadow-lg"
-                >
-                  {url ? (
-                    <img
-                      src={url}
-                      alt={`Foto do casal ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">Foto {index + 1}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Ornamento inferior */}
-            <div className="text-[var(--primary)] text-4xl mt-12 opacity-60 rotate-180">
-              ❧
-            </div>
+          {/* Ornament */}
+          <div className="inv-ornament inv-animate-fade-in">
+            ❧ ❧ ❧
           </div>
 
-          {/* Borda decorativa inferior */}
-          <div className="h-2 bg-[var(--primary)]" />
-        </div>
+          {/* Introduction */}
+          <p className="inv-intro inv-animate-fade-in inv-animate-delay-1">
+            Together with their families
+          </p>
+
+          {/* Names */}
+          <div className="inv-names">
+            <h1 className="inv-name inv-animate-fade-in inv-animate-delay-2">
+              {content.partner1Name}
+            </h1>
+            <span className="inv-ampersand inv-animate-fade-in inv-animate-delay-3">
+              &
+            </span>
+            <h1 className="inv-name inv-animate-fade-in inv-animate-delay-3">
+              {content.partner2Name}
+            </h1>
+          </div>
+
+          {/* Divider */}
+          <div className="inv-divider inv-animate-fade-in inv-animate-delay-4">
+            <div className="inv-divider-line" />
+            <span className="inv-divider-icon">✦</span>
+            <div className="inv-divider-line" />
+          </div>
+
+          {/* Date and Venue */}
+          <div className="inv-details inv-animate-fade-in inv-animate-delay-5">
+            <p className="inv-date">{content.weddingDate}</p>
+            <p className="inv-venue">{content.venue}</p>
+          </div>
+
+          {/* Bottom Ornament */}
+          <div 
+            className="inv-ornament inv-animate-fade-in inv-animate-delay-5" 
+            style={{ marginTop: 'var(--inv-space-12)' }}
+          >
+            ✦
+          </div>
+        </header>
+
+        {/* Photo Gallery Section */}
+        <section className="inv-gallery">
+          <div className="inv-gallery-grid">
+            {content.photoUrls.map((url, index) => (
+              <div key={index} className="inv-photo">
+                {url ? (
+                  <img
+                    src={url}
+                    alt={`${content.partner1Name} & ${content.partner2Name} - Photo ${index + 1}`}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="inv-photo-placeholder">
+                    Photo {index + 1}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="inv-footer">
+          <div className="inv-ornament" style={{ fontSize: '1.5rem', marginBottom: 'var(--inv-space-6)' }}>
+            ❧
+          </div>
+          <p className="inv-footer-text">
+            We look forward to celebrating with you
+          </p>
+        </footer>
       </div>
     </div>
   );
