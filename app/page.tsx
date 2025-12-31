@@ -1,8 +1,22 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { generateWeddingInvitation } from './actions/generate'
 import { Card3DPreview } from './components/Card3DPreview'
+import { InvitationRenderer } from './components/InvitationRenderer'
+import { ElegantDatePicker } from './components/ElegantDatePicker'
+import {
+  Button,
+  FormInput,
+  FormSelect,
+  PhotoUpload,
+  IconButton,
+  ErrorMessage,
+  ToggleButtonGroup,
+  FormRow,
+} from './components/ui'
+import { AVAILABLE_TEMPLATES, getTemplateById } from './data/mock-invitations'
+import type { InvitationConfig, TemplateId } from './types/invitation'
 
 export default function Home() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
@@ -10,25 +24,65 @@ export default function Home() {
   const [partner1, setPartner1] = useState('')
   const [partner2, setPartner2] = useState('')
   const [weddingDate, setWeddingDate] = useState('')
+  const [weddingDateFormatted, setWeddingDateFormatted] = useState('')
   const [venue, setVenue] = useState('')
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic')
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
+  const [showTemplatePreview, setShowTemplatePreview] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [show3DPreview, setShow3DPreview] = useState(false)
 
-  const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  // Handler para o ElegantDatePicker
+  const handleDateChange = useCallback((date: string, formatted: string) => {
+    setWeddingDate(date)
+    setWeddingDateFormatted(formatted)
+  }, [])
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const result = reader.result as string
-      setPhotoPreview(result)
-      // Extract base64 without the data URL prefix
-      const base64 = result.split(',')[1]
-      setPhotoBase64(base64)
+  // Abre o Google Maps com o endereço do venue
+  const openVenueInMaps = useCallback(() => {
+    if (venue) {
+      const encodedVenue = encodeURIComponent(venue)
+      window.open(`https://www.google.com/maps/search/?api=1&query=${encodedVenue}`, '_blank')
     }
-    reader.readAsDataURL(file)
+  }, [venue])
+
+  // Cria a configuração do convite baseada nos dados do formulário
+  const invitationConfig = useMemo<InvitationConfig>(() => {
+    const template = getTemplateById(selectedTemplate)
+    return {
+      id: `inv_preview_${Date.now()}`,
+      templateId: selectedTemplate,
+      content: {
+        partner1Name: partner1 || 'Seu Nome',
+        partner2Name: partner2 || 'Nome do Par',
+        weddingDate: weddingDateFormatted || 'Data do Casamento',
+        venue: venue || 'Local da Cerimônia',
+        photoUrls: [
+          photoPreview || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
+          'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
+          'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800',
+        ],
+      },
+      theme: template?.defaultTheme ?? {
+        primaryColor: '#c9a961',
+        secondaryColor: '#2c2c2c',
+        fontFamily: 'playfair',
+      },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+  }, [partner1, partner2, weddingDateFormatted, venue, selectedTemplate, photoPreview])
+
+  // Handler para o PhotoUpload
+  const handlePhotoChange = useCallback((_file: File, preview: string, base64: string) => {
+    setPhotoPreview(preview)
+    setPhotoBase64(base64)
+  }, [])
+
+  const handlePhotoClear = useCallback(() => {
+    setPhotoPreview(null)
+    setPhotoBase64('')
   }, [])
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -115,108 +169,110 @@ export default function Home() {
             <h2 className="form-section-title">Your Details</h2>
             <form onSubmit={handleGenerate} className="invitation-form">
               {/* Photo Upload */}
-              <div className="form-group photo-upload-group">
-                <label className="form-label">Your Photo Together</label>
-                <div 
-                  className={`photo-upload-area ${photoPreview ? 'has-photo' : ''}`}
-                  onClick={() => document.getElementById('photo-input')?.click()}
-                >
-                  {photoPreview ? (
-                    <img src={photoPreview} alt="Couple preview" className="photo-preview" />
-                  ) : (
-                    <div className="upload-placeholder">
-                      <span className="upload-icon">📷</span>
-                      <span className="upload-text">Click to upload your photo</span>
-                      <span className="upload-hint">JPG, PNG up to 10MB</span>
-                    </div>
-                  )}
-                </div>
-                <input
-                  id="photo-input"
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                  className="hidden-input"
-                />
-              </div>
+              <PhotoUpload
+                value={photoPreview}
+                onChange={handlePhotoChange}
+                onClear={handlePhotoClear}
+                label="Your Photo Together"
+                hint="JPG, PNG up to 10MB"
+              />
 
               {/* Names */}
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">Partner 1</label>
-                  <input
-                    type="text"
-                    value={partner1}
-                    onChange={(e) => setPartner1(e.target.value)}
-                    placeholder="First name"
-                    className="form-input"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Partner 2</label>
-                  <input
-                    type="text"
-                    value={partner2}
-                    onChange={(e) => setPartner2(e.target.value)}
-                    placeholder="First name"
-                    className="form-input"
-                  />
-                </div>
-              </div>
+              <FormRow columns={2}>
+                <FormInput
+                  label="Partner 1"
+                  value={partner1}
+                  onChange={(e) => setPartner1(e.target.value)}
+                  placeholder="First name"
+                />
+                <FormInput
+                  label="Partner 2"
+                  value={partner2}
+                  onChange={(e) => setPartner2(e.target.value)}
+                  placeholder="First name"
+                />
+              </FormRow>
 
               {/* Date */}
               <div className="form-group">
                 <label className="form-label">Wedding Date</label>
-                <input
-                  type="text"
+                <ElegantDatePicker
                   value={weddingDate}
-                  onChange={(e) => setWeddingDate(e.target.value)}
-                  placeholder="e.g., Saturday, June 15th, 2025"
-                  className="form-input"
+                  onChange={handleDateChange}
+                  minDate={new Date().toISOString().split('T')[0]}
+                  placeholder="Select your wedding date"
                 />
               </div>
 
               {/* Venue */}
-              <div className="form-group">
-                <label className="form-label">Venue</label>
-                <input
-                  type="text"
-                  value={venue}
-                  onChange={(e) => setVenue(e.target.value)}
-                  placeholder="e.g., The Grand Ballroom, New York"
-                  className="form-input"
-                />
-              </div>
+              <FormInput
+                label="Venue"
+                value={venue}
+                onChange={(e) => setVenue(e.target.value)}
+                placeholder="e.g., The Grand Ballroom, New York"
+                rightAddon={
+                  venue ? (
+                    <IconButton
+                      icon="📍"
+                      label="View on Google Maps"
+                      onClick={openVenueInMaps}
+                      size="sm"
+                      type="button"
+                    />
+                  ) : undefined
+                }
+              />
+
+              {/* Template Selection */}
+              <FormSelect
+                label="Template Style"
+                value={selectedTemplate}
+                onChange={(e) => setSelectedTemplate(e.target.value as TemplateId)}
+                options={AVAILABLE_TEMPLATES
+                  .filter(t => t.id === 'classic' || t.id === 'modern')
+                  .map((template) => ({
+                    value: template.id,
+                    label: `${template.name} — ${template.description}`,
+                  }))}
+              />
 
               {/* Error Message */}
-              {error && (
-                <div className="error-message">
-                  {error}
-                </div>
-              )}
+              <ErrorMessage message={error} />
 
               {/* Generate Button */}
-              <button
+              <Button
                 type="submit"
-                disabled={isLoading}
+                variant="primary"
+                size="lg"
+                fullWidth
+                isLoading={isLoading}
+                leftIcon={!isLoading ? '✨' : undefined}
                 className="generate-button"
               >
-                {isLoading ? (
-                  <>
-                    <span className="spinner"></span>
-                    Creating your invitation...
-                  </>
-                ) : (
-                  <>✨ Generate Invitation</>
-                )}
-              </button>
+                {isLoading ? 'Creating your invitation...' : 'Generate Invitation'}
+              </Button>
             </form>
           </section>
 
           {/* Preview Section */}
           <section className="preview-section">
             <div className="preview-card">
-              {generatedImage ? (
+              {/* Toggle entre preview de template e imagem gerada */}
+              <ToggleButtonGroup
+                value={showTemplatePreview ? 'template' : 'generated'}
+                onChange={(v) => setShowTemplatePreview(v === 'template')}
+                options={[
+                  { value: 'generated', label: 'AI Generated', icon: '🎨' },
+                  { value: 'template', label: 'Template Preview', icon: '📋' },
+                ]}
+              />
+
+              {showTemplatePreview ? (
+                /* Novo: Preview do template em tempo real */
+                <div className="template-preview-container">
+                  <InvitationRenderer config={invitationConfig} />
+                </div>
+              ) : generatedImage ? (
                 <>
                   <img 
                     src={generatedImage} 
@@ -224,15 +280,16 @@ export default function Home() {
                     className="generated-image"
                   />
                   <div className="button-group">
-                    <button onClick={handleDownload} className="download-button">
-                      ⬇️ Download Invitation
-                    </button>
-                    <button 
+                    <Button onClick={handleDownload} variant="secondary" leftIcon="⬇️">
+                      Download Invitation
+                    </Button>
+                    <Button 
                       onClick={() => setShow3DPreview(true)} 
-                      className="preview-3d-button"
+                      variant="secondary"
+                      leftIcon="🎴"
                     >
-                      🎴 View 3D Card
-                    </button>
+                      View 3D Card
+                    </Button>
                   </div>
                 </>
               ) : (
