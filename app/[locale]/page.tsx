@@ -40,7 +40,6 @@ export default function Home() {
             venue={form.venue}
             selectedTemplate={form.selectedTemplate}
             selectedPalette={form.selectedPalette}
-            selectedTone={form.selectedTone}
             customGreeting={form.customGreeting}
             customStory={form.customStory}
             customClosing={form.customClosing}
@@ -55,7 +54,6 @@ export default function Home() {
             onVenueChange={form.setVenue}
             onTemplateChange={form.setSelectedTemplate}
             onPaletteSelect={form.handlePaletteSelect}
-            onToneChange={form.setSelectedTone}
             onCustomGreetingChange={form.setCustomGreeting}
             onCustomStoryChange={form.setCustomStory}
             onCustomClosingChange={form.setCustomClosing}

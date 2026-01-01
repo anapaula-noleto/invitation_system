@@ -15,7 +15,6 @@ import {
 } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
-import type { ToneType } from '@/app/constants/textLimits';
 import type { TemplateId } from '@/app/types/invitation';
 
 interface InvitationFormSectionProps {
@@ -27,7 +26,6 @@ interface InvitationFormSectionProps {
   venue: string;
   selectedTemplate: TemplateId;
   selectedPalette: WeddingPalette;
-  selectedTone: ToneType;
   customGreeting: string;
   customStory: string;
   customClosing: string;
@@ -46,7 +44,6 @@ interface InvitationFormSectionProps {
   onVenueChange: (value: string) => void;
   onTemplateChange: (value: TemplateId) => void;
   onPaletteSelect: (palette: WeddingPalette) => void;
-  onToneChange: (value: ToneType) => void;
   onCustomGreetingChange: (value: string) => void;
   onCustomStoryChange: (value: string) => void;
   onCustomClosingChange: (value: string) => void;
@@ -62,7 +59,6 @@ export function InvitationFormSection({
   venue,
   selectedTemplate,
   selectedPalette,
-  selectedTone,
   customGreeting,
   customStory,
   customClosing,
@@ -77,7 +73,6 @@ export function InvitationFormSection({
   onVenueChange,
   onTemplateChange,
   onPaletteSelect,
-  onToneChange,
   onCustomGreetingChange,
   onCustomStoryChange,
   onCustomClosingChange,
@@ -181,30 +176,15 @@ export function InvitationFormSection({
             <p className="ai-text-section-subtitle">{t('form.customTexts.subtitle')}</p>
           </div>
 
-          {/* Tone Selection */}
-          <FormSelect
-            label={t('form.customTexts.tone.label')}
-            value={selectedTone}
-            onChange={(e) => onToneChange(e.target.value as ToneType)}
-            options={[
-              { value: 'classic', label: t('form.customTexts.tone.classic') },
-              { value: 'modern', label: t('form.customTexts.tone.modern') },
-              { value: 'biblical', label: t('form.customTexts.tone.biblical') },
-              { value: 'humorous', label: t('form.customTexts.tone.humorous') },
-            ]}
-          />
-
           <AITextField
             textType="greeting"
             value={customGreeting}
             onChange={onCustomGreetingChange}
             label={t('form.customTexts.greeting.label')}
-            placeholder={t('form.customTexts.greeting.placeholder')}
             enhanceLabel={t('form.customTexts.greeting.enhance')}
             enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
             locale={locale}
-            tone={selectedTone}
           />
 
           <AITextField
@@ -212,12 +192,10 @@ export function InvitationFormSection({
             value={customStory}
             onChange={onCustomStoryChange}
             label={t('form.customTexts.story.label')}
-            placeholder={t('form.customTexts.story.placeholder')}
             enhanceLabel={t('form.customTexts.story.enhance')}
             enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
             locale={locale}
-            tone={selectedTone}
           />
 
           <AITextField
@@ -225,12 +203,10 @@ export function InvitationFormSection({
             value={customClosing}
             onChange={onCustomClosingChange}
             label={t('form.customTexts.closing.label')}
-            placeholder={t('form.customTexts.closing.placeholder')}
             enhanceLabel={t('form.customTexts.closing.enhance')}
             enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
             locale={locale}
-            tone={selectedTone}
           />
         </div>
 

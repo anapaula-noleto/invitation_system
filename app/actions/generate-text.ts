@@ -2,7 +2,7 @@
 
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
-import { type TextType, type ToneType, MAX_CHARACTERS } from '@/app/constants/textLimits'
+import { type TextType, MAX_CHARACTERS } from '@/app/constants/textLimits'
 
 interface EnhanceTextResult {
   success: boolean
@@ -13,8 +13,7 @@ interface EnhanceTextResult {
 export async function enhanceInvitationText(
   textType: TextType,
   userText: string,
-  locale: string = 'en',
-  tone: ToneType = 'classic'
+  locale: string = 'en'
 ): Promise<EnhanceTextResult> {
   try {
     if (!userText || userText.trim().length < 5) {
@@ -40,34 +39,26 @@ export async function enhanceInvitationText(
       closing: 'Context: Closing message.',
     }
 
-    // Instruções de tom
-    const toneInstructions: Record<ToneType, string> = {
-      classic: `Tone: Classic and timeless. Use elegant, formal language with refined expressions. Think traditional wedding invitations with graceful prose.`,
-      modern: `Tone: Modern and fresh. Use contemporary language that feels personal and authentic. Keep it warm but not overly formal.`,
-      biblical: `Tone: Biblical and spiritual. Incorporate subtle religious references and blessings. Use reverent, sacred language that reflects faith and divine love.`,
-      humorous: `Tone: Lighthearted and witty. Add gentle humor and playful expressions while maintaining warmth. Keep it fun but still appropriate for a wedding.`,
-    }
-
     const systemPrompt = `You are an expert wedding invitation editor.
 ${localeInstructions[locale] || localeInstructions.en}
 ${textTypeContext[textType]}
-${toneInstructions[tone]}
 
 Rules:
-1. Maintain the original meaning.
-2. Fix grammar/spelling.
-3. Elevate the text according to the specified tone.
-4. Do NOT use quotation marks.
-5. Return ONLY the enhanced text.
-6. It must have complete meaning and proper sentence structure.
-7. Maximum ${maxChars} characters.`
+1. PRESERVE the original tone and style of the user's text (formal, casual, humorous, religious, etc.).
+2. Fix grammar and spelling errors.
+3. Make it slightly more elegant while keeping the user's voice and personality.
+4. Do NOT change the tone - if they wrote something funny, keep it funny. If religious, keep it religious.
+5. Do NOT use quotation marks.
+6. Return ONLY the enhanced text.
+7. It must have complete meaning and proper sentence structure.
+8. Maximum ${maxChars} characters.`
 
     const result = await generateText({
       model: google('gemini-2.5-flash'),
       system: systemPrompt,
       prompt: userText,
       maxTokens: 2048,
-      temperature: 0.7,
+      temperature: 0.5, // Lower temperature to preserve user's style
     })
 
     const text = result.text?.trim()

@@ -4,7 +4,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { generateWeddingInvitation } from '@/app/actions/generate';
 import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes';
-import type { ToneType } from '@/app/constants/textLimits';
 import type { InvitationConfig, TemplateId } from '@/app/types/invitation';
 
 export interface UseInvitationFormReturn {
@@ -18,7 +17,6 @@ export interface UseInvitationFormReturn {
   venue: string;
   selectedTemplate: TemplateId;
   selectedPalette: WeddingPalette;
-  selectedTone: ToneType;
   customGreeting: string;
   customStory: string;
   customClosing: string;
@@ -39,7 +37,6 @@ export interface UseInvitationFormReturn {
   setPartner2: (value: string) => void;
   setVenue: (value: string) => void;
   setSelectedTemplate: (value: TemplateId) => void;
-  setSelectedTone: (value: ToneType) => void;
   setCustomGreeting: (value: string) => void;
   setCustomStory: (value: string) => void;
   setCustomClosing: (value: string) => void;
@@ -70,7 +67,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const [venue, setVenue] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic');
   const [selectedPalette, setSelectedPalette] = useState<WeddingPalette>(getDefaultPalette());
-  const [selectedTone, setSelectedTone] = useState<ToneType>('classic');
 
   // AI-generated custom texts
   const [customGreeting, setCustomGreeting] = useState('');
@@ -202,7 +198,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     venue,
     selectedTemplate,
     selectedPalette,
-    selectedTone,
     customGreeting,
     customStory,
     customClosing,
@@ -223,7 +218,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setPartner2,
     setVenue,
     setSelectedTemplate,
-    setSelectedTone,
     setCustomGreeting,
     setCustomStory,
     setCustomClosing,

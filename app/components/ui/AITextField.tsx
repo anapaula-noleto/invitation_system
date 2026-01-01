@@ -1,21 +1,19 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { enhanceInvitationText } from '@/app/actions/generate-text';
-import { MAX_CHARACTERS, type TextType, type ToneType } from '@/app/constants/textLimits';
+import { MAX_CHARACTERS, type TextType } from '@/app/constants/textLimits';
+import { getSuggestions, getPlaceholder, type SuggestionChip } from '@/app/constants/uxConfig';
 
 interface AITextFieldProps {
   textType: TextType;
   value: string;
   onChange: (value: string) => void;
   label: string;
-  placeholder: string;
   enhanceLabel: string;
   enhancingLabel: string;
   clearLabel: string;
   locale: string;
-  tone: ToneType;
-  characterCountLabel?: string;
 }
 
 export function AITextField({
@@ -23,12 +21,10 @@ export function AITextField({
   value,
   onChange,
   label,
-  placeholder,
   enhanceLabel,
   enhancingLabel,
   clearLabel,
   locale,
-  tone,
 }: AITextFieldProps) {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +34,10 @@ export function AITextField({
   const isOverLimit = currentLength > maxChars;
   const canEnhance = value.trim().length >= 5;
 
+  // Get UX config based on locale
+  const suggestions = useMemo(() => getSuggestions(locale, textType), [locale, textType]);
+  const placeholder = useMemo(() => getPlaceholder(locale, textType), [locale, textType]);
+
   const handleEnhance = useCallback(async () => {
     if (!canEnhance) return;
     
@@ -45,7 +45,7 @@ export function AITextField({
     setError(null);
 
     try {
-      const result = await enhanceInvitationText(textType, value, locale, tone);
+      const result = await enhanceInvitationText(textType, value, locale);
 
       if (result.success && result.text) {
         onChange(result.text);
@@ -58,7 +58,7 @@ export function AITextField({
     } finally {
       setIsEnhancing(false);
     }
-  }, [textType, value, locale, tone, onChange, canEnhance]);
+  }, [textType, value, locale, onChange, canEnhance]);
 
   const handleClear = useCallback(() => {
     onChange('');
@@ -71,6 +71,14 @@ export function AITextField({
     onChange(newValue);
     setError(null);
   }, [onChange]);
+
+  const handleSuggestionClick = useCallback((suggestion: SuggestionChip) => {
+    onChange(suggestion.text);
+    setError(null);
+  }, [onChange]);
+
+  // Don't show suggestions if user already has text
+  const showSuggestions = !value || value.trim().length === 0;
 
   return (
     <div className="ai-text-field">
@@ -108,6 +116,22 @@ export function AITextField({
           </button>
         </div>
       </div>
+
+      {/* Suggestion Chips */}
+      {showSuggestions && (
+        <div className="ai-text-suggestions">
+          {suggestions.map((suggestion) => (
+            <button
+              key={suggestion.id}
+              type="button"
+              className="ai-text-suggestion-chip"
+              onClick={() => handleSuggestionClick(suggestion)}
+            >
+              {suggestion.label}
+            </button>
+          ))}
+        </div>
+      )}
       
       <textarea
         className={`form-input ai-text-textarea ${value ? 'has-value' : ''} ${isOverLimit ? 'has-error' : ''}`}
