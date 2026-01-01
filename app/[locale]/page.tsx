@@ -225,6 +225,10 @@ export default function Home() {
                   onChange={handleDateChange}
                   minDate={new Date().toISOString().split('T')[0]}
                   placeholder={t('form.date.placeholder')}
+                  months={t.raw('datepicker.months') as string[]}
+                  weekdays={t.raw('datepicker.weekdays') as string[]}
+                  weekdaysFull={t.raw('datepicker.weekdaysFull') as string[]}
+                  todayLabel={t('datepicker.today')}
                 />
               </div>
 

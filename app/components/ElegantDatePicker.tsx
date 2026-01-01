@@ -7,16 +7,31 @@ interface ElegantDatePickerProps {
   onChange: (date: string, formatted: string) => void;
   minDate?: string;
   placeholder?: string;
+  months?: string[];
+  weekdays?: string[];
+  weekdaysFull?: string[];
+  todayLabel?: string;
 }
 
-const MONTHS = [
+const DEFAULT_MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const DEFAULT_WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-export function ElegantDatePicker({ value, onChange, minDate, placeholder }: ElegantDatePickerProps) {
+const DEFAULT_WEEKDAYS_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+export function ElegantDatePicker({ 
+  value, 
+  onChange, 
+  minDate, 
+  placeholder,
+  months = DEFAULT_MONTHS,
+  weekdays = DEFAULT_WEEKDAYS,
+  weekdaysFull = DEFAULT_WEEKDAYS_FULL,
+  todayLabel = 'Today'
+}: ElegantDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [displayMonth, setDisplayMonth] = useState(() => {
     if (value) {
@@ -43,17 +58,16 @@ export function ElegantDatePicker({ value, onChange, minDate, placeholder }: Ele
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  // Formata a data para exibição
+  // Formata a data para exibição usando a localidade correta
   const formatDate = useCallback((dateStr: string): string => {
     if (!dateStr) return '';
     const date = new Date(dateStr + 'T12:00:00');
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }, []);
+    const dayOfWeek = weekdaysFull[date.getDay()];
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${dayOfWeek}, ${month} ${day}, ${year}`;
+  }, [months, weekdaysFull]);
 
   // Gera os dias do mês
   const getDaysInMonth = useCallback(() => {
@@ -170,7 +184,7 @@ export function ElegantDatePicker({ value, onChange, minDate, placeholder }: Ele
               ‹
             </button>
             <span className="datepicker-month-year">
-              {MONTHS[displayMonth.month]} {displayMonth.year}
+              {months[displayMonth.month]} {displayMonth.year}
             </span>
             <button 
               type="button" 
@@ -184,7 +198,7 @@ export function ElegantDatePicker({ value, onChange, minDate, placeholder }: Ele
 
           {/* Dias da semana */}
           <div className="datepicker-weekdays">
-            {WEEKDAYS.map(day => (
+            {weekdays.map((day: string) => (
               <span key={day} className="datepicker-weekday">{day}</span>
             ))}
           </div>
@@ -217,7 +231,7 @@ export function ElegantDatePicker({ value, onChange, minDate, placeholder }: Ele
                 setDisplayMonth({ year: today.getFullYear(), month: today.getMonth() });
               }}
             >
-              Today
+              {todayLabel}
             </button>
           </div>
         </div>
