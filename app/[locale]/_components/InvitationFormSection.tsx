@@ -15,6 +15,7 @@ import {
 } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
+import type { ToneType } from '@/app/constants/textLimits';
 import type { TemplateId } from '@/app/types/invitation';
 
 interface InvitationFormSectionProps {
@@ -26,6 +27,7 @@ interface InvitationFormSectionProps {
   venue: string;
   selectedTemplate: TemplateId;
   selectedPalette: WeddingPalette;
+  selectedTone: ToneType;
   customGreeting: string;
   customStory: string;
   customClosing: string;
@@ -44,6 +46,7 @@ interface InvitationFormSectionProps {
   onVenueChange: (value: string) => void;
   onTemplateChange: (value: TemplateId) => void;
   onPaletteSelect: (palette: WeddingPalette) => void;
+  onToneChange: (value: ToneType) => void;
   onCustomGreetingChange: (value: string) => void;
   onCustomStoryChange: (value: string) => void;
   onCustomClosingChange: (value: string) => void;
@@ -59,6 +62,7 @@ export function InvitationFormSection({
   venue,
   selectedTemplate,
   selectedPalette,
+  selectedTone,
   customGreeting,
   customStory,
   customClosing,
@@ -73,6 +77,7 @@ export function InvitationFormSection({
   onVenueChange,
   onTemplateChange,
   onPaletteSelect,
+  onToneChange,
   onCustomGreetingChange,
   onCustomStoryChange,
   onCustomClosingChange,
@@ -169,12 +174,25 @@ export function InvitationFormSection({
           />
         </div>
 
-        {/* AI-Generated Custom Texts */}
+        {/* Custom Texts with AI Enhancement */}
         <div className="ai-text-section">
           <div className="ai-text-section-header">
             <h3 className="ai-text-section-title">{t('form.customTexts.title')}</h3>
             <p className="ai-text-section-subtitle">{t('form.customTexts.subtitle')}</p>
           </div>
+
+          {/* Tone Selection */}
+          <FormSelect
+            label={t('form.customTexts.tone.label')}
+            value={selectedTone}
+            onChange={(e) => onToneChange(e.target.value as ToneType)}
+            options={[
+              { value: 'classic', label: t('form.customTexts.tone.classic') },
+              { value: 'modern', label: t('form.customTexts.tone.modern') },
+              { value: 'biblical', label: t('form.customTexts.tone.biblical') },
+              { value: 'humorous', label: t('form.customTexts.tone.humorous') },
+            ]}
+          />
 
           <AITextField
             textType="greeting"
@@ -182,11 +200,11 @@ export function InvitationFormSection({
             onChange={onCustomGreetingChange}
             label={t('form.customTexts.greeting.label')}
             placeholder={t('form.customTexts.greeting.placeholder')}
-            generateLabel={t('form.customTexts.greeting.generate')}
-            generatingLabel={t('form.customTexts.generating')}
+            enhanceLabel={t('form.customTexts.greeting.enhance')}
+            enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
-            names={{ partner1, partner2 }}
             locale={locale}
+            tone={selectedTone}
           />
 
           <AITextField
@@ -195,11 +213,11 @@ export function InvitationFormSection({
             onChange={onCustomStoryChange}
             label={t('form.customTexts.story.label')}
             placeholder={t('form.customTexts.story.placeholder')}
-            generateLabel={t('form.customTexts.story.generate')}
-            generatingLabel={t('form.customTexts.generating')}
+            enhanceLabel={t('form.customTexts.story.enhance')}
+            enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
-            names={{ partner1, partner2 }}
             locale={locale}
+            tone={selectedTone}
           />
 
           <AITextField
@@ -208,11 +226,11 @@ export function InvitationFormSection({
             onChange={onCustomClosingChange}
             label={t('form.customTexts.closing.label')}
             placeholder={t('form.customTexts.closing.placeholder')}
-            generateLabel={t('form.customTexts.closing.generate')}
-            generatingLabel={t('form.customTexts.generating')}
+            enhanceLabel={t('form.customTexts.closing.enhance')}
+            enhancingLabel={t('form.customTexts.enhancing')}
             clearLabel={t('form.customTexts.clear')}
-            names={{ partner1, partner2 }}
             locale={locale}
+            tone={selectedTone}
           />
         </div>
 

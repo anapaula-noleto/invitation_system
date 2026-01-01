@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { generateInvitationText, type TextType } from '@/app/actions/generate-text';
+import { useState, useCallback } from 'react';
+import { enhanceInvitationText } from '@/app/actions/generate-text';
+import { MAX_CHARACTERS, type TextType, type ToneType } from '@/app/constants/textLimits';
 
 interface AITextFieldProps {
   textType: TextType;
@@ -9,11 +10,12 @@ interface AITextFieldProps {
   onChange: (value: string) => void;
   label: string;
   placeholder: string;
-  generateLabel: string;
-  generatingLabel: string;
+  enhanceLabel: string;
+  enhancingLabel: string;
   clearLabel: string;
-  names: { partner1: string; partner2: string };
   locale: string;
+  tone: ToneType;
+  characterCountLabel?: string;
 }
 
 export function AITextField({
@@ -22,39 +24,53 @@ export function AITextField({
   onChange,
   label,
   placeholder,
-  generateLabel,
-  generatingLabel,
+  enhanceLabel,
+  enhancingLabel,
   clearLabel,
-  names,
   locale,
+  tone,
 }: AITextFieldProps) {
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const maxChars = MAX_CHARACTERS[textType];
+  const currentLength = value.length;
+  const isOverLimit = currentLength > maxChars;
+  const canEnhance = value.trim().length >= 5;
 
-  const handleGenerate = async () => {
-    setIsGenerating(true);
+  const handleEnhance = useCallback(async () => {
+    if (!canEnhance) return;
+    
+    setIsEnhancing(true);
     setError(null);
 
     try {
-      const result = await generateInvitationText(textType, names, locale);
+      const result = await enhanceInvitationText(textType, value, locale, tone);
 
       if (result.success && result.text) {
         onChange(result.text);
       } else {
-        setError(result.error || 'Failed to generate text');
+        setError(result.error || 'Failed to enhance text');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error(err);
     } finally {
-      setIsGenerating(false);
+      setIsEnhancing(false);
     }
-  };
+  }, [textType, value, locale, tone, onChange, canEnhance]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     onChange('');
     setError(null);
-  };
+  }, [onChange]);
+
+  const handleTextChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    // Allow typing but show warning if over limit
+    onChange(newValue);
+    setError(null);
+  }, [onChange]);
 
   return (
     <div className="ai-text-field">
@@ -73,19 +89,20 @@ export function AITextField({
           )}
           <button
             type="button"
-            className="ai-text-generate-btn"
-            onClick={handleGenerate}
-            disabled={isGenerating || !names.partner1 || !names.partner2}
+            className="ai-text-enhance-btn"
+            onClick={handleEnhance}
+            disabled={isEnhancing || !canEnhance}
+            title={!canEnhance ? 'Write at least 5 characters' : ''}
           >
-            {isGenerating ? (
+            {isEnhancing ? (
               <>
                 <span className="ai-text-spinner" />
-                {generatingLabel}
+                {enhancingLabel}
               </>
             ) : (
               <>
                 <span className="ai-text-icon">✨</span>
-                {generateLabel}
+                {enhanceLabel}
               </>
             )}
           </button>
@@ -93,16 +110,22 @@ export function AITextField({
       </div>
       
       <textarea
-        className={`form-input ai-text-textarea ${value ? 'has-value' : ''}`}
+        className={`form-input ai-text-textarea ${value ? 'has-value' : ''} ${isOverLimit ? 'has-error' : ''}`}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleTextChange}
         placeholder={placeholder}
         rows={3}
+        maxLength={maxChars + 50} // Allow slight overage for editing
       />
       
-      {error && (
-        <p className="ai-text-error">{error}</p>
-      )}
+      <div className="ai-text-footer">
+        <span className={`ai-text-char-count ${isOverLimit ? 'over-limit' : ''}`}>
+          {currentLength} / {maxChars}
+        </span>
+        {error && (
+          <span className="ai-text-error">{error}</span>
+        )}
+      </div>
     </div>
   );
 }

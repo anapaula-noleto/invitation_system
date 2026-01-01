@@ -2,124 +2,95 @@
 
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
+import { type TextType, type ToneType, MAX_CHARACTERS } from '@/app/constants/textLimits'
 
-export type TextType = 'greeting' | 'story' | 'closing'
-
-interface GenerateTextResult {
+interface EnhanceTextResult {
   success: boolean
   text?: string
   error?: string
 }
 
-const TEXT_PROMPTS: Record<TextType, (names: { partner1: string; partner2: string }, locale: string) => string> = {
-  greeting: (names, locale) => {
-    const localeInstructions: Record<string, string> = {
-      pt: 'Escreva em português brasileiro formal e elegante.',
-      es: 'Escribe en español elegante y formal.',
-      en: 'Write in elegant, formal English.',
-    }
-    return `You are a romantic wedding invitation writer. Create an elegant, heartfelt opening greeting for a wedding invitation.
-
-The couple's names are: ${names.partner1} & ${names.partner2}
-
-Requirements:
-- ${localeInstructions[locale] || localeInstructions.en}
-- Keep it SHORT: maximum 2 sentences (under 30 words)
-- Romantic and sophisticated tone
-- Do NOT include the names in the text (they will be shown separately)
-- Do NOT use quotation marks
-- Just write the greeting text directly
-
-Example style: "Together with their families, we joyfully invite you to celebrate our union in love."`
-  },
-
-  story: (names, locale) => {
-    const localeInstructions: Record<string, string> = {
-      pt: 'Escreva em português brasileiro poético e romântico.',
-      es: 'Escribe en español poético y romántico.',
-      en: 'Write in poetic, romantic English.',
-    }
-    return `You are a romantic wedding invitation writer. Create a brief, poetic "Our Story" paragraph for a wedding invitation.
-
-The couple's names are: ${names.partner1} & ${names.partner2}
-
-Requirements:
-- ${localeInstructions[locale] || localeInstructions.en}
-- Keep it SHORT: 2-3 sentences (under 50 words)
-- Evoke emotions about love, destiny, and the journey together
-- Generic enough to apply to any couple
-- Do NOT include specific details or dates
-- Do NOT use quotation marks
-- Just write the story text directly
-
-Example style: "From the moment our paths crossed, we knew our souls were meant to dance together. Every shared smile and whispered dream has led us to this beautiful beginning."`
-  },
-
-  closing: (names, locale) => {
-    const localeInstructions: Record<string, string> = {
-      pt: 'Escreva em português brasileiro elegante e caloroso.',
-      es: 'Escribe en español elegante y cálido.',
-      en: 'Write in elegant, warm English.',
-    }
-    return `You are a romantic wedding invitation writer. Create an elegant closing message for a wedding invitation.
-
-The couple's names are: ${names.partner1} & ${names.partner2}
-
-Requirements:
-- ${localeInstructions[locale] || localeInstructions.en}
-- Keep it SHORT: 1-2 sentences (under 25 words)
-- Warm invitation to join the celebration
-- Express gratitude and excitement
-- Do NOT use quotation marks
-- Just write the closing text directly
-
-Example style: "Your presence would make our special day complete. We can't wait to celebrate with you."`
-  },
-}
-
-export async function generateInvitationText(
+export async function enhanceInvitationText(
   textType: TextType,
-  names: { partner1: string; partner2: string },
-  locale: string = 'en'
-): Promise<GenerateTextResult> {
+  userText: string,
+  locale: string = 'en',
+  tone: ToneType = 'classic'
+): Promise<EnhanceTextResult> {
   try {
-    if (!names.partner1 || !names.partner2) {
+    if (!userText || userText.trim().length < 5) {
       return {
         success: false,
-        error: 'Please enter both partners\' names first.',
+        error: 'Please write at least a few words.',
       }
     }
 
-    const prompt = TEXT_PROMPTS[textType](names, locale)
+    const maxChars = MAX_CHARACTERS[textType]
+
+    // Instruções de idioma
+    const localeInstructions: Record<string, string> = {
+      pt: `Output Language: Portuguese (Brazil). Context: Wedding invitation.`,
+      es: `Output Language: Spanish. Context: Wedding invitation.`,
+      en: `Output Language: English. Context: Wedding invitation.`,
+    }
+
+    // Contexto do tipo de texto
+    const textTypeContext: Record<TextType, string> = {
+      greeting: 'Context: Opening greeting.',
+      story: "Context: Couple's love story.",
+      closing: 'Context: Closing message.',
+    }
+
+    // Instruções de tom
+    const toneInstructions: Record<ToneType, string> = {
+      classic: `Tone: Classic and timeless. Use elegant, formal language with refined expressions. Think traditional wedding invitations with graceful prose.`,
+      modern: `Tone: Modern and fresh. Use contemporary language that feels personal and authentic. Keep it warm but not overly formal.`,
+      biblical: `Tone: Biblical and spiritual. Incorporate subtle religious references and blessings. Use reverent, sacred language that reflects faith and divine love.`,
+      humorous: `Tone: Lighthearted and witty. Add gentle humor and playful expressions while maintaining warmth. Keep it fun but still appropriate for a wedding.`,
+    }
+
+    const systemPrompt = `You are an expert wedding invitation editor.
+${localeInstructions[locale] || localeInstructions.en}
+${textTypeContext[textType]}
+${toneInstructions[tone]}
+
+Rules:
+1. Maintain the original meaning.
+2. Fix grammar/spelling.
+3. Elevate the text according to the specified tone.
+4. Do NOT use quotation marks.
+5. Return ONLY the enhanced text.
+6. It must have complete meaning and proper sentence structure.
+7. Maximum ${maxChars} characters.`
 
     const result = await generateText({
       model: google('gemini-2.5-flash'),
-      prompt,
-      maxTokens: 100,
-      temperature: 0.8,
+      system: systemPrompt,
+      prompt: userText,
+      maxTokens: 2048,
+      temperature: 0.7,
     })
 
     const text = result.text?.trim()
 
     if (!text) {
-      return {
-        success: false,
-        error: 'No text was generated. Please try again.',
-      }
+      throw new Error('No text generated')
     }
 
-    // Remove quotation marks if present
-    const cleanText = text.replace(/^["']|["']$/g, '').trim()
+    // Limpeza
+    let cleanText = text
+      .replace(/^["']|["']$/g, '')
+      .replace(/^Enhanced text:\s*/i, '')
+      .trim()
 
     return {
       success: true,
       text: cleanText,
     }
   } catch (error) {
-    console.error('Error generating invitation text:', error)
+    console.error('Error enhancing invitation text:', error)
     return {
       success: false,
-      error: 'Failed to generate text. Please try again.',
+      error: 'Failed to enhance text. Please try again.',
     }
   }
 }

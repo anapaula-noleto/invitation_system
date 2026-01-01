@@ -42,25 +42,33 @@
       "label": "Paleta de Cores"
     },
     "customTexts": {
-      "title": "Textos Gerados por IA",
-      "subtitle": "Adicione textos personalizados criados por inteligência artificial",
+      "title": "Textos Personalizados",
+      "subtitle": "Escreva seus textos e deixe a IA deixá-los ainda mais românticos",
+      "tone": {
+        "label": "Tom do Texto",
+        "classic": "Clássico",
+        "modern": "Moderno",
+        "biblical": "Bíblico",
+        "humorous": "Bem-humorado"
+      },
       "greeting": {
         "label": "Saudação de Abertura",
-        "placeholder": "Clique em 'Gerar' para criar uma bela saudação de abertura",
-        "generate": "Gerar"
+        "placeholder": "Escreva sua saudação de boas-vindas aos convidados...",
+        "enhance": "Melhorar"
       },
       "story": {
         "label": "Nossa História",
-        "placeholder": "Clique em 'Gerar' para criar um parágrafo romântico",
-        "generate": "Gerar"
+        "placeholder": "Conte um pouco da história de vocês como casal...",
+        "enhance": "Melhorar"
       },
       "closing": {
         "label": "Mensagem de Encerramento",
-        "placeholder": "Clique em 'Gerar' para criar uma calorosa mensagem de encerramento",
-        "generate": "Gerar"
+        "placeholder": "Escreva uma mensagem de encerramento para os convidados...",
+        "enhance": "Melhorar"
       },
-      "generating": "Gerando...",
-      "clear": "Limpar"
+      "enhancing": "Melhorando...",
+      "clear": "Limpar",
+      "charLimit": "caracteres"
     },
     "submit": {
       "default": "Gerar Convite",
