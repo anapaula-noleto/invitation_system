@@ -1,0 +1,5 @@
+Create a field in the page for the person to add up to
+three AI generated texts in the invitation. And add the text if exists to the templates,
+the texts must be in different parts of the invite and if thei dont exist the space where
+thei should have been desappears
+Use Gemini Gemini 2.5 Flash 

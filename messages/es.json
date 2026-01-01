@@ -41,6 +41,27 @@
     "palette": {
       "label": "Paleta de Colores"
     },
+    "customTexts": {
+      "title": "Textos Generados por IA",
+      "subtitle": "Añade textos personalizados creados por inteligencia artificial",
+      "greeting": {
+        "label": "Saludo de Apertura",
+        "placeholder": "Haz clic en 'Generar' para crear un hermoso saludo de apertura",
+        "generate": "Generar"
+      },
+      "story": {
+        "label": "Nuestra Historia",
+        "placeholder": "Haz clic en 'Generar' para crear un párrafo romántico",
+        "generate": "Generar"
+      },
+      "closing": {
+        "label": "Mensaje de Cierre",
+        "placeholder": "Haz clic en 'Generar' para crear un cálido mensaje de cierre",
+        "generate": "Generar"
+      },
+      "generating": "Generando...",
+      "clear": "Limpiar"
+    },
     "submit": {
       "default": "Generar Invitación",
       "loading": "Creando tu invitación..."

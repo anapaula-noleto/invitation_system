@@ -18,6 +18,12 @@ export interface InvitationContent {
   venue: string;
   /** URLs das 3 fotos do casal */
   photoUrls: [string, string, string];
+  /** Texto AI customizado - Saudação/Abertura (opcional) */
+  customGreeting?: string;
+  /** Texto AI customizado - Nossa História (opcional) */
+  customStory?: string;
+  /** Texto AI customizado - Mensagem de Fechamento (opcional) */
+  customClosing?: string;
 }
 
 /** Tema visual do convite */

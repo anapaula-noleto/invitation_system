@@ -67,9 +67,9 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
 
           {/* Content Side */}
           <div className="inv-modern-hero-content">
-            {/* Intro Badge */}
+            {/* Intro Badge - Custom Greeting or Default */}
             <span className="inv-modern-intro inv-animate-fade-in">
-              {t.invitationBadge}
+              {content.customGreeting || t.invitationBadge}
             </span>
 
             {/* Names */}
@@ -106,9 +106,17 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
           </div>
         </section>
 
+        {/* Our Story Section - Only shows if customStory exists */}
+        {content.customStory && (
+          <section className="inv-modern-story">
+            <h2 className="inv-modern-story-title">{t.ourStory}</h2>
+            <p className="inv-modern-story-text">{content.customStory}</p>
+          </section>
+        )}
+
         {/* Gallery Section */}
         <section className="inv-modern-gallery">
-          <h2 className="inv-modern-gallery-title">{t.ourStory}</h2>
+          <h2 className="inv-modern-gallery-title">{content.customStory ? '' : t.ourStory}</h2>
           <div className="inv-modern-gallery-grid">
             {content.photoUrls.map((url, index) => (
               <div key={index} className="inv-modern-photo">
@@ -131,7 +139,7 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
         {/* Footer */}
         <footer className="inv-modern-footer">
           <p className="inv-modern-footer-text">
-            {t.footerText}
+            {content.customClosing || t.footerText}
           </p>
         </footer>
       </div>

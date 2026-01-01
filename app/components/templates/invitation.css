@@ -639,3 +639,73 @@
   animation-delay: 0.5s;
   opacity: 0;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM STORY SECTION - CLASSIC TEMPLATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.inv-story {
+  padding: var(--inv-space-16) var(--inv-space-8);
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--inv-accent-rgb), 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.inv-story-title {
+  font-family: var(--inv-font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--inv-accent, #c9a961);
+  margin-bottom: var(--inv-space-6);
+  letter-spacing: 0.02em;
+}
+
+.inv-story-text {
+  font-family: var(--inv-font-serif);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--inv-text-muted, #666);
+  max-width: 600px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM STORY SECTION - MODERN TEMPLATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.inv-modern-story {
+  padding: var(--inv-space-16) var(--inv-space-8);
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    var(--inv-bg, #1a1a2e) 0%,
+    rgba(var(--inv-accent-rgb), 0.1) 100%
+  );
+}
+
+.inv-modern-story-title {
+  font-family: var(--inv-font-sans);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--inv-accent, #c9a961);
+  margin-bottom: var(--inv-space-6);
+}
+
+.inv-modern-story-text {
+  font-family: var(--inv-font-sans);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--inv-text-muted, rgba(255, 255, 255, 0.7));
+  max-width: 600px;
+  margin: 0 auto;
+}

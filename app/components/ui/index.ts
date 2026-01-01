@@ -31,3 +31,5 @@ export type { FormRowProps } from './FormRow';
 export { PaletteSelector } from './PaletteSelector';
 
 export { LanguageSelector } from './LanguageSelector';
+
+export { AITextField } from './AITextField';

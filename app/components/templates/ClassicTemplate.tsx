@@ -57,9 +57,9 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
             ❧ ❧ ❧
           </div>
 
-          {/* Introduction */}
+          {/* Introduction - Custom Greeting or Default */}
           <p className="inv-intro inv-animate-fade-in inv-animate-delay-1">
-            {t.together}
+            {content.customGreeting || t.together}
           </p>
 
           {/* Names */}
@@ -118,13 +118,27 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
           </div>
         </section>
 
+        {/* Our Story Section - Only shows if customStory exists */}
+        {content.customStory && (
+          <section className="inv-story">
+            <div className="inv-ornament" style={{ marginBottom: 'var(--inv-space-6)' }}>
+              ✦
+            </div>
+            <h2 className="inv-story-title">{t.ourStory}</h2>
+            <p className="inv-story-text">{content.customStory}</p>
+            <div className="inv-ornament" style={{ marginTop: 'var(--inv-space-6)' }}>
+              ✦
+            </div>
+          </section>
+        )}
+
         {/* Footer */}
         <footer className="inv-footer">
           <div className="inv-ornament" style={{ fontSize: '1.5rem', marginBottom: 'var(--inv-space-6)' }}>
             ❧
           </div>
           <p className="inv-footer-text">
-            {t.footerText}
+            {content.customClosing || t.footerText}
           </p>
         </footer>
       </div>
