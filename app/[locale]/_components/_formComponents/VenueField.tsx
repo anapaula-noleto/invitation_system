@@ -1,14 +1,13 @@
 'use client';
 
-import { IconButton, PlacesAutocomplete } from '@/app/components/ui';
+import { PlacesAutocomplete } from '@/app/components/ui';
+import { MapPin } from '@/app/components/ui/Icon';
 
 interface VenueFieldProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
-  viewOnMapsLabel?: string;
-  onMapClick?: () => void;
 }
 
 export function VenueField({
@@ -16,8 +15,6 @@ export function VenueField({
   value,
   onChange,
   placeholder,
-  viewOnMapsLabel,
-  onMapClick,
 }: VenueFieldProps) {
   return (
     <PlacesAutocomplete
@@ -26,15 +23,9 @@ export function VenueField({
       onChange={onChange}
       placeholder={placeholder}
       rightAddon={
-        value && onMapClick ? (
-          <IconButton
-            icon="📍"
-            label={viewOnMapsLabel || 'View on Maps'}
-            onClick={onMapClick}
-            size="sm"
-            type="button"
-          />
-        ) : undefined
+        <span className="input-icon-gold">
+          <MapPin size={18} />
+        </span>
       }
     />
   );

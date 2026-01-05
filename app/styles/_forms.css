@@ -209,6 +209,14 @@
   pointer-events: auto;
 }
 
+/* Golden icon in input addon */
+.input-icon-gold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    SELECT INPUT
    ───────────────────────────────────────────────────────────────────────── */

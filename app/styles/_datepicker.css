@@ -9,7 +9,7 @@
 
 .datepicker-input {
   width: 100%;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--space-3) var(--space-4) var(--space-5);
   background: rgba(201, 169, 97, 0.03);
   border: 1px solid rgba(201, 169, 97, 0.15);
   border-radius: var(--radius-lg);
@@ -49,7 +49,6 @@
   align-items: center;
   justify-content: center;
   color: var(--gold-500);
-  margin-left: var(--space-3);
 }
 
 .datepicker-dropdown {

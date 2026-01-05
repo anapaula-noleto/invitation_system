@@ -54,7 +54,6 @@ interface InvitationFormSectionProps {
   onCustomGreetingChange: (value: string) => void;
   onCustomStoryChange: (value: string) => void;
   onCustomClosingChange: (value: string) => void;
-  onVenueMapClick: () => void;
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -86,7 +85,6 @@ export function InvitationFormSection({
   onCustomGreetingChange,
   onCustomStoryChange,
   onCustomClosingChange,
-  onVenueMapClick,
   onSubmit,
 }: InvitationFormSectionProps) {
   const t = useTranslations();
@@ -134,8 +132,6 @@ export function InvitationFormSection({
           value={venue}
           onChange={onVenueChange}
           placeholder={t('form.venue.placeholder')}
-          viewOnMapsLabel={t('form.venue.viewOnMaps')}
-          onMapClick={onVenueMapClick}
         />
 
         {/* Reception Venue with Checkbox Toggle */}

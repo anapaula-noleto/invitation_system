@@ -1,6 +1,7 @@
 'use client';
 
 import { PlacesAutocomplete } from '@/app/components/ui';
+import { MapPin } from '@/app/components/ui/Icon';
 import { FormCheckbox } from './FormCheckbox';
 
 interface ReceptionVenueFieldProps {
@@ -37,6 +38,11 @@ export function ReceptionVenueField({
           value={venueValue}
           onChange={onVenueChange}
           placeholder={venuePlaceholder}
+          rightAddon={
+            <span className="input-icon-gold">
+              <MapPin size={18} />
+            </span>
+          }
         />
       )}
     </>

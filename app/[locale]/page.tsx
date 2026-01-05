@@ -60,7 +60,6 @@ export default function Home() {
             onCustomGreetingChange={form.setCustomGreeting}
             onCustomStoryChange={form.setCustomStory}
             onCustomClosingChange={form.setCustomClosing}
-            onVenueMapClick={form.openVenueInMaps}
             onSubmit={form.handleGenerate}
           />
 
