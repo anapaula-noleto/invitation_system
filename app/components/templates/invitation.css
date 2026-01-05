@@ -709,3 +709,222 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VENUE MAP SECTION - SHARED STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.inv-map-section {
+  padding: var(--inv-space-12) var(--inv-space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--inv-space-6);
+}
+
+.inv-map-container {
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--inv-accent-rgb), 0.2);
+}
+
+.inv-map-container iframe {
+  display: block;
+}
+
+.inv-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--inv-space-3);
+  padding: var(--inv-space-4) var(--inv-space-6);
+  background: rgba(var(--inv-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--inv-accent-rgb), 0.3);
+  border-radius: 50px;
+  text-decoration: none;
+  color: var(--inv-text);
+  font-family: var(--inv-font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all var(--inv-transition-normal);
+}
+
+.inv-map-link:hover {
+  background: rgba(var(--inv-accent-rgb), 0.2);
+  border-color: var(--inv-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(var(--inv-accent-rgb), 0.2);
+}
+
+.inv-map-link-icon {
+  font-size: 1.25rem;
+}
+
+.inv-map-link-text {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inv-map-link-arrow {
+  opacity: 0.6;
+  transition: all var(--inv-transition-fast);
+}
+
+.inv-map-link:hover .inv-map-link-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Classic Template Map */
+.inv-classic .inv-map-section {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--inv-accent-rgb), 0.05) 100%
+  );
+}
+
+/* Modern Template Map */
+.inv-modern .inv-map-section {
+  background: linear-gradient(
+    180deg,
+    var(--inv-bg, #1a1a2e) 0%,
+    rgba(var(--inv-accent-rgb), 0.08) 100%
+  );
+}
+
+.inv-modern .inv-map-container {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inv-modern .inv-map-link {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.inv-modern .inv-map-link:hover {
+  background: rgba(var(--inv-accent-rgb), 0.15);
+  border-color: var(--inv-accent);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .inv-map-section {
+    padding: var(--inv-space-8) var(--inv-space-4);
+  }
+
+  .inv-map-container {
+    height: 300px;
+    border-radius: 12px;
+  }
+
+  .inv-map-link {
+    padding: var(--inv-space-3) var(--inv-space-4);
+    font-size: 0.85rem;
+  }
+
+  .inv-map-link-text {
+    max-width: 200px;
+  }
+
+  .inv-map-fallback {
+    padding: var(--inv-space-6) var(--inv-space-4);
+  }
+
+  .inv-map-fallback-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAP FALLBACK - WHEN API KEY IS NOT CONFIGURED
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.inv-map-fallback {
+  width: 100%;
+  max-width: 800px;
+  padding: var(--inv-space-8);
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--inv-accent-rgb), 0.08) 0%,
+    rgba(var(--inv-accent-rgb), 0.04) 100%
+  );
+  border: 2px dashed rgba(var(--inv-accent-rgb), 0.3);
+  border-radius: 16px;
+  transition: all var(--inv-transition-normal);
+}
+
+.inv-map-fallback:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--inv-accent-rgb), 0.12) 0%,
+    rgba(var(--inv-accent-rgb), 0.06) 100%
+  );
+  border-color: rgba(var(--inv-accent-rgb), 0.5);
+}
+
+.inv-map-fallback-icon {
+  font-size: 3rem;
+  margin-bottom: var(--inv-space-4);
+  display: block;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.inv-map-fallback-title {
+  font-family: var(--inv-font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--inv-text);
+  margin-bottom: var(--inv-space-2);
+}
+
+.inv-map-fallback-venue {
+  font-family: var(--inv-font-sans);
+  font-size: 1rem;
+  color: var(--inv-text-muted, rgba(0, 0, 0, 0.6));
+  margin-bottom: var(--inv-space-6);
+  line-height: 1.6;
+}
+
+/* Modern Template Fallback */
+.inv-modern .inv-map-fallback {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--inv-accent-rgb), 0.1) 0%,
+    rgba(var(--inv-accent-rgb), 0.05) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.inv-modern .inv-map-fallback:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--inv-accent-rgb), 0.15) 0%,
+    rgba(var(--inv-accent-rgb), 0.08) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.inv-modern .inv-map-fallback-title {
+  color: var(--inv-text);
+}
+
+.inv-modern .inv-map-fallback-venue {
+  color: rgba(255, 255, 255, 0.7);
+}

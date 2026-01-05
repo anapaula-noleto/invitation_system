@@ -2,6 +2,7 @@
 
 import type { InvitationConfig } from '@/app/types/invitation';
 import { useInvitationTranslations } from '@/app/context/InvitationTranslationsContext';
+import { VenueMap } from './VenueMap';
 import './invitation.css';
 
 interface ClassicTemplateProps {
@@ -131,6 +132,9 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
             </div>
           </section>
         )}
+
+        {/* Venue Map */}
+        <VenueMap venue={content.venue} />
 
         {/* Footer */}
         <footer className="inv-footer">
