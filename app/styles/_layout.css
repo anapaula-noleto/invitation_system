@@ -148,16 +148,16 @@
   background: linear-gradient(
     90deg,
     var(--gold-500) 0%,
-    var(--gold-500) 40%,
+    var(--gold-500) 35%,
     var(--gold-200) 50%,
-    var(--gold-500) 60%,
+    var(--gold-500) 65%,
     var(--gold-500) 100%
   );
-  background-size: 300% 100%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 2.5s linear infinite;
+  animation: shimmer 2s ease-in-out infinite;
   position: relative;
 }
 
