@@ -13,10 +13,11 @@
   "form": {
     "title": "Tus Datos",
     "photo": {
-      "label": "Tu Foto Juntos",
-      "hint": "JPG, PNG hasta 10MB",
+      "label": "Tus Fotos Juntos",
+      "hint": "JPG, PNG hasta 10MB (máx 3 fotos)",
       "upload": "Subir Foto",
-      "change": "Cambiar Foto"
+      "change": "Cambiar Foto",
+      "addPhoto": "Añadir foto"
     },
     "partner1": {
       "label": "Pareja 1",

@@ -5,11 +5,11 @@ import { useTranslations, useLocale } from 'next-intl';
 import { generateWeddingInvitation } from '@/app/actions/generate';
 import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { InvitationConfig, TemplateId } from '@/app/types/invitation';
+import type { PhotoItem } from '@/app/components/ui';
 
 export interface UseInvitationFormReturn {
   // Form state
-  photoPreview: string | null;
-  photoBase64: string;
+  photos: PhotoItem[];
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -50,8 +50,7 @@ export interface UseInvitationFormReturn {
   // Handlers
   handleDateChange: (date: string, formatted: string) => void;
   handlePaletteSelect: (palette: WeddingPalette) => void;
-  handlePhotoChange: (file: File, preview: string, base64: string) => void;
-  handlePhotoClear: () => void;
+  handlePhotosChange: (photos: PhotoItem[]) => void;
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
   openVenueInMaps: () => void;
@@ -61,9 +60,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const t = useTranslations();
   const locale = useLocale();
 
-  // Form state
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [photoBase64, setPhotoBase64] = useState<string>('');
+  // Form state - Multiple photos support
+  const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const [partner1, setPartner1] = useState('');
   const [partner2, setPartner2] = useState('');
   const [weddingDate, setWeddingDate] = useState('');
@@ -103,20 +101,14 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setSelectedPalette(palette);
   }, []);
 
-  const handlePhotoChange = useCallback((_file: File, preview: string, base64: string) => {
-    setPhotoPreview(preview);
-    setPhotoBase64(base64);
-  }, []);
-
-  const handlePhotoClear = useCallback(() => {
-    setPhotoPreview(null);
-    setPhotoBase64('');
+  const handlePhotosChange = useCallback((newPhotos: PhotoItem[]) => {
+    setPhotos(newPhotos);
   }, []);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!photoBase64) {
+    if (photos.length === 0) {
       setError(t('errors.photoRequired'));
       return;
     }
@@ -131,8 +123,9 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setGeneratedImage(null);
 
     try {
+      // Use first photo's base64 for AI generation
       const result = await generateWeddingInvitation(
-        photoBase64,
+        photos[0].base64,
         { partner1, partner2 },
         weddingDate,
         venue
@@ -162,8 +155,22 @@ export function useInvitationForm(): UseInvitationFormReturn {
     document.body.removeChild(link);
   }, [generatedImage, partner1, partner2]);
 
+  // Default placeholder photos for empty slots
+  const defaultPhotos = [
+    'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
+    'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
+    'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800',
+  ];
+
   // Computed: Invitation config based on form data
   const invitationConfig = useMemo<InvitationConfig>(() => {
+    // Build photoUrls array: use uploaded photos first, then fill with defaults
+    const photoUrls: [string, string, string] = [
+      photos[0]?.preview || defaultPhotos[0],
+      photos[1]?.preview || defaultPhotos[1],
+      photos[2]?.preview || defaultPhotos[2],
+    ];
+
     return {
       id: `inv_preview_${Date.now()}`,
       templateId: selectedTemplate,
@@ -173,11 +180,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
         weddingDate: weddingDateFormatted || t('invitation.defaultDate'),
         venue: venue || t('invitation.defaultVenue'),
         receptionVenue: hasSeparateReceptionVenue ? receptionVenue : undefined,
-        photoUrls: [
-          photoPreview || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
-          'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
-          'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800',
-        ],
+        photoUrls,
         customGreeting: customGreeting || undefined,
         customStory: customStory || undefined,
         customClosing: customClosing || undefined,
@@ -192,12 +195,11 @@ export function useInvitationForm(): UseInvitationFormReturn {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-  }, [partner1, partner2, weddingDateFormatted, venue, receptionVenue, hasSeparateReceptionVenue, selectedTemplate, photoPreview, selectedPalette, customGreeting, customStory, customClosing, t]);
+  }, [partner1, partner2, weddingDateFormatted, venue, receptionVenue, hasSeparateReceptionVenue, selectedTemplate, photos, selectedPalette, customGreeting, customStory, customClosing, t]);
 
   return {
     // Form state
-    photoPreview,
-    photoBase64,
+    photos,
     partner1,
     partner2,
     weddingDate,
@@ -238,8 +240,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
     // Handlers
     handleDateChange,
     handlePaletteSelect,
-    handlePhotoChange,
-    handlePhotoClear,
+    handlePhotosChange,
     handleGenerate,
     handleDownload,
     openVenueInMaps,

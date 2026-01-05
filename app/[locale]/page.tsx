@@ -33,7 +33,7 @@ export default function Home() {
         <div className="main-content">
           {/* Form Section */}
           <InvitationFormSection
-            photoPreview={form.photoPreview}
+            photos={form.photos}
             partner1={form.partner1}
             partner2={form.partner2}
             weddingDate={form.weddingDate}
@@ -48,8 +48,7 @@ export default function Home() {
             locale={form.locale}
             isLoading={form.isLoading}
             error={form.error}
-            onPhotoChange={form.handlePhotoChange}
-            onPhotoClear={form.handlePhotoClear}
+            onPhotosChange={form.handlePhotosChange}
             onPartner1Change={form.setPartner1}
             onPartner2Change={form.setPartner2}
             onDateChange={form.handleDateChange}

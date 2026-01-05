@@ -1,15 +1,16 @@
 'use client';
 
-import { FormInput, FormRow, FormSelect, PhotoUpload } from '@/app/components/ui';
+import { FormInput, FormRow, FormSelect, MultiPhotoUpload } from '@/app/components/ui';
+import type { PhotoItem } from '@/app/components/ui';
 import { ElegantDatePicker } from '@/app/components/ElegantDatePicker';
 import type { TemplateId } from '@/app/types/invitation';
 
 interface BasicInfoFieldsProps {
-  photoPreview: string | null;
-  onPhotoChange: (file: File, preview: string, base64: string) => void;
-  onPhotoClear: () => void;
+  photos: PhotoItem[];
+  onPhotosChange: (photos: PhotoItem[]) => void;
   photoLabel: string;
   photoHint: string;
+  addPhotoLabel: string;
   
   partner1: string;
   onPartner1Change: (value: string) => void;
@@ -38,11 +39,11 @@ interface BasicInfoFieldsProps {
 }
 
 export function BasicInfoFields({
-  photoPreview,
-  onPhotoChange,
-  onPhotoClear,
+  photos,
+  onPhotosChange,
   photoLabel,
   photoHint,
+  addPhotoLabel,
   partner1,
   onPartner1Change,
   partner1Label,
@@ -67,13 +68,14 @@ export function BasicInfoFields({
 }: BasicInfoFieldsProps) {
   return (
     <>
-      {/* Photo Upload */}
-      <PhotoUpload
-        value={photoPreview}
-        onChange={onPhotoChange}
-        onClear={onPhotoClear}
+      {/* Photo Upload - Up to 3 photos */}
+      <MultiPhotoUpload
+        value={photos}
+        onChange={onPhotosChange}
+        maxPhotos={3}
         label={photoLabel}
         hint={photoHint}
+        addPhotoLabel={addPhotoLabel}
       />
 
       {/* Names */}

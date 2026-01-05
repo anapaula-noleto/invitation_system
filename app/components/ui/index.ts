@@ -13,6 +13,9 @@ export type { FormSelectProps, SelectOption } from './FormSelect';
 export { PhotoUpload } from './PhotoUpload';
 export type { PhotoUploadProps } from './PhotoUpload';
 
+export { MultiPhotoUpload } from './MultiPhotoUpload';
+export type { MultiPhotoUploadProps, PhotoItem } from './MultiPhotoUpload';
+
 export { IconButton } from './IconButton';
 export type { IconButtonProps } from './IconButton';
 

@@ -6,7 +6,11 @@ import {
   FormSelect,
   ErrorMessage,
   PaletteSelector,
+  Icon,
+  Sparkles,
+  MultiPhotoUpload,
 } from '@/app/components/ui';
+import type { PhotoItem } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { TemplateId } from '@/app/types/invitation';
@@ -19,7 +23,7 @@ import {
 
 interface InvitationFormSectionProps {
   // Form values
-  photoPreview: string | null;
+  photos: PhotoItem[];
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -38,8 +42,7 @@ interface InvitationFormSectionProps {
   error: string | null;
   
   // Handlers
-  onPhotoChange: (file: File, preview: string, base64: string) => void;
-  onPhotoClear: () => void;
+  onPhotosChange: (photos: PhotoItem[]) => void;
   onPartner1Change: (value: string) => void;
   onPartner2Change: (value: string) => void;
   onDateChange: (date: string, formatted: string) => void;
@@ -56,7 +59,7 @@ interface InvitationFormSectionProps {
 }
 
 export function InvitationFormSection({
-  photoPreview,
+  photos,
   partner1,
   partner2,
   weddingDate,
@@ -71,8 +74,7 @@ export function InvitationFormSection({
   locale,
   isLoading,
   error,
-  onPhotoChange,
-  onPhotoClear,
+  onPhotosChange,
   onPartner1Change,
   onPartner2Change,
   onDateChange,
@@ -103,11 +105,11 @@ export function InvitationFormSection({
       <form onSubmit={onSubmit} className="invitation-form">
         {/* Basic Information: Photo, Names, Date, Template */}
         <BasicInfoFields
-          photoPreview={photoPreview}
-          onPhotoChange={onPhotoChange}
-          onPhotoClear={onPhotoClear}
+          photos={photos}
+          onPhotosChange={onPhotosChange}
           photoLabel={t('form.photo.label')}
           photoHint={t('form.photo.hint')}
+          addPhotoLabel={t('form.photo.addPhoto')}
           partner1={partner1}
           onPartner1Change={onPartner1Change}
           partner1Label={t('form.partner1.label')}

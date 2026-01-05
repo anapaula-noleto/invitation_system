@@ -569,3 +569,140 @@
 .error-text {
   font-size: var(--text-sm);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MULTI PHOTO UPLOAD
+   ───────────────────────────────────────────────────────────────────────── */
+
+.multi-photo-upload-group {
+  width: 100%;
+}
+
+.multi-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.multi-photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(201, 169, 97, 0.25);
+}
+
+.multi-photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-normal) var(--ease-out-quart);
+}
+
+.multi-photo-item:hover .multi-photo-preview {
+  transform: scale(1.05);
+}
+
+.multi-photo-remove {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out-quart);
+  opacity: 0;
+}
+
+.multi-photo-item:hover .multi-photo-remove {
+  opacity: 1;
+}
+
+.multi-photo-remove:hover {
+  background: rgba(229, 57, 53, 0.9);
+  border-color: transparent;
+  color: white;
+}
+
+.multi-photo-number {
+  position: absolute;
+  bottom: var(--space-2);
+  left: var(--space-2);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+  border-radius: var(--radius-full);
+  color: var(--midnight-950);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.multi-photo-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  aspect-ratio: 1;
+  border: 2px dashed rgba(201, 169, 97, 0.3);
+  border-radius: var(--radius-lg);
+  background: rgba(201, 169, 97, 0.03);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out-quart);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.multi-photo-add:hover {
+  border-color: var(--gold-500);
+  background: rgba(201, 169, 97, 0.08);
+}
+
+.multi-photo-add.dragging {
+  border-color: var(--gold-400);
+  background: rgba(201, 169, 97, 0.12);
+  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.15);
+}
+
+.multi-photo-add .upload-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(201, 169, 97, 0.1);
+  border: 1px solid rgba(201, 169, 97, 0.2);
+}
+
+.multi-photo-add .upload-text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.multi-photo-add .upload-hint {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.multi-photo-add-text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--gold-400);
+}
+
+/* Responsive: 2 columns on smaller screens */
+@media (max-width: 480px) {
+  .multi-photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
