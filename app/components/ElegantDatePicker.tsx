@@ -220,20 +220,6 @@ export function ElegantDatePicker({
               </div>
             ))}
           </div>
-
-          {/* Footer */}
-          <div className="datepicker-footer">
-            <button 
-              type="button" 
-              className="datepicker-today-btn"
-              onClick={() => {
-                const today = new Date();
-                setDisplayMonth({ year: today.getFullYear(), month: today.getMonth() });
-              }}
-            >
-              {todayLabel}
-            </button>
-          </div>
         </div>
       )}
     </div>
