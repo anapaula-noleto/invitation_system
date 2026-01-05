@@ -79,7 +79,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // UI state
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [showTemplatePreview, setShowTemplatePreview] = useState(false);
+  const [showTemplatePreview, setShowTemplatePreview] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [show3DPreview, setShow3DPreview] = useState(false);

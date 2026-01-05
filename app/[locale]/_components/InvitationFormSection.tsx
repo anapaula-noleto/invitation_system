@@ -105,7 +105,8 @@ export function InvitationFormSection({
         <Tabs defaultTab="info">
           <TabList>
             <Tab id="info" icon="📋">{t('form.tabs.basicInfo')}</Tab>
-            <Tab id="style" icon="🎨">{t('form.tabs.style')}</Tab>
+            <Tab id="photos" icon="📷">{t('form.tabs.photos')}</Tab>
+            <Tab id="customization" icon="🎨">{t('form.tabs.customization')}</Tab>
             <Tab id="texts" icon="✍️">{t('form.tabs.texts')}</Tab>
           </TabList>
 
@@ -159,21 +160,13 @@ export function InvitationFormSection({
             </div>
           </TabPanel>
 
-          {/* Tab 2: Estilo (Paleta + Fotos) */}
-          <TabPanel id="style">
+          {/* Tab 2: Fotos do Casal */}
+          <TabPanel id="photos">
             <div className="tab-content">
               <div className="tab-header">
-                <h3 className="tab-title">{t('form.tabs.styleTitle')}</h3>
-                <p className="tab-subtitle">{t('form.tabs.styleSubtitle')}</p>
+                <h3 className="tab-title">{t('form.tabs.photosTitle')}</h3>
+                <p className="tab-subtitle">{t('form.tabs.photosSubtitle')}</p>
               </div>
-              <div className="form-group">
-                <label className="form-label">{t('form.palette.label')}</label>
-                <PaletteSelector
-                  value={selectedPalette.id}
-                  onSelect={onPaletteSelect}
-                />
-              </div>
-
               <PhotosSection
                 photos={photos}
                 onPhotosChange={onPhotosChange}
@@ -183,7 +176,24 @@ export function InvitationFormSection({
             </div>
           </TabPanel>
 
-          {/* Tab 3: Textos Personalizados */}
+          {/* Tab 3: Personalização (Paleta de Cores) */}
+          <TabPanel id="customization">
+            <div className="tab-content">
+              <div className="tab-header">
+                <h3 className="tab-title">{t('form.tabs.customizationTitle')}</h3>
+                <p className="tab-subtitle">{t('form.tabs.customizationSubtitle')}</p>
+              </div>
+              <div className="form-group">
+                <label className="form-label">{t('form.palette.label')}</label>
+                <PaletteSelector
+                  value={selectedPalette.id}
+                  onSelect={onPaletteSelect}
+                />
+              </div>
+            </div>
+          </TabPanel>
+
+          {/* Tab 4: Textos Personalizados */}
           <TabPanel id="texts">
             <div className="tab-content">
               <div className="tab-header">

@@ -32,8 +32,8 @@ export function PreviewSection({
           value={showTemplatePreview ? 'template' : 'generated'}
           onChange={(v) => onTogglePreview(v === 'template')}
           options={[
-            { value: 'generated', label: t('preview.tabs.generated'), icon: '🎨' },
             { value: 'template', label: t('preview.tabs.template'), icon: '📋' },
+            { value: 'generated', label: t('preview.tabs.generated'), icon: '🎨' },
           ]}
         />
 
