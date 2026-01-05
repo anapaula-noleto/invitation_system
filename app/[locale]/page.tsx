@@ -68,9 +68,10 @@ export default function Home() {
           <PreviewSection
             invitationConfig={form.invitationConfig}
             generatedImage={form.generatedImage}
-            showTemplatePreview={form.showTemplatePreview}
-            onTogglePreview={form.setShowTemplatePreview}
+            activePreviewTab={form.activePreviewTab}
+            onPreviewTabChange={form.handlePreviewTabChange}
             onDownload={form.handleDownload}
+            onUsePhotos={form.handleUsePhotos}
           />
         </div>
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { FileText, Sparkles } from 'lucide-react';
+import { FileText, Sparkles, Download, Image } from 'lucide-react';
 import { InvitationRenderer } from '@/app/components/InvitationRenderer';
 import { Button, Tabs, TabList, Tab, TabPanel } from '@/app/components/ui';
 import type { InvitationConfig } from '@/app/types/invitation';
@@ -9,24 +9,26 @@ import type { InvitationConfig } from '@/app/types/invitation';
 interface PreviewSectionProps {
   invitationConfig: InvitationConfig;
   generatedImage: string | null;
-  showTemplatePreview: boolean;
-  onTogglePreview: (showTemplate: boolean) => void;
+  activePreviewTab: string;
+  onPreviewTabChange: (tabId: string) => void;
   onDownload: () => void;
+  onUsePhotos: () => void;
 }
 
 export function PreviewSection({
   invitationConfig,
   generatedImage,
-  showTemplatePreview,
-  onTogglePreview,
+  activePreviewTab,
+  onPreviewTabChange,
   onDownload,
+  onUsePhotos,
 }: PreviewSectionProps) {
   const t = useTranslations();
 
   return (
     <section className="preview-section">
       <div className="preview-card">
-        <Tabs defaultTab="template">
+        <Tabs defaultTab="template" activeTab={activePreviewTab} onTabChange={onPreviewTabChange}>
           <TabList>
             <Tab id="template" icon={<FileText size={16} />}>
               {t('preview.tabs.template')}
@@ -53,8 +55,11 @@ export function PreviewSection({
                   className="generated-image"
                 />
                 <div className="button-group">
-                  <Button onClick={onDownload} variant="secondary" leftIcon="⬇️">
+                  <Button onClick={onDownload} variant="secondary" leftIcon={<Download size={16} />}>
                     {t('preview.actions.download')}
+                  </Button>
+                  <Button onClick={onUsePhotos} variant="primary" leftIcon={<Image size={16} />}>
+                    {t('preview.actions.usePhotos')}
                   </Button>
                 </div>
               </>

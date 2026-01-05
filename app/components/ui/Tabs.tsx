@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, createContext, useContext, useId } from 'react';
+import { useState, createContext, useContext, useId, useEffect } from 'react';
 
 interface TabsContextValue {
   activeTab: string;
@@ -20,13 +20,33 @@ function useTabs() {
 
 interface TabsProps {
   defaultTab: string;
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
   children: React.ReactNode;
   className?: string;
 }
 
-export function Tabs({ defaultTab, children, className = '' }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab);
+export function Tabs({ defaultTab, activeTab: controlledActiveTab, onTabChange, children, className = '' }: TabsProps) {
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab);
   const baseId = useId();
+
+  // Use controlled or internal state
+  const activeTab = controlledActiveTab ?? internalActiveTab;
+
+  // Sync internal state with controlled state
+  useEffect(() => {
+    if (controlledActiveTab !== undefined) {
+      setInternalActiveTab(controlledActiveTab);
+    }
+  }, [controlledActiveTab]);
+
+  const setActiveTab = (id: string) => {
+    if (onTabChange) {
+      onTabChange(id);
+    } else {
+      setInternalActiveTab(id);
+    }
+  };
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab, baseId }}>

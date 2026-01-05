@@ -115,7 +115,8 @@
       "text": "Suas fotos melhoradas aparecerão aqui"
     },
     "actions": {
-      "download": "Baixar Convite"
+      "download": "Baixar Fotos",
+      "usePhotos": "Usar Fotos no Convite"
     }
   },
   "errors": {

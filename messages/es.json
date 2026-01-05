@@ -115,7 +115,8 @@
       "text": "Tus fotos mejoradas aparecerán aquí"
     },
     "actions": {
-      "download": "Descargar Invitación"
+      "download": "Descargar Fotos",
+      "usePhotos": "Usar Fotos en la Invitación"
     }
   },
   "errors": {

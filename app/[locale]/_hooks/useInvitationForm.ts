@@ -26,7 +26,7 @@ export interface UseInvitationFormReturn {
 
   // UI state
   generatedImage: string | null;
-  showTemplatePreview: boolean;
+  activePreviewTab: string;
   isLoading: boolean;
   error: string | null;
 
@@ -44,15 +44,16 @@ export interface UseInvitationFormReturn {
   setCustomGreeting: (value: string) => void;
   setCustomStory: (value: string) => void;
   setCustomClosing: (value: string) => void;
-  setShowTemplatePreview: (value: boolean) => void;
 
   // Handlers
   handleDateChange: (date: string, formatted: string) => void;
   handlePaletteSelect: (palette: WeddingPalette) => void;
   handlePhotosChange: (photos: PhotoItem[]) => void;
   handlePhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handlePreviewTabChange: (tabId: string) => void;
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
+  handleUsePhotos: () => void;
   openVenueInMaps: () => void;
 }
 
@@ -80,7 +81,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // UI state
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [showTemplatePreview, setShowTemplatePreview] = useState(true);
+  const [activePreviewTab, setActivePreviewTab] = useState('template');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,6 +89,10 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const handleDateChange = useCallback((date: string, formatted: string) => {
     setWeddingDate(date);
     setWeddingDateFormatted(formatted);
+  }, []);
+
+  const handlePreviewTabChange = useCallback((tabId: string) => {
+    setActivePreviewTab(tabId);
   }, []);
 
   const openVenueInMaps = useCallback(() => {
@@ -132,6 +137,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
       if (result.success && result.imageUrl) {
         setGeneratedImage(result.imageUrl);
+        // Switch to generated tab after successful generation
+        setActivePreviewTab('generated');
       } else {
         setError(result.error || t('errors.generationFailed'));
       }
@@ -148,11 +155,17 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
     const link = document.createElement('a');
     link.href = generatedImage;
-    link.download = `wedding-invitation-${partner1}-${partner2}.png`;
+    link.download = `wedding-photo-enhanced-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [generatedImage, partner1, partner2]);
+  }, [generatedImage]);
+
+  const handleUsePhotos = useCallback(() => {
+    // TODO: Implement using generated photos in the invitation
+    // For now, switch to template tab to show the invitation
+    setActivePreviewTab('template');
+  }, []);
 
   // Default placeholder photos for empty slots
   const defaultPhotos = [
@@ -215,7 +228,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
     // UI state
     generatedImage,
-    showTemplatePreview,
+    activePreviewTab,
     isLoading,
     error,
 
@@ -233,15 +246,16 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setCustomGreeting,
     setCustomStory,
     setCustomClosing,
-    setShowTemplatePreview,
 
     // Handlers
     handleDateChange,
     handlePaletteSelect,
     handlePhotosChange,
     handlePhotoStyleChange,
+    handlePreviewTabChange,
     handleGenerate,
     handleDownload,
+    handleUsePhotos,
     openVenueInMaps,
   };
 }

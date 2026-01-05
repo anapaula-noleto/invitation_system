@@ -115,7 +115,8 @@
       "text": "Your enhanced photos will appear here"
     },
     "actions": {
-      "download": "Download Invitation"
+      "download": "Download Photos",
+      "usePhotos": "Use Photos in Invitation"
     }
   },
   "errors": {
