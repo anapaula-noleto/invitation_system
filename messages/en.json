@@ -115,8 +115,7 @@
       "text": "Your enhanced photos will appear here"
     },
     "actions": {
-      "download": "Download Invitation",
-      "view3d": "View 3D Card"
+      "download": "Download Invitation"
     }
   },
   "errors": {

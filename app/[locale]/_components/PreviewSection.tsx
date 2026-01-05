@@ -12,7 +12,6 @@ interface PreviewSectionProps {
   showTemplatePreview: boolean;
   onTogglePreview: (showTemplate: boolean) => void;
   onDownload: () => void;
-  onView3D: () => void;
 }
 
 export function PreviewSection({
@@ -21,7 +20,6 @@ export function PreviewSection({
   showTemplatePreview,
   onTogglePreview,
   onDownload,
-  onView3D,
 }: PreviewSectionProps) {
   const t = useTranslations();
 
@@ -57,13 +55,6 @@ export function PreviewSection({
                 <div className="button-group">
                   <Button onClick={onDownload} variant="secondary" leftIcon="⬇️">
                     {t('preview.actions.download')}
-                  </Button>
-                  <Button 
-                    onClick={onView3D} 
-                    variant="secondary"
-                    leftIcon="🎴"
-                  >
-                    {t('preview.actions.view3d')}
                   </Button>
                 </div>
               </>

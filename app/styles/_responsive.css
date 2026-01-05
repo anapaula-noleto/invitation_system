@@ -70,20 +70,6 @@
   .preview-section {
     position: static;
   }
-
-  .card-3d-modal {
-    max-height: 85vh;
-    border-radius: var(--radius-xl);
-  }
-
-  .card-3d-container {
-    min-height: 350px;
-  }
-
-  .card-3d-title {
-    font-size: 1.4rem;
-    padding-top: var(--space-6);
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

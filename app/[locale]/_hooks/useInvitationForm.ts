@@ -29,7 +29,6 @@ export interface UseInvitationFormReturn {
   showTemplatePreview: boolean;
   isLoading: boolean;
   error: string | null;
-  show3DPreview: boolean;
 
   // Computed
   invitationConfig: InvitationConfig;
@@ -46,7 +45,6 @@ export interface UseInvitationFormReturn {
   setCustomStory: (value: string) => void;
   setCustomClosing: (value: string) => void;
   setShowTemplatePreview: (value: boolean) => void;
-  setShow3DPreview: (value: boolean) => void;
 
   // Handlers
   handleDateChange: (date: string, formatted: string) => void;
@@ -85,7 +83,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const [showTemplatePreview, setShowTemplatePreview] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [show3DPreview, setShow3DPreview] = useState(false);
 
   // Handlers
   const handleDateChange = useCallback((date: string, formatted: string) => {
@@ -221,7 +218,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     showTemplatePreview,
     isLoading,
     error,
-    show3DPreview,
 
     // Computed
     invitationConfig,
@@ -238,7 +234,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setCustomStory,
     setCustomClosing,
     setShowTemplatePreview,
-    setShow3DPreview,
 
     // Handlers
     handleDateChange,

@@ -1,6 +1,5 @@
 'use client';
 
-import { Card3DPreview } from '@/app/components/Card3DPreview';
 import { LanguageSelector } from '@/app/components/ui';
 import { useInvitationForm } from './_hooks';
 import {
@@ -72,18 +71,9 @@ export default function Home() {
             showTemplatePreview={form.showTemplatePreview}
             onTogglePreview={form.setShowTemplatePreview}
             onDownload={form.handleDownload}
-            onView3D={() => form.setShow3DPreview(true)}
           />
         </div>
       </div>
-
-      {/* 3D Preview Modal */}
-      {form.show3DPreview && form.generatedImage && (
-        <Card3DPreview 
-          imageUrl={form.generatedImage} 
-          onClose={() => form.setShow3DPreview(false)} 
-        />
-      )}
     </main>
   );
 }
