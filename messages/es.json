@@ -102,10 +102,10 @@
   "preview": {
     "tabs": {
       "generated": "Generado por IA",
-      "template": "Vista Previa"
+      "template": "Preview del Template"
     },
     "placeholder": {
-      "text": "Tu hermosa invitación aparecerá aquí"
+      "text": "Tus fotos mejoradas aparecerán aquí"
     },
     "actions": {
       "download": "Descargar Invitación",

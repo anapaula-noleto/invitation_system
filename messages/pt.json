@@ -95,8 +95,8 @@
       "charLimit": "caracteres"
     },
     "submit": {
-      "default": "Gerar Convite",
-      "loading": "Criando seu convite..."
+      "default": "Melhorar fotos",
+      "loading": "Melhorando suas fotos..."
     }
   },
   "preview": {
@@ -105,7 +105,7 @@
       "template": "Preview do Template"
     },
     "placeholder": {
-      "text": "Seu lindo convite aparecerá aqui"
+      "text": "Suas fotos melhoradas aparecerão aqui"
     },
     "actions": {
       "download": "Baixar Convite",

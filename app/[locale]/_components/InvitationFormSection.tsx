@@ -175,6 +175,19 @@ export function InvitationFormSection({
                 addPhotoLabel={t('form.photo.addPhoto')}
               />
             </div>
+
+            {/* Generate images Button */}
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              isLoading={isLoading}
+              leftIcon={!isLoading ? '✨' : undefined}
+              className="generate-button"
+            >
+              {isLoading ? t('form.submit.loading') : t('form.submit.default')}
+            </Button>
           </TabPanel>
 
           {/* Tab 3: Personalização (Paleta de Cores) */}
@@ -234,19 +247,6 @@ export function InvitationFormSection({
 
         {/* Error Message */}
         <ErrorMessage message={error} />
-
-        {/* Generate Button */}
-        {/* <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          fullWidth
-          isLoading={isLoading}
-          leftIcon={!isLoading ? '✨' : undefined}
-          className="generate-button"
-        >
-          {isLoading ? t('form.submit.loading') : t('form.submit.default')}
-        </Button> */}
       </form>
     </section>
   );
