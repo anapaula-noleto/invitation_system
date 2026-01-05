@@ -26,6 +26,7 @@ export interface UseInvitationFormReturn {
 
   // UI state
   generatedImages: string[];
+  enhancedPhotosForInvitation: string[];
   activePreviewTab: string;
   isLoading: boolean;
   error: string | null;
@@ -81,6 +82,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // UI state
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [enhancedPhotosForInvitation, setEnhancedPhotosForInvitation] = useState<string[]>([]);
   const [activePreviewTab, setActivePreviewTab] = useState('template');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -168,10 +170,13 @@ export function useInvitationForm(): UseInvitationFormReturn {
   }, [generatedImages]);
 
   const handleUsePhotos = useCallback(() => {
-    // TODO: Implement using generated photos in the invitation
-    // For now, switch to template tab to show the invitation
-    setActivePreviewTab('template');
-  }, []);
+    // Use generated photos in the invitation (without replacing original uploads)
+    if (generatedImages.length > 0) {
+      setEnhancedPhotosForInvitation(generatedImages);
+      // Switch to template tab to show the invitation with enhanced photos
+      setActivePreviewTab('template');
+    }
+  }, [generatedImages]);
 
   // Default placeholder photos for empty slots
   const defaultPhotos = [
@@ -182,11 +187,11 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // Computed: Invitation config based on form data
   const invitationConfig = useMemo<InvitationConfig>(() => {
-    // Build photoUrls array: use uploaded photos first, then fill with defaults
+    // Build photoUrls array: prefer enhanced photos, then uploaded photos, then defaults
     const photoUrls: [string, string, string] = [
-      photos[0]?.preview || defaultPhotos[0],
-      photos[1]?.preview || defaultPhotos[1],
-      photos[2]?.preview || defaultPhotos[2],
+      enhancedPhotosForInvitation[0] || photos[0]?.preview || defaultPhotos[0],
+      enhancedPhotosForInvitation[1] || photos[1]?.preview || defaultPhotos[1],
+      enhancedPhotosForInvitation[2] || photos[2]?.preview || defaultPhotos[2],
     ];
 
     return {
@@ -213,7 +218,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-  }, [partner1, partner2, weddingDateFormatted, venue, receptionVenue, hasSeparateReceptionVenue, selectedTemplate, photos, selectedPalette, customGreeting, customStory, customClosing, t]);
+  }, [partner1, partner2, weddingDateFormatted, venue, receptionVenue, hasSeparateReceptionVenue, selectedTemplate, photos, enhancedPhotosForInvitation, selectedPalette, customGreeting, customStory, customClosing, t]);
 
   return {
     // Form state
@@ -234,6 +239,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
     // UI state
     generatedImages,
+    enhancedPhotosForInvitation,
     activePreviewTab,
     isLoading,
     error,
