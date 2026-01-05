@@ -25,7 +25,7 @@ export interface UseInvitationFormReturn {
   customClosing: string;
 
   // UI state
-  generatedImage: string | null;
+  generatedImages: string[];
   activePreviewTab: string;
   isLoading: boolean;
   error: string | null;
@@ -80,7 +80,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const [customClosing, setCustomClosing] = useState('');
 
   // UI state
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [activePreviewTab, setActivePreviewTab] = useState('template');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -118,25 +118,26 @@ export function useInvitationForm(): UseInvitationFormReturn {
     e.preventDefault();
 
     // Check if at least one photo has been uploaded
-    const hasPhotos = photos.some(photo => photo.file !== null);
-    if (!hasPhotos) {
+    const uploadedPhotos = photos.filter(photo => photo.file !== null);
+    if (uploadedPhotos.length === 0) {
       setError(t('errors.photoRequired'));
       return;
     }
 
     setIsLoading(true);
     setError(null);
-    setGeneratedImage(null);
+    setGeneratedImages([]);
 
     try {
-      // Use first photo's base64 for AI generation
+      // Send all uploaded photos' base64 for AI generation
+      const photosBase64 = uploadedPhotos.map(photo => photo.base64);
       const result = await generateWeddingInvitationPhotos(
-        photos[0].base64,
+        photosBase64,
         photoStyle
       );
 
-      if (result.success && result.imageUrl) {
-        setGeneratedImage(result.imageUrl);
+      if (result.success && result.imageUrls && result.imageUrls.length > 0) {
+        setGeneratedImages(result.imageUrls);
         // Switch to generated tab after successful generation
         setActivePreviewTab('generated');
       } else {
@@ -151,15 +152,20 @@ export function useInvitationForm(): UseInvitationFormReturn {
   };
 
   const handleDownload = useCallback(() => {
-    if (!generatedImage) return;
+    if (generatedImages.length === 0) return;
 
-    const link = document.createElement('a');
-    link.href = generatedImage;
-    link.download = `wedding-photo-enhanced-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, [generatedImage]);
+    // Download all generated images with a small delay between each
+    generatedImages.forEach((imageUrl, index) => {
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = `wedding-photo-enhanced-${index + 1}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, index * 500); // 500ms delay between each download
+    });
+  }, [generatedImages]);
 
   const handleUsePhotos = useCallback(() => {
     // TODO: Implement using generated photos in the invitation
@@ -227,7 +233,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
     customClosing,
 
     // UI state
-    generatedImage,
+    generatedImages,
     activePreviewTab,
     isLoading,
     error,

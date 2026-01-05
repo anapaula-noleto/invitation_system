@@ -5,7 +5,7 @@ import { generateText } from 'ai'
 
 interface EnhancePhotoResult {
   success: boolean
-  imageUrl?: string
+  imageUrls?: string[]
   error?: string
 }
 
@@ -49,7 +49,7 @@ const stylePrompts: Record<PhotoStyle, string> = {
 };
 
 export async function generateWeddingInvitationPhotos(
-  couplePhotoBase64: string,
+  photosBase64: string[],
   style: PhotoStyle = 'romantic'
 ): Promise<EnhancePhotoResult> {
   try {
@@ -57,7 +57,7 @@ export async function generateWeddingInvitationPhotos(
 
     const prompt = `You are a world-class professional wedding photographer and photo retoucher specializing in pre-wedding photoshoots.
 
-I'm providing a couple's photo. Your task is to transform this image into a stunning, professional pre-wedding photograph with the following requirements:
+Your task is to transform this image into a stunning, professional pre-wedding photograph with the following requirements:
 
 PHOTO ENHANCEMENT REQUIREMENTS:
 ${styleInstructions}
@@ -72,55 +72,64 @@ GENERAL RETOUCHING GUIDELINES:
 
 OUTPUT: A single, beautifully enhanced pre-wedding photograph that captures the love and connection between the couple.`;
 
-    const result = await generateText({
-      model: google('gemini-3-pro-image-preview'),
-      messages: [
-        {
-          role: 'user',
-          content: [
+    // Process all photos in parallel
+    const enhancedPhotos = await Promise.all(
+      photosBase64.map(async (photoBase64) => {
+        const result = await generateText({
+          model: google('gemini-3-pro-image-preview'),
+          messages: [
             {
-              type: 'image',
-              image: couplePhotoBase64,
-            },
-            {
-              type: 'text',
-              text: prompt,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  image: photoBase64,
+                },
+                {
+                  type: 'text',
+                  text: prompt,
+                },
+              ],
             },
           ],
-        },
-      ],
-      providerOptions: {
-        google: {
-          responseModalities: ['IMAGE'],
-          imageConfig: {
-            aspectRatio: '4:3',
-            imageSize: '2K',
+          providerOptions: {
+            google: {
+              responseModalities: ['IMAGE'],
+              imageConfig: {
+                aspectRatio: '4:3',
+                imageSize: '2K',
+              },
+            },
           },
-        },
-      },
-    })
+        });
 
+        const imageFile = result.files?.[0];
+        if (!imageFile?.base64) {
+          return null;
+        }
+        return `data:image/png;base64,${imageFile.base64}`;
+      })
+    );
 
-    const imageFile = result.files?.[0]
+    // Filter out failed generations
+    const successfulPhotos = enhancedPhotos.filter((url): url is string => url !== null);
 
-    if (!imageFile?.base64) {
+    if (successfulPhotos.length === 0) {
       return {
         success: false,
-        error: 'No image was generated. Please try again.',
-      }
+        error: 'No images were generated. Please try again.',
+      };
     }
-
-    const imageUrl = `data:image/png;base64,${imageFile.base64}`
 
     return {
       success: true,
-      imageUrl,
-    }
+      imageUrls: successfulPhotos,
+    };
   } catch (error) {
-    console.error('Error generating invitation:', error)
+    console.error('Error generating photos:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to generate invitation',
-    }
+      error: error instanceof Error ? error.message : 'Failed to enhance photos',
+    };
   }
 }

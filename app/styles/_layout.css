@@ -346,11 +346,27 @@
   line-height: 1.5;
 }
 
+.generated-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.generated-images-grid:has(:only-child) {
+  grid-template-columns: 1fr;
+}
+
 .generated-image {
   width: 100%;
   border-radius: var(--radius-xl);
   display: block;
   box-shadow: var(--shadow-xl);
+  transition: transform var(--duration-normal) var(--ease-out-quart);
+}
+
+.generated-image:hover {
+  transform: scale(1.02);
 }
 
 /* Template Preview Container */

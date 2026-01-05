@@ -8,7 +8,7 @@ import type { InvitationConfig } from '@/app/types/invitation';
 
 interface PreviewSectionProps {
   invitationConfig: InvitationConfig;
-  generatedImage: string | null;
+  generatedImages: string[];
   activePreviewTab: string;
   onPreviewTabChange: (tabId: string) => void;
   onDownload: () => void;
@@ -17,7 +17,7 @@ interface PreviewSectionProps {
 
 export function PreviewSection({
   invitationConfig,
-  generatedImage,
+  generatedImages,
   activePreviewTab,
   onPreviewTabChange,
   onDownload,
@@ -45,15 +45,20 @@ export function PreviewSection({
             </div>
           </TabPanel>
 
-          {/* Generated image */}
+          {/* Generated images */}
           <TabPanel id="generated">
-            {generatedImage ? (
+            {generatedImages.length > 0 ? (
               <>
-                <img 
-                  src={generatedImage} 
-                  alt="Generated wedding invitation" 
-                  className="generated-image"
-                />
+                <div className="generated-images-grid">
+                  {generatedImages.map((imageUrl, index) => (
+                    <img 
+                      key={index}
+                      src={imageUrl} 
+                      alt={`Enhanced wedding photo ${index + 1}`} 
+                      className="generated-image"
+                    />
+                  ))}
+                </div>
                 <div className="button-group">
                   <Button onClick={onDownload} variant="secondary" leftIcon={<Download size={16} />}>
                     {t('preview.actions.download')}
