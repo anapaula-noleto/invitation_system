@@ -34,6 +34,7 @@ export default function Home() {
           {/* Form Section */}
           <InvitationFormSection
             photos={form.photos}
+            photoStyle={form.photoStyle}
             partner1={form.partner1}
             partner2={form.partner2}
             weddingDate={form.weddingDate}
@@ -49,6 +50,7 @@ export default function Home() {
             isLoading={form.isLoading}
             error={form.error}
             onPhotosChange={form.handlePhotosChange}
+            onPhotoStyleChange={form.handlePhotoStyleChange}
             onPartner1Change={form.setPartner1}
             onPartner2Change={form.setPartner2}
             onDateChange={form.handleDateChange}

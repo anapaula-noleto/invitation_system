@@ -3,57 +3,74 @@
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
 
-interface GenerateInvitationResult {
+interface EnhancePhotoResult {
   success: boolean
   imageUrl?: string
   error?: string
 }
 
-export async function generateWeddingInvitation(
+type PhotoStyle = 'romantic' | 'classic' | 'modern' | 'artistic';
+
+export type { PhotoStyle };
+
+const stylePrompts: Record<PhotoStyle, string> = {
+  romantic: `
+    - Apply soft, dreamy lighting with warm golden tones
+    - Add subtle bokeh effect in the background
+    - Enhance skin tones for a natural, healthy glow
+    - Create an intimate, romantic atmosphere
+    - Use soft focus on edges while keeping subjects sharp
+    - Add gentle lens flare effects
+  `,
+  classic: `
+    - Apply timeless, elegant lighting with neutral tones
+    - Create a clean, sophisticated background
+    - Professional skin retouching while maintaining natural look
+    - Balanced exposure with refined contrast
+    - Classic portrait composition enhancements
+    - Subtle vignette for focus on subjects
+  `,
+  modern: `
+    - Apply contemporary, clean lighting with crisp tones
+    - Create a minimalist, refined background
+    - Sleek, natural skin enhancement
+    - High contrast with sharp details
+    - Modern color grading with subtle desaturation
+    - Strong compositional balance
+  `,
+  artistic: `
+    - Apply dramatic, cinematic lighting
+    - Create visually striking background with depth
+    - Artistic skin enhancement with painterly quality
+    - Bold contrast and rich shadows
+    - Creative color grading with mood enhancement
+    - Fine art aesthetic with editorial quality
+  `,
+};
+
+export async function generateWeddingInvitationPhotos(
   couplePhotoBase64: string,
-  names: { partner1: string; partner2: string },
-  weddingDate: string,
-  venue: string
-): Promise<GenerateInvitationResult> {
+  style: PhotoStyle = 'romantic'
+): Promise<EnhancePhotoResult> {
   try {
-    const prompt = `You are a professional wedding invitation designer tasked with creating an ultra-high-end fold-out card design.
+    const styleInstructions = stylePrompts[style] || stylePrompts.romantic;
 
-I'm providing a photo of a couple. Create a FOLD-OUT WEDDING INVITATION with TWO PANELS side by side in a single image.
+    const prompt = `You are a world-class professional wedding photographer and photo retoucher specializing in pre-wedding photoshoots.
 
-CRITICAL LAYOUT REQUIREMENT:
-The final image must be a HORIZONTAL composition with TWO EQUAL PANELS side by side:
-- LEFT PANEL (Front Cover): This is the OUTSIDE of the card when folded
-- RIGHT PANEL (Inside): This is revealed when the card opens
+I'm providing a couple's photo. Your task is to transform this image into a stunning, professional pre-wedding photograph with the following requirements:
 
-The panels should have a subtle vertical dividing line or fold indicator in the center.
+PHOTO ENHANCEMENT REQUIREMENTS:
+${styleInstructions}
 
-PHASE 1: PHOTO TRANSFORMATION & RETOUCHING
-First, transform the raw input photo into a world-class studio portrait.
-- Lighting & Atmosphere: Apply flattering, warm softbox studio lighting.
-- Background Replacement: Replace with a gently blurred, luxurious studio setting.
-- Facial & Smile Enhancement: Perform photorealistic retouching with natural-looking improvements.
+GENERAL RETOUCHING GUIDELINES:
+- Enhance the photo to look like it was taken by a professional wedding photographer
+- Improve lighting, composition, and overall visual appeal
+- Make the couple look their best while maintaining their natural features
+- Ensure the final image has a cohesive, polished look suitable for wedding invitations
+- Keep the couple as the main focus of the image
+- Maintain the original aspect ratio and composition intent
 
-PHASE 2: FOLD-OUT CARD DESIGN
-
-LEFT PANEL (Front Cover - seen when card is closed):
-- Feature an elegant, sophisticated cover design
-- Include the couple's names "${names.partner1} & ${names.partner2}" in beautiful script
-- Add decorative floral/botanical elements framing the design
-- Use a luxurious, romantic aesthetic (ivory, blush, gold accents)
-- Keep this panel more minimal and intriguing
-
-RIGHT PANEL (Inside - revealed when opened):
-- Place the transformed couple's portrait as the centerpiece
-- Frame the photo elegantly within the design
-- Include the full invitation text beautifully arranged:
-  - "Request the pleasure of your company"
-  - "at their wedding celebration"
-  - "${weddingDate}"
-  - "${venue}"
-- Continue the floral/botanical theme from the cover
-- More detailed and informative than the cover
-
-IMPORTANT: Both panels must have matching aesthetics, color palette, and design elements that flow together as one cohesive piece. The image should be suitable for UV-mapping onto a 3D fold-out card.`;
+OUTPUT: A single, beautifully enhanced pre-wedding photograph that captures the love and connection between the couple.`;
 
     const result = await generateText({
       model: google('gemini-3-pro-image-preview'),
@@ -76,7 +93,7 @@ IMPORTANT: Both panels must have matching aesthetics, color palette, and design 
         google: {
           responseModalities: ['IMAGE'],
           imageConfig: {
-            aspectRatio: '16:9', // Wide aspect ratio for two-panel fold-out
+            aspectRatio: '4:3',
             imageSize: '2K',
           },
         },

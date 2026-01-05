@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { generateWeddingInvitation } from '@/app/actions/generate';
+import { generateWeddingInvitationPhotos, type PhotoStyle } from '@/app/actions/generate';
 import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { InvitationConfig, TemplateId } from '@/app/types/invitation';
 import type { PhotoItem } from '@/app/components/ui';
@@ -10,6 +10,7 @@ import type { PhotoItem } from '@/app/components/ui';
 export interface UseInvitationFormReturn {
   // Form state
   photos: PhotoItem[];
+  photoStyle: string;
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -51,6 +52,7 @@ export interface UseInvitationFormReturn {
   handleDateChange: (date: string, formatted: string) => void;
   handlePaletteSelect: (palette: WeddingPalette) => void;
   handlePhotosChange: (photos: PhotoItem[]) => void;
+  handlePhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
   openVenueInMaps: () => void;
@@ -62,6 +64,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // Form state - Multiple photos support
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  const [photoStyle, setPhotoStyle] = useState<PhotoStyle>('romantic');
   const [partner1, setPartner1] = useState('');
   const [partner2, setPartner2] = useState('');
   const [weddingDate, setWeddingDate] = useState('');
@@ -105,16 +108,17 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setPhotos(newPhotos);
   }, []);
 
+  const handlePhotoStyleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPhotoStyle(e.target.value as PhotoStyle);
+  }, []);
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (photos.length === 0) {
+    // Check if at least one photo has been uploaded
+    const hasPhotos = photos.some(photo => photo.file !== null);
+    if (!hasPhotos) {
       setError(t('errors.photoRequired'));
-      return;
-    }
-
-    if (!partner1 || !partner2 || !weddingDate || !venue) {
-      setError(t('errors.fieldsRequired'));
       return;
     }
 
@@ -124,11 +128,9 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
     try {
       // Use first photo's base64 for AI generation
-      const result = await generateWeddingInvitation(
+      const result = await generateWeddingInvitationPhotos(
         photos[0].base64,
-        { partner1, partner2 },
-        weddingDate,
-        venue
+        photoStyle
       );
 
       if (result.success && result.imageUrl) {
@@ -200,6 +202,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
   return {
     // Form state
     photos,
+    photoStyle,
     partner1,
     partner2,
     weddingDate,
@@ -241,6 +244,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
     handleDateChange,
     handlePaletteSelect,
     handlePhotosChange,
+    handlePhotoStyleChange,
     handleGenerate,
     handleDownload,
     openVenueInMaps,

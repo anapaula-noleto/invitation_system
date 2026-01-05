@@ -35,7 +35,14 @@
       "hint": "JPG, PNG hasta 10MB (máx 3 fotos)",
       "upload": "Subir Foto",
       "change": "Cambiar Foto",
-      "addPhoto": "Añadir foto"
+      "addPhoto": "Añadir foto",
+      "styleLabel": "Estilo de Fotos",
+      "styles": {
+        "romantic": "Romántico — Luz suave, tonos cálidos",
+        "classic": "Clásico — Elegancia atemporal, colores neutros",
+        "modern": "Moderno — Aspecto limpio y contemporáneo",
+        "artistic": "Artístico — Efectos creativos y dramáticos"
+      }
     },
     "partner1": {
       "label": "Pareja 1",

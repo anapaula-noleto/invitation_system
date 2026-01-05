@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Heart, Camera, Palette, PenLine } from 'lucide-react';
+import { Heart, Camera, Palette, PenLine, Wand2 } from 'lucide-react';
 import {
   Button,
   FormSelect,
@@ -27,6 +27,7 @@ import {
 interface InvitationFormSectionProps {
   // Form values
   photos: PhotoItem[];
+  photoStyle: string;
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -46,6 +47,7 @@ interface InvitationFormSectionProps {
   
   // Handlers
   onPhotosChange: (photos: PhotoItem[]) => void;
+  onPhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onPartner1Change: (value: string) => void;
   onPartner2Change: (value: string) => void;
   onDateChange: (date: string, formatted: string) => void;
@@ -62,6 +64,7 @@ interface InvitationFormSectionProps {
 
 export function InvitationFormSection({
   photos,
+  photoStyle,
   partner1,
   partner2,
   weddingDate,
@@ -77,6 +80,7 @@ export function InvitationFormSection({
   isLoading,
   error,
   onPhotosChange,
+  onPhotoStyleChange,
   onPartner1Change,
   onPartner2Change,
   onDateChange,
@@ -91,6 +95,17 @@ export function InvitationFormSection({
   onSubmit,
 }: InvitationFormSectionProps) {
   const t = useTranslations();
+
+  // Check if at least one photo has been uploaded
+  const hasPhotos = photos.some(photo => photo.file !== null);
+
+  // Get photo style options with translations
+  const photoStyleOptions = [
+    { value: 'romantic', label: t('form.photo.styles.romantic') },
+    { value: 'classic', label: t('form.photo.styles.classic') },
+    { value: 'modern', label: t('form.photo.styles.modern') },
+    { value: 'artistic', label: t('form.photo.styles.artistic') },
+  ];
 
   // Get template options with translations
   const templateOptions = AVAILABLE_TEMPLATES
@@ -174,6 +189,16 @@ export function InvitationFormSection({
                 hint={t('form.photo.hint')}
                 addPhotoLabel={t('form.photo.addPhoto')}
               />
+
+              {/* Photo Style Select */}
+              <div className="form-group">
+                <FormSelect
+                  label={t('form.photo.styleLabel')}
+                  value={photoStyle}
+                  onChange={onPhotoStyleChange}
+                  options={photoStyleOptions}
+                />
+              </div>
             </div>
 
             {/* Generate images Button */}
@@ -183,7 +208,8 @@ export function InvitationFormSection({
               size="lg"
               fullWidth
               isLoading={isLoading}
-              leftIcon={!isLoading ? '✨' : undefined}
+              disabled={!hasPhotos}
+              leftIcon={!isLoading ? <Wand2 size={18} /> : undefined}
               className="generate-button"
             >
               {isLoading ? t('form.submit.loading') : t('form.submit.default')}
