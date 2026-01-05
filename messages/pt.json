@@ -11,7 +11,18 @@
     "tagline": "Transforme suas fotos queridas em elegantes anúncios de casamento"
   },
   "form": {
-    "title": "Seus Dados",
+    "title": "Crie seu Convite",
+    "tabs": {
+      "basicInfo": "Informações",
+      "basicInfoTitle": "Informações do Casal",
+      "basicInfoSubtitle": "Dados básicos sobre você, seu par e o evento",
+      "style": "Estilo",
+      "styleTitle": "Estilo Visual",
+      "styleSubtitle": "Personalize as cores e adicione suas fotos favoritas",
+      "texts": "Textos",
+      "textsTitle": "Textos Personalizados",
+      "textsSubtitle": "Escreva seus textos e deixe a IA deixá-los ainda mais românticos"
+    },
     "photos": {
       "title": "Fotos do Casal",
       "subtitle": "Adicione até 3 fotos para exibir na galeria do convite"

@@ -11,7 +11,18 @@
     "tagline": "Transform your cherished photos into elegant wedding announcements"
   },
   "form": {
-    "title": "Your Details",
+    "title": "Create your Invitation",
+    "tabs": {
+      "basicInfo": "Information",
+      "basicInfoTitle": "Couple Information",
+      "basicInfoSubtitle": "Basic details about you, your partner, and the event",
+      "style": "Style",
+      "styleTitle": "Visual Style",
+      "styleSubtitle": "Customize colors and add your favorite photos",
+      "texts": "Texts",
+      "textsTitle": "Custom Texts",
+      "textsSubtitle": "Write your texts and let AI make them even more romantic"
+    },
     "photos": {
       "title": "Your Photos Together",
       "subtitle": "Add up to 3 photos to display in the invitation gallery"

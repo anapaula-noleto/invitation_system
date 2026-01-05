@@ -27,8 +27,6 @@ interface CustomTextsSection {
     enhancingLabel: string;
     clearLabel: string;
   };
-  title: string;
-  subtitle: string;
   locale: string;
 }
 
@@ -36,17 +34,10 @@ export function CustomTextsSection({
   greeting,
   story,
   closing,
-  title,
-  subtitle,
   locale,
 }: CustomTextsSection) {
   return (
-    <div className="ai-text-section">
-      <div className="ai-text-section-header">
-        <h3 className="ai-text-section-title">{title}</h3>
-        <p className="ai-text-section-subtitle">{subtitle}</p>
-      </div>
-
+    <div className="ai-text-fields">
       <AITextField
         textType="greeting"
         value={greeting.value}

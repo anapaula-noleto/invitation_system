@@ -31,6 +31,8 @@ export type { ToggleButtonGroupProps } from './ToggleButtonGroup';
 export { FormRow } from './FormRow';
 export type { FormRowProps } from './FormRow';
 
+export { Tabs, TabList, Tab, TabPanel } from './Tabs';
+
 export { PaletteSelector } from './PaletteSelector';
 
 export { LanguageSelector } from './LanguageSelector';

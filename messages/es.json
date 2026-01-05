@@ -11,7 +11,18 @@
     "tagline": "Transforma tus fotos preciadas en elegantes anuncios de boda"
   },
   "form": {
-    "title": "Tus Datos",
+    "title": "Crea tu Invitación",
+    "tabs": {
+      "basicInfo": "Información",
+      "basicInfoTitle": "Información de la Pareja",
+      "basicInfoSubtitle": "Datos básicos sobre ti, tu pareja y el evento",
+      "style": "Estilo",
+      "styleTitle": "Estilo Visual",
+      "styleSubtitle": "Personaliza los colores y añade tus fotos favoritas",
+      "texts": "Textos",
+      "textsTitle": "Textos Personalizados",
+      "textsSubtitle": "Escribe tus textos y deja que la IA los haga aún más románticos"
+    },
     "photos": {
       "title": "Tus Fotos Juntos",
       "subtitle": "Añade hasta 3 fotos para mostrar en la galería de la invitación"
