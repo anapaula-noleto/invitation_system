@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, type ChangeEvent, type DragEvent, useState } from 'react';
+import { Icon, Camera } from './Icon';
 
 export interface PhotoUploadProps {
   value: string | null;
@@ -127,7 +128,7 @@ export function PhotoUpload({
         ) : (
           <div className="upload-placeholder">
             <span className="upload-icon" aria-hidden="true">
-              📷
+              <Icon icon={Camera} size="xl" className="icon-gold" />
             </span>
             <span className="upload-text">Click to upload your photo</span>
             <span className="upload-hint">{hint}</span>

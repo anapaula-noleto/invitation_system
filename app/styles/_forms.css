@@ -421,6 +421,7 @@
   background: rgba(201, 169, 97, 0.1);
   border: 1px solid rgba(201, 169, 97, 0.2);
   font-size: 1.75rem;
+  color: var(--gold-500);
   transition: all var(--duration-normal) var(--ease-out-quart);
 }
 

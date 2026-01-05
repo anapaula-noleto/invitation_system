@@ -36,3 +36,42 @@ export { AITextField } from './AITextField';
 
 export { PlacesAutocomplete } from './PlacesAutocomplete';
 export type { PlacesAutocompleteProps, PlaceResult } from './PlacesAutocomplete';
+
+export { Icon } from './Icon';
+export type { IconProps, LucideIcon } from './Icon';
+
+// Re-export commonly used icons
+export {
+  ArrowLeft,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Check,
+  Plus,
+  Minus,
+  MapPin,
+  Map,
+  Calendar,
+  Clock,
+  Sparkles,
+  Heart,
+  Star,
+  Gift,
+  Music,
+  Wine,
+  AlertCircle,
+  Info,
+  CheckCircle,
+  Loader2,
+  RefreshCw,
+  Trash2,
+  Edit,
+  Eye,
+  EyeOff,
+  Send,
+  Upload,
+  Download,
+} from './Icon';

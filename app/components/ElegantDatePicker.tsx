@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { Icon, Calendar } from '@/app/components/ui';
 
 interface ElegantDatePickerProps {
   value: string;
@@ -167,7 +168,9 @@ export function ElegantDatePicker({
         <span className={`datepicker-value ${!value ? 'placeholder' : ''}`}>
           {displayValue || placeholder || 'Select a date'}
         </span>
-        <span className="datepicker-icon">📅</span>
+        <span className="datepicker-icon">
+          <Icon icon={Calendar} size="md" className="icon-gold" />
+        </span>
       </div>
 
       {/* Dropdown do calendário */}
