@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { Heart, Camera, Palette, PenLine } from 'lucide-react';
 import {
   Button,
   FormSelect,
@@ -104,10 +105,10 @@ export function InvitationFormSection({
       <form onSubmit={onSubmit} className="invitation-form">
         <Tabs defaultTab="info">
           <TabList>
-            <Tab id="info">{t('form.tabs.basicInfo')}</Tab>
-            <Tab id="photos">{t('form.tabs.photos')}</Tab>
-            <Tab id="customization">{t('form.tabs.customization')}</Tab>
-            <Tab id="texts">{t('form.tabs.texts')}</Tab>
+            <Tab id="info" icon={<Heart size={16} />}>{t('form.tabs.basicInfo')}</Tab>
+            <Tab id="photos" icon={<Camera size={16} />}>{t('form.tabs.photos')}</Tab>
+            <Tab id="customization" icon={<Palette size={16} />}>{t('form.tabs.customization')}</Tab>
+            <Tab id="texts" icon={<PenLine size={16} />}>{t('form.tabs.texts')}</Tab>
           </TabList>
 
           {/* Tab 1: Informações Básicas */}
