@@ -1,9 +1,9 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { useCallback, useState, useRef, useEffect } from 'react';
-import { type Locale, routing } from '@/i18n/routing';
+import { type Locale } from '@/i18n/routing';
 
 interface Language {
   code: Locale;
@@ -33,22 +33,7 @@ export function LanguageSelector() {
   const currentLanguage = LANGUAGES.find(lang => lang.code === locale) || LANGUAGES[0];
 
   const handleLanguageChange = useCallback((newLocale: Locale) => {
-    // Remove current locale from pathname if present
-    const segments = pathname.split('/').filter(Boolean);
-    const currentLocaleInPath = routing.locales.includes(segments[0] as Locale);
-    const pathWithoutLocale = currentLocaleInPath 
-      ? '/' + segments.slice(1).join('/') 
-      : pathname;
-    
-    // Build new path: for default locale (en) with 'as-needed', no prefix needed
-    let newPath: string;
-    if (newLocale === routing.defaultLocale) {
-      newPath = pathWithoutLocale || '/';
-    } else {
-      newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
-    }
-    
-    router.push(newPath);
+    router.replace(pathname, { locale: newLocale });
     setIsOpen(false);
   }, [router, pathname]);
 
