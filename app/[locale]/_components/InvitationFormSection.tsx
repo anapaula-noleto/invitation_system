@@ -104,10 +104,10 @@ export function InvitationFormSection({
       <form onSubmit={onSubmit} className="invitation-form">
         <Tabs defaultTab="info">
           <TabList>
-            <Tab id="info" icon="📋">{t('form.tabs.basicInfo')}</Tab>
-            <Tab id="photos" icon="📷">{t('form.tabs.photos')}</Tab>
-            <Tab id="customization" icon="🎨">{t('form.tabs.customization')}</Tab>
-            <Tab id="texts" icon="✍️">{t('form.tabs.texts')}</Tab>
+            <Tab id="info">{t('form.tabs.basicInfo')}</Tab>
+            <Tab id="photos">{t('form.tabs.photos')}</Tab>
+            <Tab id="customization">{t('form.tabs.customization')}</Tab>
+            <Tab id="texts">{t('form.tabs.texts')}</Tab>
           </TabList>
 
           {/* Tab 1: Informações Básicas */}
@@ -235,7 +235,7 @@ export function InvitationFormSection({
         <ErrorMessage message={error} />
 
         {/* Generate Button */}
-        <Button
+        {/* <Button
           type="submit"
           variant="primary"
           size="lg"
@@ -245,7 +245,7 @@ export function InvitationFormSection({
           className="generate-button"
         >
           {isLoading ? t('form.submit.loading') : t('form.submit.default')}
-        </Button>
+        </Button> */}
       </form>
     </section>
   );

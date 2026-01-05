@@ -29,6 +29,30 @@ body {
   overflow-x: hidden;
 }
 
+/* Custom Scrollbar - matching template preview style */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-600);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-500);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-600) rgba(0, 0, 0, 0.1);
+}
+
 /* Selection */
 ::selection {
   background: rgba(201, 169, 97, 0.3);
