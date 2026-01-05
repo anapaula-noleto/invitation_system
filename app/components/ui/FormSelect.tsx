@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type SelectHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useId, type SelectHTMLAttributes, type ReactNode } from 'react';
 
 export interface SelectOption {
   value: string;
@@ -32,7 +32,8 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
     },
     ref
   ) => {
-    const selectId = id || `select-${Math.random().toString(36).slice(2, 9)}`;
+    const generatedId = useId();
+    const selectId = id || generatedId;
 
     return (
       <div className={`form-group ${fullWidth ? 'full-width' : ''}`}>
