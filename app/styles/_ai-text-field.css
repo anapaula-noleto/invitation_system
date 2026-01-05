@@ -89,7 +89,10 @@
 }
 
 .ai-text-icon {
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--midnight-950);
 }
 
 .ai-text-spinner {
@@ -154,6 +157,7 @@
 .ai-text-suggestion-chip {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -164,6 +168,14 @@
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out-quart);
   white-space: nowrap;
+}
+
+.ai-suggestion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+  flex-shrink: 0;
 }
 
 .ai-text-suggestion-chip:hover {

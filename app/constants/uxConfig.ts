@@ -28,17 +28,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'greeting-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'Com imensa alegria e gratidão a Deus, temos a honra de convidar você para celebrar conosco o início de nossa vida a dois.',
           },
           {
             id: 'greeting-casual',
-            label: '💕 Descontraído',
+            label: 'Descontraído',
             text: 'Finalmente chegou o grande dia! Queremos você com a gente para celebrar nosso amor e comer muito bolo!',
           },
           {
             id: 'greeting-short',
-            label: '📝 Curto',
+            label: 'Curto',
             text: 'Venha celebrar o nosso amor! Sua presença tornará este dia ainda mais especial.',
           },
         ],
@@ -48,17 +48,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'story-romantic',
-            label: '💑 Romântico',
+            label: 'Romântico',
             text: 'Nos conhecemos por acaso, em um momento que mudou nossas vidas para sempre. O que começou com um simples olhar se transformou em um amor que cresce a cada dia.',
           },
           {
             id: 'story-funny',
-            label: '😄 Divertido',
+            label: 'Divertido',
             text: 'Ele disse que foi amor à primeira vista. Ela disse que ele era insistente demais. Três anos depois, cá estamos nós provando que a persistência vence!',
           },
           {
             id: 'story-simple',
-            label: '📝 Simples',
+            label: 'Simples',
             text: 'Nossa história começou com uma amizade que floresceu em amor. Hoje, com corações cheios de gratidão, damos o próximo passo juntos.',
           },
         ],
@@ -68,17 +68,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'closing-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'Será uma honra tê-lo conosco neste momento tão especial. Aguardamos ansiosamente sua presença para abençoar nossa união.',
           },
           {
             id: 'closing-casual',
-            label: '💕 Descontraído',
+            label: 'Descontraído',
             text: 'Não esqueça o lenço para as lágrimas de emoção e o sapato confortável para dançar a noite toda. Te esperamos!',
           },
           {
             id: 'closing-short',
-            label: '📝 Curto',
+            label: 'Curto',
             text: 'Com amor e carinho, esperamos por você!',
           },
         ],
@@ -96,17 +96,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'greeting-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'With immense joy and gratitude, we have the honor of inviting you to celebrate with us the beginning of our life together.',
           },
           {
             id: 'greeting-casual',
-            label: '💕 Casual',
+            label: 'Casual',
             text: 'The big day has finally arrived! We want you there to celebrate our love and eat way too much cake!',
           },
           {
             id: 'greeting-short',
-            label: '📝 Short',
+            label: 'Short',
             text: 'Come celebrate our love! Your presence will make this day even more special.',
           },
         ],
@@ -116,17 +116,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'story-romantic',
-            label: '💑 Romantic',
+            label: 'Romantic',
             text: 'We met by chance, in a moment that changed our lives forever. What started with a simple glance turned into a love that grows stronger every day.',
           },
           {
             id: 'story-funny',
-            label: '😄 Funny',
+            label: 'Funny',
             text: 'He said it was love at first sight. She said he was too persistent. Three years later, here we are proving that persistence pays off!',
           },
           {
             id: 'story-simple',
-            label: '📝 Simple',
+            label: 'Simple',
             text: 'Our story began with a friendship that blossomed into love. Today, with hearts full of gratitude, we take the next step together.',
           },
         ],
@@ -136,17 +136,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'closing-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'It will be an honor to have you with us on this special day. We eagerly await your presence to bless our union.',
           },
           {
             id: 'closing-casual',
-            label: '💕 Casual',
+            label: 'Casual',
             text: "Don't forget tissues for the happy tears and comfortable shoes to dance the night away. See you there!",
           },
           {
             id: 'closing-short',
-            label: '📝 Short',
+            label: 'Short',
             text: 'With love, we look forward to seeing you!',
           },
         ],
@@ -164,17 +164,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'greeting-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'Con inmensa alegría y gratitud a Dios, tenemos el honor de invitarlos a celebrar con nosotros el inicio de nuestra vida juntos.',
           },
           {
             id: 'greeting-casual',
-            label: '💕 Informal',
+            label: 'Informal',
             text: '¡Por fin llegó el gran día! Los queremos con nosotros para celebrar nuestro amor y comer mucho pastel.',
           },
           {
             id: 'greeting-short',
-            label: '📝 Corto',
+            label: 'Corto',
             text: '¡Vengan a celebrar nuestro amor! Su presencia hará este día aún más especial.',
           },
         ],
@@ -184,17 +184,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'story-romantic',
-            label: '💑 Romántico',
+            label: 'Romántico',
             text: 'Nos conocimos por casualidad, en un momento que cambió nuestras vidas para siempre. Lo que comenzó con una simple mirada se transformó en un amor que crece cada día.',
           },
           {
             id: 'story-funny',
-            label: '😄 Divertido',
+            label: 'Divertido',
             text: 'Él dijo que fue amor a primera vista. Ella dijo que era demasiado insistente. Tres años después, ¡aquí estamos demostrando que la persistencia funciona!',
           },
           {
             id: 'story-simple',
-            label: '📝 Simple',
+            label: 'Simple',
             text: 'Nuestra historia comenzó con una amistad que floreció en amor. Hoy, con corazones llenos de gratitud, damos el siguiente paso juntos.',
           },
         ],
@@ -204,17 +204,17 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
         suggestions: [
           {
             id: 'closing-formal',
-            label: '✨ Formal',
+            label: 'Formal',
             text: 'Será un honor tenerlos con nosotros en este día tan especial. Esperamos ansiosamente su presencia para bendecir nuestra unión.',
           },
           {
             id: 'closing-casual',
-            label: '💕 Informal',
+            label: 'Informal',
             text: 'No olviden los pañuelos para las lágrimas de emoción y zapatos cómodos para bailar toda la noche. ¡Los esperamos!',
           },
           {
             id: 'closing-short',
-            label: '📝 Corto',
+            label: 'Corto',
             text: 'Con cariño, ¡los esperamos!',
           },
         ],

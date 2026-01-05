@@ -1,9 +1,19 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
+import { Sparkles, Heart, Smile, FileText, Wand2 } from 'lucide-react';
 import { enhanceInvitationText } from '@/app/actions/generate-text';
 import { MAX_CHARACTERS, type TextType } from '@/app/constants/textLimits';
 import { getSuggestions, getPlaceholder, type SuggestionChip } from '@/app/constants/uxConfig';
+
+// Map suggestion IDs to icons
+const getSuggestionIcon = (id: string) => {
+  if (id.includes('formal')) return <Sparkles size={14} />;
+  if (id.includes('casual') || id.includes('romantic')) return <Heart size={14} />;
+  if (id.includes('funny')) return <Smile size={14} />;
+  if (id.includes('short') || id.includes('simple')) return <FileText size={14} />;
+  return <Sparkles size={14} />; // default
+};
 
 interface AITextFieldProps {
   textType: TextType;
@@ -109,7 +119,7 @@ export function AITextField({
               </>
             ) : (
               <>
-                <span className="ai-text-icon">✨</span>
+                <span className="ai-text-icon"><Wand2 size={16} /></span>
                 {enhanceLabel}
               </>
             )}
@@ -127,6 +137,7 @@ export function AITextField({
               className="ai-text-suggestion-chip"
               onClick={() => handleSuggestionClick(suggestion)}
             >
+              <span className="ai-suggestion-icon">{getSuggestionIcon(suggestion.id)}</span>
               {suggestion.label}
             </button>
           ))}
