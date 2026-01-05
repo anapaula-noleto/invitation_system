@@ -12,6 +12,10 @@
   },
   "form": {
     "title": "Your Details",
+    "photos": {
+      "title": "Your Photos Together",
+      "subtitle": "Add up to 3 photos to display in the invitation gallery"
+    },
     "photo": {
       "label": "Your Photos Together",
       "hint": "JPG, PNG up to 10MB (max 3 photos)",

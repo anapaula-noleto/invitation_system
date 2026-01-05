@@ -8,7 +8,6 @@ import {
   PaletteSelector,
   Icon,
   Sparkles,
-  MultiPhotoUpload,
 } from '@/app/components/ui';
 import type { PhotoItem } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
@@ -19,6 +18,7 @@ import {
   VenueField,
   ReceptionVenueField,
   CustomTextsSection,
+  PhotosSection,
 } from './_formComponents';
 
 interface InvitationFormSectionProps {
@@ -103,13 +103,8 @@ export function InvitationFormSection({
     <section className="form-section">
       <h2 className="form-section-title">{t('form.title')}</h2>
       <form onSubmit={onSubmit} className="invitation-form">
-        {/* Basic Information: Photo, Names, Date, Template */}
+        {/* Basic Information: Names, Date, Template */}
         <BasicInfoFields
-          photos={photos}
-          onPhotosChange={onPhotosChange}
-          photoLabel={t('form.photo.label')}
-          photoHint={t('form.photo.hint')}
-          addPhotoLabel={t('form.photo.addPhoto')}
           partner1={partner1}
           onPartner1Change={onPartner1Change}
           partner1Label={t('form.partner1.label')}
@@ -162,6 +157,16 @@ export function InvitationFormSection({
             onSelect={onPaletteSelect}
           />
         </div>
+
+        {/* Photos Section */}
+        <PhotosSection
+          photos={photos}
+          onPhotosChange={onPhotosChange}
+          title={t('form.photos.title')}
+          subtitle={t('form.photos.subtitle')}
+          hint={t('form.photo.hint')}
+          addPhotoLabel={t('form.photo.addPhoto')}
+        />
 
         {/* Custom Texts with AI Enhancement */}
         <CustomTextsSection

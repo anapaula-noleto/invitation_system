@@ -12,6 +12,10 @@
   },
   "form": {
     "title": "Seus Dados",
+    "photos": {
+      "title": "Fotos do Casal",
+      "subtitle": "Adicione até 3 fotos para exibir na galeria do convite"
+    },
     "photo": {
       "label": "Fotos do Casal",
       "hint": "JPG, PNG até 10MB (máx 3 fotos)",
