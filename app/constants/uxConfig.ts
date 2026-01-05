@@ -53,7 +53,7 @@ export const UX_CONFIG: Record<Locale, LocaleUXConfig> = {
           },
           {
             id: 'story-funny',
-            label: '�� Divertido',
+            label: '😄 Divertido',
             text: 'Ele disse que foi amor à primeira vista. Ela disse que ele era insistente demais. Três anos depois, cá estamos nós provando que a persistência vence!',
           },
           {
