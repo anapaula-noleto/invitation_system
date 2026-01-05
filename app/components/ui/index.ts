@@ -33,3 +33,6 @@ export { PaletteSelector } from './PaletteSelector';
 export { LanguageSelector } from './LanguageSelector';
 
 export { AITextField } from './AITextField';
+
+export { PlacesAutocomplete } from './PlacesAutocomplete';
+export type { PlacesAutocompleteProps, PlaceResult } from './PlacesAutocomplete';

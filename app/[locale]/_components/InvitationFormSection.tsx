@@ -12,6 +12,7 @@ import {
   FormRow,
   PaletteSelector,
   AITextField,
+  PlacesAutocomplete,
 } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
@@ -133,11 +134,11 @@ export function InvitationFormSection({
           />
         </div>
 
-        {/* Venue */}
-        <FormInput
+        {/* Venue with Google Places Autocomplete */}
+        <PlacesAutocomplete
           label={t('form.venue.label')}
           value={venue}
-          onChange={(e) => onVenueChange(e.target.value)}
+          onChange={onVenueChange}
           placeholder={t('form.venue.placeholder')}
           rightAddon={
             venue ? (
