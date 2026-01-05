@@ -1,22 +1,21 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ElegantDatePicker } from '@/app/components/ElegantDatePicker';
 import {
   Button,
-  FormInput,
   FormSelect,
-  PhotoUpload,
-  IconButton,
   ErrorMessage,
-  FormRow,
   PaletteSelector,
-  AITextField,
-  PlacesAutocomplete,
 } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { TemplateId } from '@/app/types/invitation';
+import {
+  BasicInfoFields,
+  VenueField,
+  ReceptionVenueField,
+  CustomTextsSection,
+} from './_formComponents';
 
 interface InvitationFormSectionProps {
   // Form values
@@ -102,96 +101,55 @@ export function InvitationFormSection({
     <section className="form-section">
       <h2 className="form-section-title">{t('form.title')}</h2>
       <form onSubmit={onSubmit} className="invitation-form">
-        {/* Photo Upload */}
-        <PhotoUpload
-          value={photoPreview}
-          onChange={onPhotoChange}
-          onClear={onPhotoClear}
-          label={t('form.photo.label')}
-          hint={t('form.photo.hint')}
+        {/* Basic Information: Photo, Names, Date, Template */}
+        <BasicInfoFields
+          photoPreview={photoPreview}
+          onPhotoChange={onPhotoChange}
+          onPhotoClear={onPhotoClear}
+          photoLabel={t('form.photo.label')}
+          photoHint={t('form.photo.hint')}
+          partner1={partner1}
+          onPartner1Change={onPartner1Change}
+          partner1Label={t('form.partner1.label')}
+          partner1Placeholder={t('form.partner1.placeholder')}
+          partner2={partner2}
+          onPartner2Change={onPartner2Change}
+          partner2Label={t('form.partner2.label')}
+          partner2Placeholder={t('form.partner2.placeholder')}
+          weddingDate={weddingDate}
+          onDateChange={onDateChange}
+          dateLabel={t('form.date.label')}
+          datePlaceholder={t('form.date.placeholder')}
+          minDate={new Date().toISOString().split('T')[0]}
+          months={t.raw('datepicker.months') as string[]}
+          weekdays={t.raw('datepicker.weekdays') as string[]}
+          weekdaysFull={t.raw('datepicker.weekdaysFull') as string[]}
+          todayLabel={t('datepicker.today')}
+          selectedTemplate={selectedTemplate}
+          onTemplateChange={onTemplateChange}
+          templateLabel={t('form.template.label')}
+          templateOptions={templateOptions}
         />
 
-        {/* Names */}
-        <FormRow columns={2}>
-          <FormInput
-            label={t('form.partner1.label')}
-            value={partner1}
-            onChange={(e) => onPartner1Change(e.target.value)}
-            placeholder={t('form.partner1.placeholder')}
-          />
-          <FormInput
-            label={t('form.partner2.label')}
-            value={partner2}
-            onChange={(e) => onPartner2Change(e.target.value)}
-            placeholder={t('form.partner2.placeholder')}
-          />
-        </FormRow>
-
-        {/* Date */}
-        <div className="form-group">
-          <label className="form-label">{t('form.date.label')}</label>
-          <ElegantDatePicker
-            value={weddingDate}
-            onChange={onDateChange}
-            minDate={new Date().toISOString().split('T')[0]}
-            placeholder={t('form.date.placeholder')}
-            months={t.raw('datepicker.months') as string[]}
-            weekdays={t.raw('datepicker.weekdays') as string[]}
-            weekdaysFull={t.raw('datepicker.weekdaysFull') as string[]}
-            todayLabel={t('datepicker.today')}
-          />
-        </div>
-
-        {/* Venue with Google Places Autocomplete */}
-        <PlacesAutocomplete
+        {/* Ceremony Venue */}
+        <VenueField
           label={t('form.venue.label')}
           value={venue}
           onChange={onVenueChange}
           placeholder={t('form.venue.placeholder')}
-          rightAddon={
-            venue ? (
-              <IconButton
-                icon="📍"
-                label={t('form.venue.viewOnMaps')}
-                onClick={onVenueMapClick}
-                size="sm"
-                type="button"
-              />
-            ) : undefined
-          }
+          viewOnMapsLabel={t('form.venue.viewOnMaps')}
+          onMapClick={onVenueMapClick}
         />
 
-        {/* Reception Venue - Separate Location Toggle */}
-        <div className="form-group">
-          <label className="form-checkbox-label">
-            <input
-              type="checkbox"
-              checked={hasSeparateReceptionVenue}
-              onChange={(e) => onHasSeparateReceptionVenueChange(e.target.checked)}
-              className="form-checkbox"
-            />
-            <span className="form-checkbox-text">
-              {t('form.reception.hasSeparateLocation')}
-            </span>
-          </label>
-        </div>
-
-        {/* Reception Venue Input - Only shows if checkbox is checked */}
-        {hasSeparateReceptionVenue && (
-          <PlacesAutocomplete
-            label={t('form.reception.label')}
-            value={receptionVenue}
-            onChange={onReceptionVenueChange}
-            placeholder={t('form.reception.placeholder')}
-          />
-        )}
-
-        {/* Template Selection */}
-        <FormSelect
-          label={t('form.template.label')}
-          value={selectedTemplate}
-          onChange={(e) => onTemplateChange(e.target.value as TemplateId)}
-          options={templateOptions}
+        {/* Reception Venue with Checkbox Toggle */}
+        <ReceptionVenueField
+          checkboxLabel={t('form.reception.hasSeparateLocation')}
+          isChecked={hasSeparateReceptionVenue}
+          onCheckChange={onHasSeparateReceptionVenueChange}
+          venueLabel={t('form.reception.label')}
+          venueValue={receptionVenue}
+          onVenueChange={onReceptionVenueChange}
+          venuePlaceholder={t('form.reception.placeholder')}
         />
 
         {/* Color Palette Selection */}
@@ -204,45 +162,35 @@ export function InvitationFormSection({
         </div>
 
         {/* Custom Texts with AI Enhancement */}
-        <div className="ai-text-section">
-          <div className="ai-text-section-header">
-            <h3 className="ai-text-section-title">{t('form.customTexts.title')}</h3>
-            <p className="ai-text-section-subtitle">{t('form.customTexts.subtitle')}</p>
-          </div>
-
-          <AITextField
-            textType="greeting"
-            value={customGreeting}
-            onChange={onCustomGreetingChange}
-            label={t('form.customTexts.greeting.label')}
-            enhanceLabel={t('form.customTexts.greeting.enhance')}
-            enhancingLabel={t('form.customTexts.enhancing')}
-            clearLabel={t('form.customTexts.clear')}
-            locale={locale}
-          />
-
-          <AITextField
-            textType="story"
-            value={customStory}
-            onChange={onCustomStoryChange}
-            label={t('form.customTexts.story.label')}
-            enhanceLabel={t('form.customTexts.story.enhance')}
-            enhancingLabel={t('form.customTexts.enhancing')}
-            clearLabel={t('form.customTexts.clear')}
-            locale={locale}
-          />
-
-          <AITextField
-            textType="closing"
-            value={customClosing}
-            onChange={onCustomClosingChange}
-            label={t('form.customTexts.closing.label')}
-            enhanceLabel={t('form.customTexts.closing.enhance')}
-            enhancingLabel={t('form.customTexts.enhancing')}
-            clearLabel={t('form.customTexts.clear')}
-            locale={locale}
-          />
-        </div>
+        <CustomTextsSection
+          greeting={{
+            value: customGreeting,
+            onChange: onCustomGreetingChange,
+            label: t('form.customTexts.greeting.label'),
+            enhanceLabel: t('form.customTexts.greeting.enhance'),
+            enhancingLabel: t('form.customTexts.enhancing'),
+            clearLabel: t('form.customTexts.clear'),
+          }}
+          story={{
+            value: customStory,
+            onChange: onCustomStoryChange,
+            label: t('form.customTexts.story.label'),
+            enhanceLabel: t('form.customTexts.story.enhance'),
+            enhancingLabel: t('form.customTexts.enhancing'),
+            clearLabel: t('form.customTexts.clear'),
+          }}
+          closing={{
+            value: customClosing,
+            onChange: onCustomClosingChange,
+            label: t('form.customTexts.closing.label'),
+            enhanceLabel: t('form.customTexts.closing.enhance'),
+            enhancingLabel: t('form.customTexts.enhancing'),
+            clearLabel: t('form.customTexts.clear'),
+          }}
+          title={t('form.customTexts.title')}
+          subtitle={t('form.customTexts.subtitle')}
+          locale={locale}
+        />
 
         {/* Error Message */}
         <ErrorMessage message={error} />
