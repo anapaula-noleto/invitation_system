@@ -87,6 +87,12 @@ export function ClassicTemplate({ config }: ClassicTemplateProps) {
           <div className="inv-details inv-animate-fade-in inv-animate-delay-5">
             <p className="inv-date">{content.weddingDate}</p>
             <p className="inv-venue">{content.venue}</p>
+            {content.receptionVenue && (
+              <p className="inv-reception-venue">
+                <span className="inv-reception-label">{t.receptionVenue}:</span>
+                {content.receptionVenue}
+              </p>
+            )}
           </div>
 
           {/* Bottom Ornament */}

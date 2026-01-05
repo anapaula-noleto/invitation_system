@@ -14,8 +14,10 @@ export interface InvitationContent {
   partner2Name: string;
   /** Data do casamento (formato legível, ex: "Sábado, 15 de Junho de 2025") */
   weddingDate: string;
-  /** Local da cerimônia/festa */
+  /** Local da cerimônia (local principal) */
   venue: string;
+  /** Local da recepção (opcional, se diferente do venue da cerimônia) */
+  receptionVenue?: string;
   /** URLs das 3 fotos do casal */
   photoUrls: [string, string, string];
   /** Texto AI customizado - Saudação/Abertura (opcional) */

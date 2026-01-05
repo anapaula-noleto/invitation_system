@@ -31,9 +31,14 @@
       "placeholder": "Selecciona la fecha de la boda"
     },
     "venue": {
-      "label": "Lugar",
-      "placeholder": "Ej: Salón Imperial, Madrid",
+      "label": "Lugar de la Ceremonia",
+      "placeholder": "Ej: Iglesia San José, Madrid",
       "viewOnMaps": "Ver en Google Maps"
+    },
+    "reception": {
+      "label": "Lugar de la Recepción",
+      "placeholder": "Ej: Salón Imperial, Madrid",
+      "hasSeparateLocation": "La recepción es en un lugar diferente de la ceremonia"
     },
     "template": {
       "label": "Estilo de Plantilla"
@@ -119,6 +124,7 @@
     "joinUs": "Acompáñanos en el inicio de nuestra vida juntos",
     "when": "Cuándo",
     "where": "Dónde",
+    "receptionVenue": "Recepción",
     "ourStory": "Nuestra Historia",
     "storyText": "Desde el momento en que nos conocimos, supimos que nuestras vidas nunca serían las mismas. Ahora, estamos listos para comenzar el próximo capítulo de nuestro viaje juntos.",
     "rsvp": "Confirmar antes del",

@@ -31,9 +31,14 @@
       "placeholder": "Select your wedding date"
     },
     "venue": {
-      "label": "Venue",
-      "placeholder": "e.g., The Grand Ballroom, New York",
+      "label": "Ceremony Location",
+      "placeholder": "e.g., St. Joseph Church, New York",
       "viewOnMaps": "View on Google Maps"
+    },
+    "reception": {
+      "label": "Reception Location",
+      "placeholder": "e.g., The Grand Ballroom, New York",
+      "hasSeparateLocation": "The reception is at a different location from the ceremony"
     },
     "template": {
       "label": "Template Style"
@@ -119,6 +124,7 @@
     "joinUs": "Join us as we begin our forever",
     "when": "When",
     "where": "Where",
+    "receptionVenue": "Reception",
     "ourStory": "Our Story",
     "storyText": "From the moment we met, we knew our lives would never be the same. Now, we're ready to begin the next chapter of our journey together.",
     "rsvp": "RSVP by",

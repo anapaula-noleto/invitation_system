@@ -20,6 +20,7 @@ export function InvitationRenderer({ config }: InvitationRendererProps) {
     together: t('together'),
     saveDate: t('saveDate'),
     location: t('where'),
+    receptionVenue: t('receptionVenue'),
     ourStory: t('ourStory'),
     footerText: t('joinUs'),
     invitationBadge: t('requestHonor'),

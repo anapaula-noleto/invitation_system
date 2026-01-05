@@ -15,6 +15,8 @@ export interface UseInvitationFormReturn {
   weddingDate: string;
   weddingDateFormatted: string;
   venue: string;
+  receptionVenue: string;
+  hasSeparateReceptionVenue: boolean;
   selectedTemplate: TemplateId;
   selectedPalette: WeddingPalette;
   customGreeting: string;
@@ -36,6 +38,8 @@ export interface UseInvitationFormReturn {
   setPartner1: (value: string) => void;
   setPartner2: (value: string) => void;
   setVenue: (value: string) => void;
+  setReceptionVenue: (value: string) => void;
+  setHasSeparateReceptionVenue: (value: boolean) => void;
   setSelectedTemplate: (value: TemplateId) => void;
   setCustomGreeting: (value: string) => void;
   setCustomStory: (value: string) => void;
@@ -65,6 +69,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const [weddingDate, setWeddingDate] = useState('');
   const [weddingDateFormatted, setWeddingDateFormatted] = useState('');
   const [venue, setVenue] = useState('');
+  const [receptionVenue, setReceptionVenue] = useState('');
+  const [hasSeparateReceptionVenue, setHasSeparateReceptionVenue] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic');
   const [selectedPalette, setSelectedPalette] = useState<WeddingPalette>(getDefaultPalette());
 
@@ -166,6 +172,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
         partner2Name: partner2 || t('invitation.defaultPartner2'),
         weddingDate: weddingDateFormatted || t('invitation.defaultDate'),
         venue: venue || t('invitation.defaultVenue'),
+        receptionVenue: hasSeparateReceptionVenue ? receptionVenue : undefined,
         photoUrls: [
           photoPreview || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
           'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
@@ -185,7 +192,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-  }, [partner1, partner2, weddingDateFormatted, venue, selectedTemplate, photoPreview, selectedPalette, customGreeting, customStory, customClosing, t]);
+  }, [partner1, partner2, weddingDateFormatted, venue, receptionVenue, hasSeparateReceptionVenue, selectedTemplate, photoPreview, selectedPalette, customGreeting, customStory, customClosing, t]);
 
   return {
     // Form state
@@ -196,6 +203,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     weddingDate,
     weddingDateFormatted,
     venue,
+    receptionVenue,
+    hasSeparateReceptionVenue,
     selectedTemplate,
     selectedPalette,
     customGreeting,
@@ -217,6 +226,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setPartner1,
     setPartner2,
     setVenue,
+    setReceptionVenue,
+    setHasSeparateReceptionVenue,
     setSelectedTemplate,
     setCustomGreeting,
     setCustomStory,

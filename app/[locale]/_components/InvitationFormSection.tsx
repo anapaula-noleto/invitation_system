@@ -25,6 +25,8 @@ interface InvitationFormSectionProps {
   partner2: string;
   weddingDate: string;
   venue: string;
+  receptionVenue: string;
+  hasSeparateReceptionVenue: boolean;
   selectedTemplate: TemplateId;
   selectedPalette: WeddingPalette;
   customGreeting: string;
@@ -43,6 +45,8 @@ interface InvitationFormSectionProps {
   onPartner2Change: (value: string) => void;
   onDateChange: (date: string, formatted: string) => void;
   onVenueChange: (value: string) => void;
+  onReceptionVenueChange: (value: string) => void;
+  onHasSeparateReceptionVenueChange: (value: boolean) => void;
   onTemplateChange: (value: TemplateId) => void;
   onPaletteSelect: (palette: WeddingPalette) => void;
   onCustomGreetingChange: (value: string) => void;
@@ -58,6 +62,8 @@ export function InvitationFormSection({
   partner2,
   weddingDate,
   venue,
+  receptionVenue,
+  hasSeparateReceptionVenue,
   selectedTemplate,
   selectedPalette,
   customGreeting,
@@ -72,6 +78,8 @@ export function InvitationFormSection({
   onPartner2Change,
   onDateChange,
   onVenueChange,
+  onReceptionVenueChange,
+  onHasSeparateReceptionVenueChange,
   onTemplateChange,
   onPaletteSelect,
   onCustomGreetingChange,
@@ -152,6 +160,31 @@ export function InvitationFormSection({
             ) : undefined
           }
         />
+
+        {/* Reception Venue - Separate Location Toggle */}
+        <div className="form-group">
+          <label className="form-checkbox-label">
+            <input
+              type="checkbox"
+              checked={hasSeparateReceptionVenue}
+              onChange={(e) => onHasSeparateReceptionVenueChange(e.target.checked)}
+              className="form-checkbox"
+            />
+            <span className="form-checkbox-text">
+              {t('form.reception.hasSeparateLocation')}
+            </span>
+          </label>
+        </div>
+
+        {/* Reception Venue Input - Only shows if checkbox is checked */}
+        {hasSeparateReceptionVenue && (
+          <PlacesAutocomplete
+            label={t('form.reception.label')}
+            value={receptionVenue}
+            onChange={onReceptionVenueChange}
+            placeholder={t('form.reception.placeholder')}
+          />
+        )}
 
         {/* Template Selection */}
         <FormSelect

@@ -4,6 +4,7 @@ export interface InvitationTranslations {
   together: string;
   saveDate: string;
   location: string;
+  receptionVenue: string;
   ourStory: string;
   footerText: string;
   invitationBadge: string;

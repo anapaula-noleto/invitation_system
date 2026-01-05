@@ -38,6 +38,8 @@ export default function Home() {
             partner2={form.partner2}
             weddingDate={form.weddingDate}
             venue={form.venue}
+            receptionVenue={form.receptionVenue}
+            hasSeparateReceptionVenue={form.hasSeparateReceptionVenue}
             selectedTemplate={form.selectedTemplate}
             selectedPalette={form.selectedPalette}
             customGreeting={form.customGreeting}
@@ -52,6 +54,8 @@ export default function Home() {
             onPartner2Change={form.setPartner2}
             onDateChange={form.handleDateChange}
             onVenueChange={form.setVenue}
+            onReceptionVenueChange={form.setReceptionVenue}
+            onHasSeparateReceptionVenueChange={form.setHasSeparateReceptionVenue}
             onTemplateChange={form.setSelectedTemplate}
             onPaletteSelect={form.handlePaletteSelect}
             onCustomGreetingChange={form.setCustomGreeting}

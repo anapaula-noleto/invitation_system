@@ -31,9 +31,14 @@
       "placeholder": "Selecione a data do casamento"
     },
     "venue": {
-      "label": "Local",
-      "placeholder": "Ex: Salão Nobre, São Paulo",
+      "label": "Local da Cerimônia",
+      "placeholder": "Ex: Igreja São José, São Paulo",
       "viewOnMaps": "Ver no Google Maps"
+    },
+    "reception": {
+      "label": "Local da Recepção",
+      "placeholder": "Ex: Salão Nobre, São Paulo",
+      "hasSeparateLocation": "A recepção é em um local diferente da cerimônia"
     },
     "template": {
       "label": "Estilo do Template"
@@ -119,6 +124,7 @@
     "joinUs": "Junte-se a nós no início da nossa vida juntos",
     "when": "Quando",
     "where": "Onde",
+    "receptionVenue": "Recepção",
     "ourStory": "Nossa História",
     "storyText": "Desde o momento em que nos conhecemos, sabíamos que nossas vidas nunca mais seriam as mesmas. Agora, estamos prontos para começar o próximo capítulo da nossa jornada juntos.",
     "rsvp": "Confirme até",

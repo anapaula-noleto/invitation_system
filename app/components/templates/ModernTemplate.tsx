@@ -103,6 +103,16 @@ export function ModernTemplate({ config }: ModernTemplateProps) {
                   {content.venue}
                 </div>
               </div>
+
+              {content.receptionVenue && (
+                <div className="inv-modern-detail">
+                  <span className="inv-modern-detail-icon">🍾</span>
+                  <div className="inv-modern-detail-text">
+                    <strong>{t.receptionVenue}</strong>
+                    {content.receptionVenue}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
