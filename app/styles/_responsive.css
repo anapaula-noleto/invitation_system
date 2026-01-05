@@ -1,0 +1,150 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE - Media Queries & Breakpoint Adjustments
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MEDIUM SCREENS (768px+)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    padding: var(--space-12) var(--space-8);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LARGE SCREENS (1024px+)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .main-content {
+    grid-template-columns: 1fr 1.1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MEDIUM+ SCREENS (640px+)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 640px) {
+  .palette-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SMALL SCREENS (max 768px)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: var(--space-4);
+  }
+
+  .header {
+    padding: var(--space-8) 0 var(--space-10);
+  }
+
+  .form-section {
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+  }
+
+  .preview-section {
+    position: static;
+  }
+
+  .card-3d-modal {
+    max-height: 85vh;
+    border-radius: var(--radius-xl);
+  }
+
+  .card-3d-container {
+    min-height: 350px;
+  }
+
+  .card-3d-title {
+    font-size: 1.4rem;
+    padding-top: var(--space-6);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   EXTRA SMALL SCREENS (max 600px)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row-cols-2,
+  .form-row-cols-3,
+  .form-row-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HIGH CONTRAST MODE
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-subtle: 1px solid rgba(201, 169, 97, 0.3);
+    --border-accent: 1px solid rgba(201, 169, 97, 0.5);
+  }
+
+  .form-input,
+  .form-select {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-primary {
+    box-shadow: 0 0 0 2px var(--gold-500);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PRINT STYLES
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media print {
+  .bg-decoration,
+  .grain-overlay,
+  .language-selector,
+  .generate-button,
+  .button-group,
+  .form-section {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .preview-section {
+    position: static;
+  }
+}

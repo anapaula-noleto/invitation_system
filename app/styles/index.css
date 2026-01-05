@@ -1,0 +1,30 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STYLES INDEX
+   Main entry point for all modular CSS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 
+ * Architecture Overview:
+ * 
+ * _tokens.css      - Design tokens (colors, typography, spacing, shadows)
+ * _base.css        - CSS reset and global defaults
+ * _layout.css      - Page structure, header, sections
+ * _forms.css       - Form elements (inputs, selects, checkboxes)
+ * _components.css  - Reusable UI components (buttons, selectors)
+ * _datepicker.css  - Date picker component
+ * _ai-text-field.css - AI text enhancement component
+ * _modal.css       - Modal and overlay styles
+ * _animations.css  - Keyframes and animation utilities
+ * _responsive.css  - Media queries and breakpoints
+ */
+
+@import "./_tokens.css";
+@import "./_base.css";
+@import "./_animations.css";
+@import "./_layout.css";
+@import "./_forms.css";
+@import "./_components.css";
+@import "./_datepicker.css";
+@import "./_ai-text-field.css";
+@import "./_modal.css";
+@import "./_responsive.css";
