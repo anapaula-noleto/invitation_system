@@ -18,9 +18,24 @@
 
 @media (min-width: 1024px) {
   .main-content {
-    grid-template-columns: 1fr 1.1fr;
-    gap: var(--space-12);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-10);
     align-items: start;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   EXTRA LARGE SCREENS (1440px+)
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 1440px) {
+  .main-content {
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-12);
+  }
+
+  .form-section {
+    padding: var(--space-12);
   }
 }
 
