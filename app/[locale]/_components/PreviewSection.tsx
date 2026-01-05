@@ -1,8 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { FileText, Sparkles } from 'lucide-react';
 import { InvitationRenderer } from '@/app/components/InvitationRenderer';
-import { Button, ToggleButtonGroup } from '@/app/components/ui';
+import { Button, Tabs, TabList, Tab, TabPanel } from '@/app/components/ui';
 import type { InvitationConfig } from '@/app/types/invitation';
 
 interface PreviewSectionProps {
@@ -27,49 +28,55 @@ export function PreviewSection({
   return (
     <section className="preview-section">
       <div className="preview-card">
-        {/* Toggle between template preview and generated image */}
-        <ToggleButtonGroup
-          value={showTemplatePreview ? 'template' : 'generated'}
-          onChange={(v) => onTogglePreview(v === 'template')}
-          options={[
-            { value: 'template', label: t('preview.tabs.template'), icon: '📋' },
-            { value: 'generated', label: t('preview.tabs.generated'), icon: '🎨' },
-          ]}
-        />
+        <Tabs defaultTab="template">
+          <TabList>
+            <Tab id="template" icon={<FileText size={16} />}>
+              {t('preview.tabs.template')}
+            </Tab>
+            <Tab id="generated" icon={<Sparkles size={16} />}>
+              {t('preview.tabs.generated')}
+            </Tab>
+          </TabList>
 
-        {showTemplatePreview ? (
-          /* Real-time template preview */
-          <div className="template-preview-container">
-            <InvitationRenderer config={invitationConfig} />
-          </div>
-        ) : generatedImage ? (
-          <>
-            <img 
-              src={generatedImage} 
-              alt="Generated wedding invitation" 
-              className="generated-image"
-            />
-            <div className="button-group">
-              <Button onClick={onDownload} variant="secondary" leftIcon="⬇️">
-                {t('preview.actions.download')}
-              </Button>
-              <Button 
-                onClick={onView3D} 
-                variant="secondary"
-                leftIcon="🎴"
-              >
-                {t('preview.actions.view3d')}
-              </Button>
+          {/* Real-time template preview */}
+          <TabPanel id="template">
+            <div className="template-preview-container">
+              <InvitationRenderer config={invitationConfig} />
             </div>
-          </>
-        ) : (
-          <div className="preview-placeholder">
-            <div className="placeholder-frame">
-              <span className="placeholder-icon">💒</span>
-              <p className="placeholder-text">{t('preview.placeholder.text')}</p>
-            </div>
-          </div>
-        )}
+          </TabPanel>
+
+          {/* Generated image */}
+          <TabPanel id="generated">
+            {generatedImage ? (
+              <>
+                <img 
+                  src={generatedImage} 
+                  alt="Generated wedding invitation" 
+                  className="generated-image"
+                />
+                <div className="button-group">
+                  <Button onClick={onDownload} variant="secondary" leftIcon="⬇️">
+                    {t('preview.actions.download')}
+                  </Button>
+                  <Button 
+                    onClick={onView3D} 
+                    variant="secondary"
+                    leftIcon="🎴"
+                  >
+                    {t('preview.actions.view3d')}
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="preview-placeholder">
+                <div className="placeholder-frame">
+                  <span className="placeholder-icon">💒</span>
+                  <p className="placeholder-text">{t('preview.placeholder.text')}</p>
+                </div>
+              </div>
+            )}
+          </TabPanel>
+        </Tabs>
       </div>
     </section>
   );
