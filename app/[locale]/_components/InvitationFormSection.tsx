@@ -218,12 +218,6 @@ export function InvitationFormSection({
                 <h3 className="tab-title">{t('form.tabs.photosTitle')}</h3>
                 <p className="tab-subtitle">{t('form.tabs.photosSubtitle')}</p>
               </div>
-              <PhotosSection
-                photos={photos}
-                onPhotosChange={onPhotosChange}
-                hint={t('form.photo.hint')}
-                addPhotoLabel={t('form.photo.addPhoto')}
-              />
 
               {/* Generation Mode Toggle */}
               <div className="form-group">
@@ -248,15 +242,12 @@ export function InvitationFormSection({
                 </div>
               </div>
 
-              {/* Photo Style Select */}
-              <div className="form-group">
-                <FormSelect
-                  label={t('form.photo.styleLabel')}
-                  value={photoStyle}
-                  onChange={onPhotoStyleChange}
-                  options={photoStyleOptions}
-                />
-              </div>
+              <PhotosSection
+                photos={photos}
+                onPhotosChange={onPhotosChange}
+                hint={t('form.photo.hint')}
+                addPhotoLabel={t('form.photo.addPhoto')}
+              />
 
               {/* Couple Details (only for generate mode) */}
               {generationMode === 'generate' && (
@@ -305,6 +296,18 @@ export function InvitationFormSection({
                 </div>
               )}
             </div>
+
+              {/* Photo Style Select */}
+              <div className="form-group">
+                <FormSelect
+                  label={t('form.photo.styleLabel')}
+                  value={photoStyle}
+                  onChange={onPhotoStyleChange}
+                  options={photoStyleOptions}
+                />
+              </div>
+
+              
 
             {/* Generate images Button */}
             <Button
