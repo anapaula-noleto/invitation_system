@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Heart, Camera, Palette, PenLine, Wand2, Sparkles, Edit3 } from 'lucide-react';
+import { Heart, Camera, Palette, PenLine, Wand2 } from 'lucide-react';
 import {
   Button,
   FormSelect,
@@ -17,24 +17,18 @@ import type { PhotoItem } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { TemplateId } from '@/app/types/invitation';
-import type { GenerationMode, CoupleDetails } from '@/app/actions/generate';
 import {
   BasicInfoFields,
   VenueField,
   ReceptionVenueField,
   CustomTextsSection,
   PhotosSection,
-  ReferenceInstructions,
 } from './_formComponents';
 
 interface InvitationFormSectionProps {
   // Form values
   photos: PhotoItem[];
-  partner1Photos: PhotoItem[];
-  partner2Photos: PhotoItem[];
   photoStyle: string;
-  generationMode: GenerationMode;
-  coupleDetails: CoupleDetails;
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -54,11 +48,7 @@ interface InvitationFormSectionProps {
   
   // Handlers
   onPhotosChange: (photos: PhotoItem[]) => void;
-  onPartner1PhotosChange: (photos: PhotoItem[]) => void;
-  onPartner2PhotosChange: (photos: PhotoItem[]) => void;
   onPhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onGenerationModeChange: (mode: GenerationMode) => void;
-  onCoupleDetailsChange: (field: keyof CoupleDetails, value: string) => void;
   onPartner1Change: (value: string) => void;
   onPartner2Change: (value: string) => void;
   onDateChange: (date: string, formatted: string) => void;
@@ -75,11 +65,7 @@ interface InvitationFormSectionProps {
 
 export function InvitationFormSection({
   photos,
-  partner1Photos,
-  partner2Photos,
   photoStyle,
-  generationMode,
-  coupleDetails,
   partner1,
   partner2,
   weddingDate,
@@ -95,11 +81,7 @@ export function InvitationFormSection({
   isLoading,
   error,
   onPhotosChange,
-  onPartner1PhotosChange,
-  onPartner2PhotosChange,
   onPhotoStyleChange,
-  onGenerationModeChange,
-  onCoupleDetailsChange,
   onPartner1Change,
   onPartner2Change,
   onDateChange,
@@ -115,17 +97,8 @@ export function InvitationFormSection({
 }: InvitationFormSectionProps) {
   const t = useTranslations();
 
-  // Check if at least one photo has been uploaded for retouch mode
+  // Check if at least one photo has been uploaded
   const hasPhotos = photos.some(photo => photo.file !== null);
-
-  // Check if partner photos are uploaded for generate mode
-  const hasPartner1Photos = partner1Photos.some(photo => photo.file !== null);
-  const hasPartner2Photos = partner2Photos.some(photo => photo.file !== null);
-
-  // For generate mode, check partner photos and couple details
-  const canGenerate = generationMode === 'retouch' 
-    ? hasPhotos 
-    : hasPartner1Photos && hasPartner2Photos && coupleDetails.partner1Description && coupleDetails.partner2Description;
 
   // Get photo style options with translations
   const photoStyleOptions = [
@@ -133,26 +106,6 @@ export function InvitationFormSection({
     { value: 'classic', label: t('form.photo.styles.classic') },
     { value: 'modern', label: t('form.photo.styles.modern') },
     { value: 'artistic', label: t('form.photo.styles.artistic') },
-  ];
-
-  // Outfit style options
-  const outfitStyleOptions = [
-    { value: 'formal', label: t('form.photo.coupleDetails.outfitStyle.options.formal') },
-    { value: 'casual', label: t('form.photo.coupleDetails.outfitStyle.options.casual') },
-    { value: 'traditional', label: t('form.photo.coupleDetails.outfitStyle.options.traditional') },
-    { value: 'bohemian', label: t('form.photo.coupleDetails.outfitStyle.options.bohemian') },
-  ];
-
-  // Setting options
-  const settingOptions = [
-    { value: 'beach_sunset', label: t('form.photo.coupleDetails.setting.options.beach_sunset') },
-    { value: 'garden', label: t('form.photo.coupleDetails.setting.options.garden') },
-    { value: 'forest', label: t('form.photo.coupleDetails.setting.options.forest') },
-    { value: 'city', label: t('form.photo.coupleDetails.setting.options.city') },
-    { value: 'vineyard', label: t('form.photo.coupleDetails.setting.options.vineyard') },
-    { value: 'mountain', label: t('form.photo.coupleDetails.setting.options.mountain') },
-    { value: 'castle', label: t('form.photo.coupleDetails.setting.options.castle') },
-    { value: 'studio', label: t('form.photo.coupleDetails.setting.options.studio') },
   ];
 
   // Get template options with translations
@@ -232,115 +185,13 @@ export function InvitationFormSection({
                 <p className="tab-subtitle">{t('form.tabs.photosSubtitle')}</p>
               </div>
 
-              {/* Generation Mode Toggle */}
-              <div className="form-group">
-                <label className="form-label">{t('form.photo.generationMode.label')}</label>
-                <div className="generation-mode-toggle">
-                  <button
-                    type="button"
-                    className={`mode-option ${generationMode === 'retouch' ? 'active' : ''}`}
-                    onClick={() => onGenerationModeChange('retouch')}
-                  >
-                    <Edit3 size={18} />
-                    <span>{t('form.photo.generationMode.retouch')}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`mode-option ${generationMode === 'generate' ? 'active' : ''}`}
-                    onClick={() => onGenerationModeChange('generate')}
-                  >
-                    <Sparkles size={18} />
-                    <span>{t('form.photo.generationMode.generate')}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Photo Upload Sections - Different for each mode */}
-              {generationMode === 'retouch' ? (
-                /* Retouch Mode: Single photo upload area for photos to enhance */
-                <PhotosSection
-                  photos={photos}
-                  onPhotosChange={onPhotosChange}
-                  hint={t('form.photos.retouchHint')}
-                  addPhotoLabel={t('form.photo.addPhoto')}
-                />
-              ) : (
-                /* Generate Mode: Separate uploads for each partner */
-                <>
-                  <ReferenceInstructions />
-                  
-                  <div className="partner-photos-section">
-                    {/* Partner 1 Photos */}
-                    <div className="partner-upload-area">
-                      <h4 className="partner-label">{t('form.photos.partner1Photos')}</h4>
-                      <PhotosSection
-                        photos={partner1Photos}
-                        onPhotosChange={onPartner1PhotosChange}
-                        hint={t('form.photos.partner1Hint')}
-                        addPhotoLabel={t('form.photo.addPhoto')}
-                      />
-                    </div>
-
-                    {/* Partner 2 Photos */}
-                    <div className="partner-upload-area">
-                      <h4 className="partner-label">{t('form.photos.partner2Photos')}</h4>
-                      <PhotosSection
-                        photos={partner2Photos}
-                        onPhotosChange={onPartner2PhotosChange}
-                        hint={t('form.photos.partner2Hint')}
-                        addPhotoLabel={t('form.photo.addPhoto')}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Couple Details (only for generate mode) */}
-              {generationMode === 'generate' && (
-                <div className="couple-details-section">
-                  <div className="section-header">
-                    <h4 className="section-title">{t('form.photo.coupleDetails.title')}</h4>
-                    <p className="section-subtitle">{t('form.photo.coupleDetails.subtitle')}</p>
-                  </div>
-
-                  <div className="form-group">
-                    <FormInput
-                      label={t('form.photo.coupleDetails.partner1Description.label')}
-                      value={coupleDetails.partner1Description}
-                      onChange={(e) => onCoupleDetailsChange('partner1Description', e.target.value)}
-                      placeholder={t('form.photo.coupleDetails.partner1Description.placeholder')}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <FormInput
-                      label={t('form.photo.coupleDetails.partner2Description.label')}
-                      value={coupleDetails.partner2Description}
-                      onChange={(e) => onCoupleDetailsChange('partner2Description', e.target.value)}
-                      placeholder={t('form.photo.coupleDetails.partner2Description.placeholder')}
-                    />
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <FormSelect
-                        label={t('form.photo.coupleDetails.outfitStyle.label')}
-                        value={coupleDetails.outfitStyle}
-                        onChange={(e) => onCoupleDetailsChange('outfitStyle', e.target.value)}
-                        options={outfitStyleOptions}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <FormSelect
-                        label={t('form.photo.coupleDetails.setting.label')}
-                        value={coupleDetails.setting}
-                        onChange={(e) => onCoupleDetailsChange('setting', e.target.value)}
-                        options={settingOptions}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Photo Upload Section */}
+              <PhotosSection
+                photos={photos}
+                onPhotosChange={onPhotosChange}
+                hint={t('form.photos.retouchHint')}
+                addPhotoLabel={t('form.photo.addPhoto')}
+              />
             </div>
 
               {/* Photo Style Select */}
@@ -362,8 +213,8 @@ export function InvitationFormSection({
               size="lg"
               fullWidth
               isLoading={isLoading}
-              disabled={!canGenerate}
-              leftIcon={!isLoading ? (generationMode === 'retouch' ? <Wand2 size={18} /> : <Sparkles size={18} />) : undefined}
+              disabled={!hasPhotos}
+              leftIcon={!isLoading ? <Wand2 size={18} /> : undefined}
               className="generate-button"
             >
               {isLoading ? t('form.submit.loading') : t('form.submit.default')}

@@ -8,6 +8,7 @@ interface PhotosSectionProps {
   onPhotosChange: (photos: PhotoItem[]) => void;
   hint: string;
   addPhotoLabel: string;
+  maxPhotos?: number;
 }
 
 export function PhotosSection({
@@ -15,12 +16,13 @@ export function PhotosSection({
   onPhotosChange,
   hint,
   addPhotoLabel,
+  maxPhotos = 3,
 }: PhotosSectionProps) {
   return (
     <MultiPhotoUpload
       value={photos}
       onChange={onPhotosChange}
-      maxPhotos={3}
+      maxPhotos={maxPhotos}
       hint={hint}
       addPhotoLabel={addPhotoLabel}
     />

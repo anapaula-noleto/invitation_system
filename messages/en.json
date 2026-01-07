@@ -29,18 +29,7 @@
     "photos": {
       "title": "Your Photos Together",
       "subtitle": "Add up to 3 photos to display in the invitation gallery",
-      "retouchHint": "Upload up to 3 photos to enhance (JPG, PNG up to 10MB)",
-      "partner1Photos": "Partner 1 Reference Photos",
-      "partner2Photos": "Partner 2 Reference Photos",
-      "partner1Hint": "Upload 1-2 clear face photos of Partner 1",
-      "partner2Hint": "Upload 1-2 clear face photos of Partner 2",
-      "referenceInstructions": {
-        "title": "Tips for Best Results",
-        "tip1": "Use clear, well-lit photos showing the face clearly",
-        "tip2": "Front-facing photos work best for AI recognition",
-        "tip3": "Avoid photos with sunglasses or heavy shadows",
-        "tip4": "Photos where the person is alone work better than group photos"
-      }
+      "retouchHint": "Upload up to 3 photos to enhance (JPG, PNG up to 10MB)"
     },
     "photo": {
       "label": "Your Photos Together",
@@ -54,45 +43,6 @@
         "classic": "Classic — Timeless elegance, neutral colors",
         "modern": "Modern — Clean, contemporary look",
         "artistic": "Artistic — Creative, dramatic effects"
-      },
-      "generationMode": {
-        "label": "What would you like to do?",
-        "retouch": "Enhance Photos — Professional retouching of your existing photos",
-        "generate": "Generate New Photos — Create new pre-wedding images using your photos as reference"
-      },
-      "coupleDetails": {
-        "title": "Describe the Couple",
-        "subtitle": "Help AI generate accurate images by describing each person",
-        "partner1Description": {
-          "label": "Describe Partner 1",
-          "placeholder": "e.g., Tall man with short brown hair, light skin, athletic build"
-        },
-        "partner2Description": {
-          "label": "Describe Partner 2",
-          "placeholder": "e.g., Woman with long black hair, medium skin tone, petite"
-        },
-        "outfitStyle": {
-          "label": "Outfit Style",
-          "options": {
-            "formal": "Formal — Elegant suits and gowns",
-            "casual": "Casual — Relaxed, everyday wear",
-            "traditional": "Traditional — Cultural wedding attire",
-            "bohemian": "Bohemian — Free-spirited, flowy outfits"
-          }
-        },
-        "setting": {
-          "label": "Photo Setting",
-          "options": {
-            "beach_sunset": "Beach at Sunset",
-            "garden": "Romantic Garden",
-            "forest": "Enchanted Forest",
-            "city": "Urban Cityscape",
-            "vineyard": "Vineyard",
-            "mountain": "Mountain Landscape",
-            "castle": "Historic Castle",
-            "studio": "Elegant Studio"
-          }
-        }
       }
     },
     "partner1": {
@@ -172,11 +122,9 @@
   },
   "errors": {
     "photoRequired": "Please upload a photo first",
-    "partnerPhotosRequired": "Please upload reference photos for both partners",
     "fieldsRequired": "Please fill in all fields",
     "generationFailed": "Failed to generate invitation",
-    "unexpected": "An unexpected error occurred",
-    "coupleDetailsRequired": "Please describe both partners for generating new images"
+    "unexpected": "An unexpected error occurred"
   },
   "palettes": {
     "olive": "Olive Green (Nature)",

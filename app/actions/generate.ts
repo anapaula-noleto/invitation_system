@@ -10,17 +10,8 @@ interface EnhancePhotoResult {
 }
 
 type PhotoStyle = 'romantic' | 'classic' | 'modern' | 'artistic';
-type GenerationMode = 'retouch' | 'generate';
 
-// Couple details for generating new images
-interface CoupleDetails {
-  partner1Description: string; // e.g., "tall man with brown hair and beard"
-  partner2Description: string; // e.g., "woman with long black hair"
-  outfitStyle: string; // e.g., "formal", "casual", "traditional", "bohemian"
-  setting: string; // e.g., "beach sunset", "garden", "city", "forest"
-}
-
-export type { PhotoStyle, GenerationMode, CoupleDetails };
+export type { PhotoStyle };
 
 const stylePrompts: Record<PhotoStyle, string> = {
   romantic: `
@@ -56,123 +47,6 @@ const stylePrompts: Record<PhotoStyle, string> = {
     - Fine art aesthetic with editorial quality
   `,
 };
-
-// Generate completely new pre-wedding images based on reference photos
-export async function retouchPhotos(
-  partner1PhotosBase64: string[],
-  partner2PhotosBase64: string[],
-  style: PhotoStyle = 'romantic',
-  coupleDetails: CoupleDetails,
-  numberOfImages: number = 3
-): Promise<EnhancePhotoResult> {
-  try {
-    const styleInstructions = stylePrompts[style] || stylePrompts.romantic;
-
-    const prompt = `You are a world-class professional wedding photographer creating stunning pre-wedding photoshoot images.
-
-IMPORTANT: You are provided with reference photos of TWO DIFFERENT people who are a couple. Study their faces, body types, and features SEPARATELY and carefully.
-- The first set of images shows Partner 1
-- The second set of images shows Partner 2
-
-The generated images MUST feature BOTH of these exact people together as a couple with accurate likeness for each person.
-
-COUPLE DESCRIPTION (for reference):
-- Partner 1: ${coupleDetails.partner1Description}
-- Partner 2: ${coupleDetails.partner2Description}
-- Outfit Style: ${coupleDetails.outfitStyle}
-- Setting/Location: ${coupleDetails.setting}
-
-PHOTO STYLE REQUIREMENTS:
-${styleInstructions}
-
-GENERATION GUIDELINES:
-- Create a completely NEW professional pre-wedding photograph
-- Partner 1 must look EXACTLY like in their reference photos (same face, same person)
-- Partner 2 must look EXACTLY like in their reference photos (same face, same person)
-- Place the couple TOGETHER in the specified setting: ${coupleDetails.setting}
-- Dress them in ${coupleDetails.outfitStyle} attire appropriate for a pre-wedding photoshoot
-- Create natural, loving poses that showcase their connection as a couple
-- Apply professional lighting and composition
-- Make the image look like it was taken by a high-end wedding photographer
-- Ensure magazine-quality results suitable for wedding invitations
-
-OUTPUT: A beautiful, professionally shot pre-wedding photograph featuring this exact couple together in the specified setting.`;
-
-    // Combine partner photos with clear separation markers
-    const allReferencePhotos = [
-      ...partner1PhotosBase64.map((photoBase64, index) => ({
-        type: 'image' as const,
-        image: photoBase64,
-        // Note: The AI will receive these in order, with partner 1 photos first
-      })),
-      ...partner2PhotosBase64.map((photoBase64, index) => ({
-        type: 'image' as const,
-        image: photoBase64,
-      })),
-    ];
-
-    const generatedPhotos: (string | null)[] = [];
-
-    for (let i = 0; i < numberOfImages; i++) {
-      const result = await generateText({
-        model: google('gemini-3-pro-image-preview'),
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text' as const,
-                text: `Here are reference photos. The first ${partner1PhotosBase64.length} photo(s) show Partner 1. The remaining ${partner2PhotosBase64.length} photo(s) show Partner 2.`,
-              },
-              // Include all reference photos
-              ...allReferencePhotos,
-              {
-                type: 'text' as const,
-                text: prompt + `\n\nGenerate image variation ${i + 1} with a unique pose and angle.`,
-              },
-            ],
-          },
-        ],
-        providerOptions: {
-          google: {
-            responseModalities: ['IMAGE'],
-            imageConfig: {
-              aspectRatio: '4:3',
-              imageSize: '2K',
-            },
-          },
-        },
-      });
-
-      const imageFile = result.files?.[0];
-      if (imageFile?.base64) {
-        generatedPhotos.push(`data:image/png;base64,${imageFile.base64}`);
-      } else {
-        generatedPhotos.push(null);
-      }
-    }
-
-    const successfulPhotos = generatedPhotos.filter((url): url is string => url !== null);
-
-    if (successfulPhotos.length === 0) {
-      return {
-        success: false,
-        error: 'No images were generated. Please try again.',
-      };
-    }
-
-    return {
-      success: true,
-      imageUrls: successfulPhotos,
-    };
-  } catch (error) {
-    console.error('Error generating new photos:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to generate new photos',
-    };
-  }
-}
 
 // Retouch existing photos (original functionality)
 export async function generatePhotos(

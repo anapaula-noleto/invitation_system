@@ -16,6 +16,7 @@ export interface MultiPhotoUploadProps {
   maxPhotos?: number;
   label?: string;
   hint?: string;
+  contextualTip?: string;
   accept?: string;
   maxSizeMB?: number;
   error?: string;
@@ -28,6 +29,7 @@ export function MultiPhotoUpload({
   maxPhotos = 3,
   label = 'Upload Photos',
   hint = 'JPG, PNG up to 10MB each',
+  contextualTip,
   accept = 'image/*',
   maxSizeMB = 10,
   error,
@@ -178,6 +180,9 @@ export function MultiPhotoUpload({
                   <Icon icon={Camera} size="xl" className="icon-gold" />
                 </span>
                 <span className="upload-text">Click to upload photos</span>
+                {contextualTip && (
+                  <span className="upload-contextual-tip">{contextualTip}</span>
+                )}
                 <span className="upload-hint">{hint}</span>
               </>
             ) : (
