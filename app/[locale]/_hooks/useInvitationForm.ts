@@ -10,6 +10,8 @@ import type { PhotoItem } from '@/app/components/ui';
 export interface UseInvitationFormReturn {
   // Form state
   photos: PhotoItem[];
+  partner1Photos: PhotoItem[];
+  partner2Photos: PhotoItem[];
   photoStyle: string;
   generationMode: GenerationMode;
   coupleDetails: CoupleDetails;
@@ -52,6 +54,8 @@ export interface UseInvitationFormReturn {
   handleDateChange: (date: string, formatted: string) => void;
   handlePaletteSelect: (palette: WeddingPalette) => void;
   handlePhotosChange: (photos: PhotoItem[]) => void;
+  handlePartner1PhotosChange: (photos: PhotoItem[]) => void;
+  handlePartner2PhotosChange: (photos: PhotoItem[]) => void;
   handlePhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleGenerationModeChange: (mode: GenerationMode) => void;
   handleCoupleDetailsChange: (field: keyof CoupleDetails, value: string) => void;
@@ -68,6 +72,9 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
   // Form state - Multiple photos support
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  // Partner reference photos for "generate" mode
+  const [partner1Photos, setPartner1Photos] = useState<PhotoItem[]>([]);
+  const [partner2Photos, setPartner2Photos] = useState<PhotoItem[]>([]);
   const [photoStyle, setPhotoStyle] = useState<PhotoStyle>('romantic');
   const [generationMode, setGenerationMode] = useState<GenerationMode>('retouch');
   const [coupleDetails, setCoupleDetails] = useState<CoupleDetails>({
@@ -123,6 +130,14 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setPhotos(newPhotos);
   }, []);
 
+  const handlePartner1PhotosChange = useCallback((newPhotos: PhotoItem[]) => {
+    setPartner1Photos(newPhotos);
+  }, []);
+
+  const handlePartner2PhotosChange = useCallback((newPhotos: PhotoItem[]) => {
+    setPartner2Photos(newPhotos);
+  }, []);
+
   const handlePhotoStyleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setPhotoStyle(e.target.value as PhotoStyle);
   }, []);
@@ -138,11 +153,23 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Check if at least one photo has been uploaded
-    const uploadedPhotos = photos.filter(photo => photo.file !== null);
-    if (uploadedPhotos.length === 0) {
-      setError(t('errors.photoRequired'));
-      return;
+    // Check photos based on generation mode
+    if (generationMode === 'retouch') {
+      // For retouch mode, need at least one photo to enhance
+      const uploadedPhotos = photos.filter(photo => photo.file !== null);
+      if (uploadedPhotos.length === 0) {
+        setError(t('errors.photoRequired'));
+        return;
+      }
+    } else {
+      // For generate mode, need reference photos for both partners
+      const uploadedPartner1Photos = partner1Photos.filter(photo => photo.file !== null);
+      const uploadedPartner2Photos = partner2Photos.filter(photo => photo.file !== null);
+
+      if (uploadedPartner1Photos.length === 0 || uploadedPartner2Photos.length === 0) {
+        setError(t('errors.partnerPhotosRequired'));
+        return;
+      }
     }
 
     // For generate mode, validate couple details
@@ -158,16 +185,24 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setGeneratedImages([]);
 
     try {
-      const photosBase64 = uploadedPhotos.map(photo => photo.base64);
-
       let result;
       if (generationMode === 'retouch') {
         // Original retouch functionality
+        const uploadedPhotos = photos.filter(photo => photo.file !== null);
+        const photosBase64 = uploadedPhotos.map(photo => photo.base64);
         result = await generatePhotos(photosBase64, photoStyle);
       } else {
-        // Generate completely new images
+        // Generate completely new images with separate partner photos
+        const partner1Base64 = partner1Photos
+          .filter(photo => photo.file !== null)
+          .map(photo => photo.base64);
+        const partner2Base64 = partner2Photos
+          .filter(photo => photo.file !== null)
+          .map(photo => photo.base64);
+
         result = await retouchPhotos(
-          photosBase64,
+          partner1Base64,
+          partner2Base64,
           photoStyle,
           coupleDetails,
           3 // Generate 3 new images
@@ -259,6 +294,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
   return {
     // Form state
     photos,
+    partner1Photos,
+    partner2Photos,
     photoStyle,
     generationMode,
     coupleDetails,
@@ -301,6 +338,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     handleDateChange,
     handlePaletteSelect,
     handlePhotosChange,
+    handlePartner1PhotosChange,
+    handlePartner2PhotosChange,
     handlePhotoStyleChange,
     handleGenerationModeChange,
     handleCoupleDetailsChange,

@@ -59,7 +59,8 @@ const stylePrompts: Record<PhotoStyle, string> = {
 
 // Generate completely new pre-wedding images based on reference photos
 export async function retouchPhotos(
-  referencePhotosBase64: string[],
+  partner1PhotosBase64: string[],
+  partner2PhotosBase64: string[],
   style: PhotoStyle = 'romantic',
   coupleDetails: CoupleDetails,
   numberOfImages: number = 3
@@ -69,7 +70,11 @@ export async function retouchPhotos(
 
     const prompt = `You are a world-class professional wedding photographer creating stunning pre-wedding photoshoot images.
 
-IMPORTANT: Use the provided reference photo(s) to understand the EXACT appearance of the couple. Study their faces, body types, and features carefully. The generated images MUST feature the SAME couple with accurate likeness.
+IMPORTANT: You are provided with reference photos of TWO DIFFERENT people who are a couple. Study their faces, body types, and features SEPARATELY and carefully.
+- The first set of images shows Partner 1
+- The second set of images shows Partner 2
+
+The generated images MUST feature BOTH of these exact people together as a couple with accurate likeness for each person.
 
 COUPLE DESCRIPTION (for reference):
 - Partner 1: ${coupleDetails.partner1Description}
@@ -82,17 +87,30 @@ ${styleInstructions}
 
 GENERATION GUIDELINES:
 - Create a completely NEW professional pre-wedding photograph
-- The couple should look EXACTLY like in the reference photos (same faces, same people)
-- Place the couple in the specified setting: ${coupleDetails.setting}
+- Partner 1 must look EXACTLY like in their reference photos (same face, same person)
+- Partner 2 must look EXACTLY like in their reference photos (same face, same person)
+- Place the couple TOGETHER in the specified setting: ${coupleDetails.setting}
 - Dress them in ${coupleDetails.outfitStyle} attire appropriate for a pre-wedding photoshoot
-- Create natural, loving poses that showcase their connection
+- Create natural, loving poses that showcase their connection as a couple
 - Apply professional lighting and composition
 - Make the image look like it was taken by a high-end wedding photographer
 - Ensure magazine-quality results suitable for wedding invitations
 
-OUTPUT: A beautiful, professionally shot pre-wedding photograph featuring this exact couple in the specified setting.`;
+OUTPUT: A beautiful, professionally shot pre-wedding photograph featuring this exact couple together in the specified setting.`;
 
-    // For generating new images, we use all reference photos together for better face consistency
+    // Combine partner photos with clear separation markers
+    const allReferencePhotos = [
+      ...partner1PhotosBase64.map((photoBase64, index) => ({
+        type: 'image' as const,
+        image: photoBase64,
+        // Note: The AI will receive these in order, with partner 1 photos first
+      })),
+      ...partner2PhotosBase64.map((photoBase64, index) => ({
+        type: 'image' as const,
+        image: photoBase64,
+      })),
+    ];
+
     const generatedPhotos: (string | null)[] = [];
 
     for (let i = 0; i < numberOfImages; i++) {
@@ -102,11 +120,12 @@ OUTPUT: A beautiful, professionally shot pre-wedding photograph featuring this e
           {
             role: 'user',
             content: [
-              // Include all reference photos for face consistency
-              ...referencePhotosBase64.map(photoBase64 => ({
-                type: 'image' as const,
-                image: photoBase64,
-              })),
+              {
+                type: 'text' as const,
+                text: `Here are reference photos. The first ${partner1PhotosBase64.length} photo(s) show Partner 1. The remaining ${partner2PhotosBase64.length} photo(s) show Partner 2.`,
+              },
+              // Include all reference photos
+              ...allReferencePhotos,
               {
                 type: 'text' as const,
                 text: prompt + `\n\nGenerate image variation ${i + 1} with a unique pose and angle.`,

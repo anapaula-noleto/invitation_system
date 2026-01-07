@@ -28,7 +28,19 @@
     },
     "photos": {
       "title": "Your Photos Together",
-      "subtitle": "Add up to 3 photos to display in the invitation gallery"
+      "subtitle": "Add up to 3 photos to display in the invitation gallery",
+      "retouchHint": "Upload up to 3 photos to enhance (JPG, PNG up to 10MB)",
+      "partner1Photos": "Partner 1 Reference Photos",
+      "partner2Photos": "Partner 2 Reference Photos",
+      "partner1Hint": "Upload 1-2 clear face photos of Partner 1",
+      "partner2Hint": "Upload 1-2 clear face photos of Partner 2",
+      "referenceInstructions": {
+        "title": "Tips for Best Results",
+        "tip1": "Use clear, well-lit photos showing the face clearly",
+        "tip2": "Front-facing photos work best for AI recognition",
+        "tip3": "Avoid photos with sunglasses or heavy shadows",
+        "tip4": "Photos where the person is alone work better than group photos"
+      }
     },
     "photo": {
       "label": "Your Photos Together",
@@ -160,6 +172,7 @@
   },
   "errors": {
     "photoRequired": "Please upload a photo first",
+    "partnerPhotosRequired": "Please upload reference photos for both partners",
     "fieldsRequired": "Please fill in all fields",
     "generationFailed": "Failed to generate invitation",
     "unexpected": "An unexpected error occurred",

@@ -28,7 +28,19 @@
     },
     "photos": {
       "title": "Tus Fotos Juntos",
-      "subtitle": "Añade hasta 3 fotos para mostrar en la galería de la invitación"
+      "subtitle": "Añade hasta 3 fotos para mostrar en la galería de la invitación",
+      "retouchHint": "Sube hasta 3 fotos para mejorar (JPG, PNG hasta 10MB)",
+      "partner1Photos": "Fotos de Referencia de la Pareja 1",
+      "partner2Photos": "Fotos de Referencia de la Pareja 2",
+      "partner1Hint": "Sube 1-2 fotos claras del rostro de la Pareja 1",
+      "partner2Hint": "Sube 1-2 fotos claras del rostro de la Pareja 2",
+      "referenceInstructions": {
+        "title": "Consejos para Mejores Resultados",
+        "tip1": "Usa fotos claras y bien iluminadas mostrando el rostro claramente",
+        "tip2": "Las fotos de frente funcionan mejor para el reconocimiento de IA",
+        "tip3": "Evita fotos con gafas de sol o sombras fuertes",
+        "tip4": "Las fotos donde la persona está sola funcionan mejor que las fotos de grupo"
+      }
     },
     "photo": {
       "label": "Tus Fotos Juntos",
@@ -160,6 +172,7 @@
   },
   "errors": {
     "photoRequired": "Por favor, sube una foto primero",
+    "partnerPhotosRequired": "Por favor, sube fotos de referencia de ambas parejas",
     "fieldsRequired": "Por favor, completa todos los campos",
     "generationFailed": "Error al generar la invitación",
     "unexpected": "Ocurrió un error inesperado",

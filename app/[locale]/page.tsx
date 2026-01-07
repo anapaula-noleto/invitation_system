@@ -33,6 +33,8 @@ export default function Home() {
           {/* Form Section */}
           <InvitationFormSection
             photos={form.photos}
+            partner1Photos={form.partner1Photos}
+            partner2Photos={form.partner2Photos}
             photoStyle={form.photoStyle}
             generationMode={form.generationMode}
             coupleDetails={form.coupleDetails}
@@ -51,6 +53,8 @@ export default function Home() {
             isLoading={form.isLoading}
             error={form.error}
             onPhotosChange={form.handlePhotosChange}
+            onPartner1PhotosChange={form.handlePartner1PhotosChange}
+            onPartner2PhotosChange={form.handlePartner2PhotosChange}
             onPhotoStyleChange={form.handlePhotoStyleChange}
             onGenerationModeChange={form.handleGenerationModeChange}
             onCoupleDetailsChange={form.handleCoupleDetailsChange}

@@ -24,11 +24,14 @@ import {
   ReceptionVenueField,
   CustomTextsSection,
   PhotosSection,
+  ReferenceInstructions,
 } from './_formComponents';
 
 interface InvitationFormSectionProps {
   // Form values
   photos: PhotoItem[];
+  partner1Photos: PhotoItem[];
+  partner2Photos: PhotoItem[];
   photoStyle: string;
   generationMode: GenerationMode;
   coupleDetails: CoupleDetails;
@@ -51,6 +54,8 @@ interface InvitationFormSectionProps {
   
   // Handlers
   onPhotosChange: (photos: PhotoItem[]) => void;
+  onPartner1PhotosChange: (photos: PhotoItem[]) => void;
+  onPartner2PhotosChange: (photos: PhotoItem[]) => void;
   onPhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onGenerationModeChange: (mode: GenerationMode) => void;
   onCoupleDetailsChange: (field: keyof CoupleDetails, value: string) => void;
@@ -70,6 +75,8 @@ interface InvitationFormSectionProps {
 
 export function InvitationFormSection({
   photos,
+  partner1Photos,
+  partner2Photos,
   photoStyle,
   generationMode,
   coupleDetails,
@@ -88,6 +95,8 @@ export function InvitationFormSection({
   isLoading,
   error,
   onPhotosChange,
+  onPartner1PhotosChange,
+  onPartner2PhotosChange,
   onPhotoStyleChange,
   onGenerationModeChange,
   onCoupleDetailsChange,
@@ -106,13 +115,17 @@ export function InvitationFormSection({
 }: InvitationFormSectionProps) {
   const t = useTranslations();
 
-  // Check if at least one photo has been uploaded
+  // Check if at least one photo has been uploaded for retouch mode
   const hasPhotos = photos.some(photo => photo.file !== null);
 
-  // For generate mode, also check if couple details are filled
+  // Check if partner photos are uploaded for generate mode
+  const hasPartner1Photos = partner1Photos.some(photo => photo.file !== null);
+  const hasPartner2Photos = partner2Photos.some(photo => photo.file !== null);
+
+  // For generate mode, check partner photos and couple details
   const canGenerate = generationMode === 'retouch' 
     ? hasPhotos 
-    : hasPhotos && coupleDetails.partner1Description && coupleDetails.partner2Description;
+    : hasPartner1Photos && hasPartner2Photos && coupleDetails.partner1Description && coupleDetails.partner2Description;
 
   // Get photo style options with translations
   const photoStyleOptions = [
@@ -242,12 +255,45 @@ export function InvitationFormSection({
                 </div>
               </div>
 
-              <PhotosSection
-                photos={photos}
-                onPhotosChange={onPhotosChange}
-                hint={t('form.photo.hint')}
-                addPhotoLabel={t('form.photo.addPhoto')}
-              />
+              {/* Photo Upload Sections - Different for each mode */}
+              {generationMode === 'retouch' ? (
+                /* Retouch Mode: Single photo upload area for photos to enhance */
+                <PhotosSection
+                  photos={photos}
+                  onPhotosChange={onPhotosChange}
+                  hint={t('form.photos.retouchHint')}
+                  addPhotoLabel={t('form.photo.addPhoto')}
+                />
+              ) : (
+                /* Generate Mode: Separate uploads for each partner */
+                <>
+                  <ReferenceInstructions />
+                  
+                  <div className="partner-photos-section">
+                    {/* Partner 1 Photos */}
+                    <div className="partner-upload-area">
+                      <h4 className="partner-label">{t('form.photos.partner1Photos')}</h4>
+                      <PhotosSection
+                        photos={partner1Photos}
+                        onPhotosChange={onPartner1PhotosChange}
+                        hint={t('form.photos.partner1Hint')}
+                        addPhotoLabel={t('form.photo.addPhoto')}
+                      />
+                    </div>
+
+                    {/* Partner 2 Photos */}
+                    <div className="partner-upload-area">
+                      <h4 className="partner-label">{t('form.photos.partner2Photos')}</h4>
+                      <PhotosSection
+                        photos={partner2Photos}
+                        onPhotosChange={onPartner2PhotosChange}
+                        hint={t('form.photos.partner2Hint')}
+                        addPhotoLabel={t('form.photo.addPhoto')}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
 
               {/* Couple Details (only for generate mode) */}
               {generationMode === 'generate' && (

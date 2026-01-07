@@ -866,3 +866,95 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   REFERENCE INSTRUCTIONS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.reference-instructions {
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.reference-instructions-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reference-instructions-list {
+  margin: 0;
+  padding-left: var(--space-5);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.reference-instructions-list li {
+  margin-bottom: var(--space-1);
+}
+
+.reference-instructions-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PARTNER PHOTOS SECTION
+   ───────────────────────────────────────────────────────────────────────── */
+
+.partner-photos-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.partner-upload-area {
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.partner-label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+}
+
+.partner-upload-area:first-child {
+  border-color: rgba(201, 169, 97, 0.3);
+  background: rgba(201, 169, 97, 0.03);
+}
+
+.partner-upload-area:first-child .partner-label {
+  color: var(--accent-gold);
+}
+
+.partner-upload-area:last-child {
+  border-color: rgba(147, 51, 234, 0.3);
+  background: rgba(147, 51, 234, 0.03);
+}
+
+.partner-upload-area:last-child .partner-label {
+  color: rgb(167, 139, 250);
+}
+
+@media (min-width: 768px) {
+  .partner-photos-section {
+    flex-direction: row;
+  }
+
+  .partner-upload-area {
+    flex: 1;
+  }
+}

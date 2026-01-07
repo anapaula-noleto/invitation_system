@@ -28,7 +28,19 @@
     },
     "photos": {
       "title": "Fotos do Casal",
-      "subtitle": "Adicione até 3 fotos para exibir na galeria do convite"
+      "subtitle": "Adicione até 3 fotos para exibir na galeria do convite",
+      "retouchHint": "Envie até 3 fotos para aprimorar (JPG, PNG até 10MB)",
+      "partner1Photos": "Fotos de Referência do Parceiro(a) 1",
+      "partner2Photos": "Fotos de Referência do Parceiro(a) 2",
+      "partner1Hint": "Envie 1-2 fotos claras do rosto do Parceiro(a) 1",
+      "partner2Hint": "Envie 1-2 fotos claras do rosto do Parceiro(a) 2",
+      "referenceInstructions": {
+        "title": "Dicas para Melhores Resultados",
+        "tip1": "Use fotos claras e bem iluminadas mostrando o rosto claramente",
+        "tip2": "Fotos de frente funcionam melhor para reconhecimento da IA",
+        "tip3": "Evite fotos com óculos de sol ou sombras pesadas",
+        "tip4": "Fotos onde a pessoa está sozinha funcionam melhor que fotos em grupo"
+      }
     },
     "photo": {
       "label": "Fotos do Casal",
@@ -160,6 +172,7 @@
   },
   "errors": {
     "photoRequired": "Por favor, envie uma foto primeiro",
+    "partnerPhotosRequired": "Por favor, envie fotos de referência de ambos os parceiros",
     "fieldsRequired": "Por favor, preencha todos os campos",
     "generationFailed": "Falha ao gerar o convite",
     "unexpected": "Ocorreu um erro inesperado",
