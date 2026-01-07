@@ -42,6 +42,45 @@
         "classic": "Clásico — Elegancia atemporal, colores neutros",
         "modern": "Moderno — Aspecto limpio y contemporáneo",
         "artistic": "Artístico — Efectos creativos y dramáticos"
+      },
+      "generationMode": {
+        "label": "¿Qué te gustaría hacer?",
+        "retouch": "Mejorar Fotos — Retoque profesional de tus fotos existentes",
+        "generate": "Generar Nuevas Fotos — Crear nuevas imágenes pre-boda usando tus fotos como referencia"
+      },
+      "coupleDetails": {
+        "title": "Describe a la Pareja",
+        "subtitle": "Ayuda a la IA a generar imágenes precisas describiendo a cada persona",
+        "partner1Description": {
+          "label": "Describe a la Pareja 1",
+          "placeholder": "Ej: Hombre alto con cabello castaño corto, piel clara, complexión atlética"
+        },
+        "partner2Description": {
+          "label": "Describe a la Pareja 2",
+          "placeholder": "Ej: Mujer con cabello negro largo, tono de piel medio, delgada"
+        },
+        "outfitStyle": {
+          "label": "Estilo de Ropa",
+          "options": {
+            "formal": "Formal — Trajes y vestidos elegantes",
+            "casual": "Casual — Ropa relajada, del día a día",
+            "traditional": "Tradicional — Atuendo cultural de boda",
+            "bohemian": "Bohemio — Ropa libre y fluida"
+          }
+        },
+        "setting": {
+          "label": "Escenario de la Foto",
+          "options": {
+            "beach_sunset": "Playa al Atardecer",
+            "garden": "Jardín Romántico",
+            "forest": "Bosque Encantado",
+            "city": "Paisaje Urbano",
+            "vineyard": "Viñedo",
+            "mountain": "Paisaje de Montaña",
+            "castle": "Castillo Histórico",
+            "studio": "Estudio Elegante"
+          }
+        }
       }
     },
     "partner1": {
@@ -123,7 +162,8 @@
     "photoRequired": "Por favor, sube una foto primero",
     "fieldsRequired": "Por favor, completa todos los campos",
     "generationFailed": "Error al generar la invitación",
-    "unexpected": "Ocurrió un error inesperado"
+    "unexpected": "Ocurrió un error inesperado",
+    "coupleDetailsRequired": "Por favor, describe a ambas parejas para generar nuevas imágenes"
   },
   "palettes": {
     "olive": "Verde Oliva (Naturaleza)",

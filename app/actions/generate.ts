@@ -10,8 +10,17 @@ interface EnhancePhotoResult {
 }
 
 type PhotoStyle = 'romantic' | 'classic' | 'modern' | 'artistic';
+type GenerationMode = 'retouch' | 'generate';
 
-export type { PhotoStyle };
+// Couple details for generating new images
+interface CoupleDetails {
+  partner1Description: string; // e.g., "tall man with brown hair and beard"
+  partner2Description: string; // e.g., "woman with long black hair"
+  outfitStyle: string; // e.g., "formal", "casual", "traditional", "bohemian"
+  setting: string; // e.g., "beach sunset", "garden", "city", "forest"
+}
+
+export type { PhotoStyle, GenerationMode, CoupleDetails };
 
 const stylePrompts: Record<PhotoStyle, string> = {
   romantic: `
@@ -48,7 +57,106 @@ const stylePrompts: Record<PhotoStyle, string> = {
   `,
 };
 
-export async function generateWeddingInvitationPhotos(
+// Generate completely new pre-wedding images based on reference photos
+export async function retouchPhotos(
+  referencePhotosBase64: string[],
+  style: PhotoStyle = 'romantic',
+  coupleDetails: CoupleDetails,
+  numberOfImages: number = 3
+): Promise<EnhancePhotoResult> {
+  try {
+    const styleInstructions = stylePrompts[style] || stylePrompts.romantic;
+
+    const prompt = `You are a world-class professional wedding photographer creating stunning pre-wedding photoshoot images.
+
+IMPORTANT: Use the provided reference photo(s) to understand the EXACT appearance of the couple. Study their faces, body types, and features carefully. The generated images MUST feature the SAME couple with accurate likeness.
+
+COUPLE DESCRIPTION (for reference):
+- Partner 1: ${coupleDetails.partner1Description}
+- Partner 2: ${coupleDetails.partner2Description}
+- Outfit Style: ${coupleDetails.outfitStyle}
+- Setting/Location: ${coupleDetails.setting}
+
+PHOTO STYLE REQUIREMENTS:
+${styleInstructions}
+
+GENERATION GUIDELINES:
+- Create a completely NEW professional pre-wedding photograph
+- The couple should look EXACTLY like in the reference photos (same faces, same people)
+- Place the couple in the specified setting: ${coupleDetails.setting}
+- Dress them in ${coupleDetails.outfitStyle} attire appropriate for a pre-wedding photoshoot
+- Create natural, loving poses that showcase their connection
+- Apply professional lighting and composition
+- Make the image look like it was taken by a high-end wedding photographer
+- Ensure magazine-quality results suitable for wedding invitations
+
+OUTPUT: A beautiful, professionally shot pre-wedding photograph featuring this exact couple in the specified setting.`;
+
+    // For generating new images, we use all reference photos together for better face consistency
+    const generatedPhotos: (string | null)[] = [];
+
+    for (let i = 0; i < numberOfImages; i++) {
+      const result = await generateText({
+        model: google('gemini-3-pro-image-preview'),
+        messages: [
+          {
+            role: 'user',
+            content: [
+              // Include all reference photos for face consistency
+              ...referencePhotosBase64.map(photoBase64 => ({
+                type: 'image' as const,
+                image: photoBase64,
+              })),
+              {
+                type: 'text' as const,
+                text: prompt + `\n\nGenerate image variation ${i + 1} with a unique pose and angle.`,
+              },
+            ],
+          },
+        ],
+        providerOptions: {
+          google: {
+            responseModalities: ['IMAGE'],
+            imageConfig: {
+              aspectRatio: '4:3',
+              imageSize: '2K',
+            },
+          },
+        },
+      });
+
+      const imageFile = result.files?.[0];
+      if (imageFile?.base64) {
+        generatedPhotos.push(`data:image/png;base64,${imageFile.base64}`);
+      } else {
+        generatedPhotos.push(null);
+      }
+    }
+
+    const successfulPhotos = generatedPhotos.filter((url): url is string => url !== null);
+
+    if (successfulPhotos.length === 0) {
+      return {
+        success: false,
+        error: 'No images were generated. Please try again.',
+      };
+    }
+
+    return {
+      success: true,
+      imageUrls: successfulPhotos,
+    };
+  } catch (error) {
+    console.error('Error generating new photos:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to generate new photos',
+    };
+  }
+}
+
+// Retouch existing photos (original functionality)
+export async function generatePhotos(
   photosBase64: string[],
   style: PhotoStyle = 'romantic'
 ): Promise<EnhancePhotoResult> {

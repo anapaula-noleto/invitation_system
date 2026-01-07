@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { generateWeddingInvitationPhotos, type PhotoStyle } from '@/app/actions/generate';
+import { generatePhotos, retouchPhotos, type PhotoStyle, type GenerationMode, type CoupleDetails } from '@/app/actions/generate';
 import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { InvitationConfig, TemplateId } from '@/app/types/invitation';
 import type { PhotoItem } from '@/app/components/ui';
@@ -11,6 +11,8 @@ export interface UseInvitationFormReturn {
   // Form state
   photos: PhotoItem[];
   photoStyle: string;
+  generationMode: GenerationMode;
+  coupleDetails: CoupleDetails;
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -51,6 +53,8 @@ export interface UseInvitationFormReturn {
   handlePaletteSelect: (palette: WeddingPalette) => void;
   handlePhotosChange: (photos: PhotoItem[]) => void;
   handlePhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleGenerationModeChange: (mode: GenerationMode) => void;
+  handleCoupleDetailsChange: (field: keyof CoupleDetails, value: string) => void;
   handlePreviewTabChange: (tabId: string) => void;
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
@@ -65,6 +69,13 @@ export function useInvitationForm(): UseInvitationFormReturn {
   // Form state - Multiple photos support
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const [photoStyle, setPhotoStyle] = useState<PhotoStyle>('romantic');
+  const [generationMode, setGenerationMode] = useState<GenerationMode>('retouch');
+  const [coupleDetails, setCoupleDetails] = useState<CoupleDetails>({
+    partner1Description: '',
+    partner2Description: '',
+    outfitStyle: 'formal',
+    setting: 'garden',
+  });
   const [partner1, setPartner1] = useState('');
   const [partner2, setPartner2] = useState('');
   const [weddingDate, setWeddingDate] = useState('');
@@ -116,6 +127,14 @@ export function useInvitationForm(): UseInvitationFormReturn {
     setPhotoStyle(e.target.value as PhotoStyle);
   }, []);
 
+  const handleGenerationModeChange = useCallback((mode: GenerationMode) => {
+    setGenerationMode(mode);
+  }, []);
+
+  const handleCoupleDetailsChange = useCallback((field: keyof CoupleDetails, value: string) => {
+    setCoupleDetails(prev => ({ ...prev, [field]: value }));
+  }, []);
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -126,17 +145,34 @@ export function useInvitationForm(): UseInvitationFormReturn {
       return;
     }
 
+    // For generate mode, validate couple details
+    if (generationMode === 'generate') {
+      if (!coupleDetails.partner1Description || !coupleDetails.partner2Description) {
+        setError(t('errors.coupleDetailsRequired'));
+        return;
+      }
+    }
+
     setIsLoading(true);
     setError(null);
     setGeneratedImages([]);
 
     try {
-      // Send all uploaded photos' base64 for AI generation
       const photosBase64 = uploadedPhotos.map(photo => photo.base64);
-      const result = await generateWeddingInvitationPhotos(
-        photosBase64,
-        photoStyle
-      );
+
+      let result;
+      if (generationMode === 'retouch') {
+        // Original retouch functionality
+        result = await generatePhotos(photosBase64, photoStyle);
+      } else {
+        // Generate completely new images
+        result = await retouchPhotos(
+          photosBase64,
+          photoStyle,
+          coupleDetails,
+          3 // Generate 3 new images
+        );
+      }
 
       if (result.success && result.imageUrls && result.imageUrls.length > 0) {
         setGeneratedImages(result.imageUrls);
@@ -224,6 +260,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     // Form state
     photos,
     photoStyle,
+    generationMode,
+    coupleDetails,
     partner1,
     partner2,
     weddingDate,
@@ -264,6 +302,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     handlePaletteSelect,
     handlePhotosChange,
     handlePhotoStyleChange,
+    handleGenerationModeChange,
+    handleCoupleDetailsChange,
     handlePreviewTabChange,
     handleGenerate,
     handleDownload,

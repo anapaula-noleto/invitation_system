@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Heart, Camera, Palette, PenLine, Wand2 } from 'lucide-react';
+import { Heart, Camera, Palette, PenLine, Wand2, Sparkles, Edit3 } from 'lucide-react';
 import {
   Button,
   FormSelect,
+  FormInput,
   ErrorMessage,
   PaletteSelector,
   Tabs,
@@ -16,6 +17,7 @@ import type { PhotoItem } from '@/app/components/ui';
 import { AVAILABLE_TEMPLATES } from '@/app/data/mock-invitations';
 import type { WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { TemplateId } from '@/app/types/invitation';
+import type { GenerationMode, CoupleDetails } from '@/app/actions/generate';
 import {
   BasicInfoFields,
   VenueField,
@@ -28,6 +30,8 @@ interface InvitationFormSectionProps {
   // Form values
   photos: PhotoItem[];
   photoStyle: string;
+  generationMode: GenerationMode;
+  coupleDetails: CoupleDetails;
   partner1: string;
   partner2: string;
   weddingDate: string;
@@ -48,6 +52,8 @@ interface InvitationFormSectionProps {
   // Handlers
   onPhotosChange: (photos: PhotoItem[]) => void;
   onPhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onGenerationModeChange: (mode: GenerationMode) => void;
+  onCoupleDetailsChange: (field: keyof CoupleDetails, value: string) => void;
   onPartner1Change: (value: string) => void;
   onPartner2Change: (value: string) => void;
   onDateChange: (date: string, formatted: string) => void;
@@ -65,6 +71,8 @@ interface InvitationFormSectionProps {
 export function InvitationFormSection({
   photos,
   photoStyle,
+  generationMode,
+  coupleDetails,
   partner1,
   partner2,
   weddingDate,
@@ -81,6 +89,8 @@ export function InvitationFormSection({
   error,
   onPhotosChange,
   onPhotoStyleChange,
+  onGenerationModeChange,
+  onCoupleDetailsChange,
   onPartner1Change,
   onPartner2Change,
   onDateChange,
@@ -99,12 +109,37 @@ export function InvitationFormSection({
   // Check if at least one photo has been uploaded
   const hasPhotos = photos.some(photo => photo.file !== null);
 
+  // For generate mode, also check if couple details are filled
+  const canGenerate = generationMode === 'retouch' 
+    ? hasPhotos 
+    : hasPhotos && coupleDetails.partner1Description && coupleDetails.partner2Description;
+
   // Get photo style options with translations
   const photoStyleOptions = [
     { value: 'romantic', label: t('form.photo.styles.romantic') },
     { value: 'classic', label: t('form.photo.styles.classic') },
     { value: 'modern', label: t('form.photo.styles.modern') },
     { value: 'artistic', label: t('form.photo.styles.artistic') },
+  ];
+
+  // Outfit style options
+  const outfitStyleOptions = [
+    { value: 'formal', label: t('form.photo.coupleDetails.outfitStyle.options.formal') },
+    { value: 'casual', label: t('form.photo.coupleDetails.outfitStyle.options.casual') },
+    { value: 'traditional', label: t('form.photo.coupleDetails.outfitStyle.options.traditional') },
+    { value: 'bohemian', label: t('form.photo.coupleDetails.outfitStyle.options.bohemian') },
+  ];
+
+  // Setting options
+  const settingOptions = [
+    { value: 'beach_sunset', label: t('form.photo.coupleDetails.setting.options.beach_sunset') },
+    { value: 'garden', label: t('form.photo.coupleDetails.setting.options.garden') },
+    { value: 'forest', label: t('form.photo.coupleDetails.setting.options.forest') },
+    { value: 'city', label: t('form.photo.coupleDetails.setting.options.city') },
+    { value: 'vineyard', label: t('form.photo.coupleDetails.setting.options.vineyard') },
+    { value: 'mountain', label: t('form.photo.coupleDetails.setting.options.mountain') },
+    { value: 'castle', label: t('form.photo.coupleDetails.setting.options.castle') },
+    { value: 'studio', label: t('form.photo.coupleDetails.setting.options.studio') },
   ];
 
   // Get template options with translations
@@ -190,6 +225,29 @@ export function InvitationFormSection({
                 addPhotoLabel={t('form.photo.addPhoto')}
               />
 
+              {/* Generation Mode Toggle */}
+              <div className="form-group">
+                <label className="form-label">{t('form.photo.generationMode.label')}</label>
+                <div className="generation-mode-toggle">
+                  <button
+                    type="button"
+                    className={`mode-option ${generationMode === 'retouch' ? 'active' : ''}`}
+                    onClick={() => onGenerationModeChange('retouch')}
+                  >
+                    <Edit3 size={18} />
+                    <span>{t('form.photo.generationMode.retouch')}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`mode-option ${generationMode === 'generate' ? 'active' : ''}`}
+                    onClick={() => onGenerationModeChange('generate')}
+                  >
+                    <Sparkles size={18} />
+                    <span>{t('form.photo.generationMode.generate')}</span>
+                  </button>
+                </div>
+              </div>
+
               {/* Photo Style Select */}
               <div className="form-group">
                 <FormSelect
@@ -199,6 +257,53 @@ export function InvitationFormSection({
                   options={photoStyleOptions}
                 />
               </div>
+
+              {/* Couple Details (only for generate mode) */}
+              {generationMode === 'generate' && (
+                <div className="couple-details-section">
+                  <div className="section-header">
+                    <h4 className="section-title">{t('form.photo.coupleDetails.title')}</h4>
+                    <p className="section-subtitle">{t('form.photo.coupleDetails.subtitle')}</p>
+                  </div>
+
+                  <div className="form-group">
+                    <FormInput
+                      label={t('form.photo.coupleDetails.partner1Description.label')}
+                      value={coupleDetails.partner1Description}
+                      onChange={(e) => onCoupleDetailsChange('partner1Description', e.target.value)}
+                      placeholder={t('form.photo.coupleDetails.partner1Description.placeholder')}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <FormInput
+                      label={t('form.photo.coupleDetails.partner2Description.label')}
+                      value={coupleDetails.partner2Description}
+                      onChange={(e) => onCoupleDetailsChange('partner2Description', e.target.value)}
+                      placeholder={t('form.photo.coupleDetails.partner2Description.placeholder')}
+                    />
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <FormSelect
+                        label={t('form.photo.coupleDetails.outfitStyle.label')}
+                        value={coupleDetails.outfitStyle}
+                        onChange={(e) => onCoupleDetailsChange('outfitStyle', e.target.value)}
+                        options={outfitStyleOptions}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <FormSelect
+                        label={t('form.photo.coupleDetails.setting.label')}
+                        value={coupleDetails.setting}
+                        onChange={(e) => onCoupleDetailsChange('setting', e.target.value)}
+                        options={settingOptions}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Generate images Button */}
@@ -208,8 +313,8 @@ export function InvitationFormSection({
               size="lg"
               fullWidth
               isLoading={isLoading}
-              disabled={!hasPhotos}
-              leftIcon={!isLoading ? <Wand2 size={18} /> : undefined}
+              disabled={!canGenerate}
+              leftIcon={!isLoading ? (generationMode === 'retouch' ? <Wand2 size={18} /> : <Sparkles size={18} />) : undefined}
               className="generate-button"
             >
               {isLoading ? t('form.submit.loading') : t('form.submit.default')}

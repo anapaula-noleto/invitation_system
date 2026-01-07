@@ -768,3 +768,101 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   GENERATION MODE TOGGLE
+   ───────────────────────────────────────────────────────────────────────── */
+
+.generation-mode-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out-quart);
+  text-align: left;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+}
+
+.mode-option:hover {
+  border-color: var(--gold-500);
+  background: rgba(201, 169, 97, 0.05);
+}
+
+.mode-option.active {
+  border-color: var(--gold-400);
+  background: rgba(201, 169, 97, 0.1);
+  color: var(--text-primary);
+}
+
+.mode-option.active svg {
+  color: var(--gold-400);
+}
+
+.mode-option svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.mode-option span {
+  flex: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COUPLE DETAILS SECTION
+   ───────────────────────────────────────────────────────────────────────── */
+
+.couple-details-section {
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  background: rgba(201, 169, 97, 0.03);
+  border: 1px solid rgba(201, 169, 97, 0.15);
+  border-radius: var(--radius-lg);
+}
+
+.couple-details-section .section-header {
+  margin-bottom: var(--space-5);
+}
+
+.couple-details-section .section-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  margin: 0 0 var(--space-2);
+}
+
+.couple-details-section .section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.couple-details-section .form-group {
+  margin-bottom: var(--space-4);
+}
+
+.couple-details-section .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.couple-details-section .form-row {
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .couple-details-section .form-row {
+    grid-template-columns: 1fr;
+  }
+}
