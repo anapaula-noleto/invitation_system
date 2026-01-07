@@ -29,7 +29,9 @@
     "photos": {
       "title": "Tus Fotos Juntos",
       "subtitle": "Añade hasta 3 fotos para mostrar en la galería de la invitación",
-      "retouchHint": "Sube hasta 3 fotos para mejorar (JPG, PNG hasta 10MB)"
+      "retouchHint": "Sube hasta 3 fotos para mejorar (JPG, PNG hasta 10MB)",
+      "generatedTitle": "✨ Tus Fotos Mejoradas",
+      "generatedSubtitle": "Fotos de boda mejoradas profesionalmente con IA, listas para usar"
     },
     "photo": {
       "label": "Tus Fotos Juntos",

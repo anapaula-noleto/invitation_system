@@ -29,7 +29,9 @@
     "photos": {
       "title": "Your Photos Together",
       "subtitle": "Add up to 3 photos to display in the invitation gallery",
-      "retouchHint": "Upload up to 3 photos to enhance (JPG, PNG up to 10MB)"
+      "retouchHint": "Upload up to 3 photos to enhance (JPG, PNG up to 10MB)",
+      "generatedTitle": "✨ Your Enhanced Photos",
+      "generatedSubtitle": "Professional AI-enhanced wedding photos ready to use"
     },
     "photo": {
       "label": "Your Photos Together",

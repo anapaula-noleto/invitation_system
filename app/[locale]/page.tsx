@@ -48,6 +48,7 @@ export default function Home() {
             locale={form.locale}
             isLoading={form.isLoading}
             error={form.error}
+            generatedImages={form.generatedImages}
             onPhotosChange={form.handlePhotosChange}
             onPhotoStyleChange={form.handlePhotoStyleChange}
             onPartner1Change={form.setPartner1}
@@ -62,16 +63,13 @@ export default function Home() {
             onCustomStoryChange={form.setCustomStory}
             onCustomClosingChange={form.setCustomClosing}
             onSubmit={form.handleGenerate}
+            onDownload={form.handleDownload}
+            onUsePhotos={form.handleUsePhotos}
           />
 
           {/* Preview Section */}
           <PreviewSection
             invitationConfig={form.invitationConfig}
-            generatedImages={form.generatedImages}
-            activePreviewTab={form.activePreviewTab}
-            onPreviewTabChange={form.handlePreviewTabChange}
-            onDownload={form.handleDownload}
-            onUsePhotos={form.handleUsePhotos}
           />
         </div>
       </div>

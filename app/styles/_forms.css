@@ -803,3 +803,115 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   GENERATED IMAGES IN FORM TAB
+   ───────────────────────────────────────────────────────────────────────── */
+
+.generated-images-section {
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  background: linear-gradient(
+    135deg,
+    rgba(201, 169, 97, 0.05) 0%,
+    rgba(201, 169, 97, 0.02) 100%
+  );
+  border: 1px solid rgba(201, 169, 97, 0.2);
+  border-radius: var(--radius-lg);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.generated-section-header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.generated-section-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  margin: 0 0 var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.generated-section-title::before {
+  content: "✨";
+  font-size: 1.5rem;
+}
+
+.generated-section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.generated-images-section .generated-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.generated-images-section .generated-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(201, 169, 97, 0.3);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-out-quart);
+}
+
+.generated-images-section .generated-image:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent-gold);
+}
+
+.generated-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .generated-images-section .generated-images-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .generated-actions {
+    flex-direction: column;
+  }
+
+  .generated-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .generated-images-section {
+    padding: var(--space-4);
+  }
+
+  .generated-section-title {
+    font-size: 1.1rem;
+  }
+}

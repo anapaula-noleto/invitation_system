@@ -27,7 +27,6 @@ export interface UseInvitationFormReturn {
   // UI state
   generatedImages: string[];
   enhancedPhotosForInvitation: string[];
-  activePreviewTab: string;
   isLoading: boolean;
   error: string | null;
 
@@ -51,7 +50,6 @@ export interface UseInvitationFormReturn {
   handlePaletteSelect: (palette: WeddingPalette) => void;
   handlePhotosChange: (photos: PhotoItem[]) => void;
   handlePhotoStyleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  handlePreviewTabChange: (tabId: string) => void;
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
   handleUsePhotos: () => void;
@@ -83,7 +81,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
   // UI state
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [enhancedPhotosForInvitation, setEnhancedPhotosForInvitation] = useState<string[]>([]);
-  const [activePreviewTab, setActivePreviewTab] = useState('template');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -91,10 +88,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const handleDateChange = useCallback((date: string, formatted: string) => {
     setWeddingDate(date);
     setWeddingDateFormatted(formatted);
-  }, []);
-
-  const handlePreviewTabChange = useCallback((tabId: string) => {
-    setActivePreviewTab(tabId);
   }, []);
 
   const openVenueInMaps = useCallback(() => {
@@ -136,8 +129,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
       if (result.success && result.imageUrls && result.imageUrls.length > 0) {
         setGeneratedImages(result.imageUrls);
-        // Switch to generated tab after successful generation
-        setActivePreviewTab('generated');
+        // As fotos aparecerão automaticamente na aba Fotos do formulário
       } else {
         setError(result.error || t('errors.generationFailed'));
       }
@@ -169,8 +161,7 @@ export function useInvitationForm(): UseInvitationFormReturn {
     // Use generated photos in the invitation (without replacing original uploads)
     if (generatedImages.length > 0) {
       setEnhancedPhotosForInvitation(generatedImages);
-      // Switch to template tab to show the invitation with enhanced photos
-      setActivePreviewTab('template');
+      // Preview já mostra apenas o template
     }
   }, [generatedImages]);
 
@@ -236,7 +227,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     // UI state
     generatedImages,
     enhancedPhotosForInvitation,
-    activePreviewTab,
     isLoading,
     error,
 
@@ -260,7 +250,6 @@ export function useInvitationForm(): UseInvitationFormReturn {
     handlePaletteSelect,
     handlePhotosChange,
     handlePhotoStyleChange,
-    handlePreviewTabChange,
     handleGenerate,
     handleDownload,
     handleUsePhotos,

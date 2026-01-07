@@ -309,6 +309,25 @@
   );
 }
 
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  color: var(--color-text-secondary);
+}
+
+.preview-header svg {
+  color: var(--color-gold);
+}
+
+.preview-header h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
 .preview-placeholder {
   aspect-ratio: 16/9;
   display: flex;

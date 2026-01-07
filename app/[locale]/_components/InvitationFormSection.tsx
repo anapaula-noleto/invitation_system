@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Heart, Camera, Palette, PenLine, Wand2 } from 'lucide-react';
+import { Heart, Camera, Palette, PenLine, Wand2, Download, Image } from 'lucide-react';
 import {
   Button,
   FormSelect,
@@ -45,6 +45,7 @@ interface InvitationFormSectionProps {
   // UI state
   isLoading: boolean;
   error: string | null;
+  generatedImages: string[];
   
   // Handlers
   onPhotosChange: (photos: PhotoItem[]) => void;
@@ -61,6 +62,8 @@ interface InvitationFormSectionProps {
   onCustomStoryChange: (value: string) => void;
   onCustomClosingChange: (value: string) => void;
   onSubmit: (e: React.FormEvent) => void;
+  onDownload: () => void;
+  onUsePhotos: () => void;
 }
 
 export function InvitationFormSection({
@@ -80,6 +83,7 @@ export function InvitationFormSection({
   locale,
   isLoading,
   error,
+  generatedImages,
   onPhotosChange,
   onPhotoStyleChange,
   onPartner1Change,
@@ -94,6 +98,8 @@ export function InvitationFormSection({
   onCustomStoryChange,
   onCustomClosingChange,
   onSubmit,
+  onDownload,
+  onUsePhotos,
 }: InvitationFormSectionProps) {
   const t = useTranslations();
 
@@ -219,6 +225,48 @@ export function InvitationFormSection({
             >
               {isLoading ? t('form.submit.loading') : t('form.submit.default')}
             </Button>
+
+            {/* Generated Images Section */}
+            {generatedImages.length > 0 && (
+              <div className="generated-images-section">
+                <div className="generated-section-header">
+                  <h4 className="generated-section-title">
+                    {t('form.photos.generatedTitle')}
+                  </h4>
+                  <p className="generated-section-subtitle">
+                    {t('form.photos.generatedSubtitle')}
+                  </p>
+                </div>
+                <div className="generated-images-grid">
+                  {generatedImages.map((imageUrl, index) => (
+                    <img 
+                      key={index}
+                      src={imageUrl} 
+                      alt={`Enhanced wedding photo ${index + 1}`} 
+                      className="generated-image"
+                    />
+                  ))}
+                </div>
+                <div className="generated-actions">
+                  <Button 
+                    type="button"
+                    onClick={onDownload} 
+                    variant="secondary" 
+                    leftIcon={<Download size={16} />}
+                  >
+                    {t('preview.actions.download')}
+                  </Button>
+                  <Button 
+                    type="button"
+                    onClick={onUsePhotos} 
+                    variant="primary" 
+                    leftIcon={<Image size={16} />}
+                  >
+                    {t('preview.actions.usePhotos')}
+                  </Button>
+                </div>
+              </div>
+            )}
           </TabPanel>
 
           {/* Tab 3: Personalização (Paleta de Cores) */}

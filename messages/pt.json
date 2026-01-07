@@ -29,7 +29,9 @@
     "photos": {
       "title": "Fotos do Casal",
       "subtitle": "Adicione até 3 fotos para exibir na galeria do convite",
-      "retouchHint": "Envie até 3 fotos para aprimorar (JPG, PNG até 10MB)"
+      "retouchHint": "Envie até 3 fotos para aprimorar (JPG, PNG até 10MB)",
+      "generatedTitle": "✨ Suas Fotos Melhoradas",
+      "generatedSubtitle": "Fotos de casamento profissionalmente aprimoradas com IA, prontas para usar"
     },
     "photo": {
       "label": "Fotos do Casal",
