@@ -122,6 +122,24 @@
       "usePhotos": "Use Photos in Invitation"
     }
   },
+  "comparison": {
+    "title": "Photo Comparison",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "photoCount": "Photo {current} of {total}",
+    "before": "Original",
+    "after": "Enhanced",
+    "improvements": {
+      "title": "Applied Enhancements",
+      "lighting": "Lighting correction and color balance",
+      "skin": "Skin smoothing and noise reduction",
+      "details": "Detail enhancement and sharpness",
+      "colors": "Color optimization and saturation"
+    },
+    "download": "Download Enhanced Photo",
+    "viewComparison": "View Comparison"
+  },
   "errors": {
     "photoRequired": "Please upload a photo first",
     "fieldsRequired": "Please fill in all fields",

@@ -5,7 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { generatePhotos, type PhotoStyle } from '@/app/actions/generate';
 import { getDefaultPalette, type WeddingPalette } from '@/app/constants/weddingPalettes';
 import type { InvitationConfig, TemplateId } from '@/app/types/invitation';
-import type { PhotoItem } from '@/app/components/ui';
+import type { PhotoItem, PhotoComparison } from '@/app/components/ui';
 
 export interface UseInvitationFormReturn {
   // Form state
@@ -30,6 +30,12 @@ export interface UseInvitationFormReturn {
   isLoading: boolean;
   error: string | null;
 
+  // Comparison modal state
+  isComparisonModalOpen: boolean;
+  selectedPhotoIndex: number;
+  originalPhotosForComparison: string[];
+  photoComparisons: PhotoComparison[];
+
   // Computed
   invitationConfig: InvitationConfig;
   locale: string;
@@ -53,6 +59,8 @@ export interface UseInvitationFormReturn {
   handleGenerate: (e: React.FormEvent) => Promise<void>;
   handleDownload: () => void;
   handleUsePhotos: () => void;
+  handleOpenComparison: (index: number) => void;
+  handleCloseComparison: () => void;
   openVenueInMaps: () => void;
 }
 
@@ -83,6 +91,11 @@ export function useInvitationForm(): UseInvitationFormReturn {
   const [enhancedPhotosForInvitation, setEnhancedPhotosForInvitation] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Comparison modal state
+  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [originalPhotosForComparison, setOriginalPhotosForComparison] = useState<string[]>([]);
 
   // Handlers
   const handleDateChange = useCallback((date: string, formatted: string) => {
@@ -129,6 +142,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
 
       if (result.success && result.imageUrls && result.imageUrls.length > 0) {
         setGeneratedImages(result.imageUrls);
+        // Salvar fotos originais para comparação
+        setOriginalPhotosForComparison(photosBase64.map(base64 => `data:image/jpeg;base64,${base64}`));
         // As fotos aparecerão automaticamente na aba Fotos do formulário
       } else {
         setError(result.error || t('errors.generationFailed'));
@@ -165,12 +180,30 @@ export function useInvitationForm(): UseInvitationFormReturn {
     }
   }, [generatedImages]);
 
+  const handleOpenComparison = useCallback((index: number) => {
+    setSelectedPhotoIndex(index);
+    setIsComparisonModalOpen(true);
+  }, []);
+
+  const handleCloseComparison = useCallback(() => {
+    setIsComparisonModalOpen(false);
+  }, []);
+
   // Default placeholder photos for empty slots
   const defaultPhotos = [
     'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
     'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
     'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800',
   ];
+
+  // Computed: Photo comparisons for modal
+  const photoComparisons = useMemo<PhotoComparison[]>(() => {
+    return generatedImages.map((enhancedUrl, index) => ({
+      originalUrl: originalPhotosForComparison[index] || '',
+      enhancedUrl,
+      index,
+    }));
+  }, [generatedImages, originalPhotosForComparison]);
 
   // Computed: Invitation config based on form data
   const invitationConfig = useMemo<InvitationConfig>(() => {
@@ -230,6 +263,12 @@ export function useInvitationForm(): UseInvitationFormReturn {
     isLoading,
     error,
 
+    // Comparison modal state
+    isComparisonModalOpen,
+    selectedPhotoIndex,
+    originalPhotosForComparison,
+    photoComparisons,
+
     // Computed
     invitationConfig,
     locale,
@@ -253,6 +292,8 @@ export function useInvitationForm(): UseInvitationFormReturn {
     handleGenerate,
     handleDownload,
     handleUsePhotos,
+    handleOpenComparison,
+    handleCloseComparison,
     openVenueInMaps,
   };
 }

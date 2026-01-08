@@ -122,6 +122,24 @@
       "usePhotos": "Usar Fotos no Convite"
     }
   },
+  "comparison": {
+    "title": "Comparação de Fotos",
+    "close": "Fechar",
+    "previous": "Anterior",
+    "next": "Próxima",
+    "photoCount": "Foto {current} de {total}",
+    "before": "Original",
+    "after": "Melhorada",
+    "improvements": {
+      "title": "Melhorias Aplicadas",
+      "lighting": "Correção de iluminação e balanço de cor",
+      "skin": "Suavização de pele e redução de ruído",
+      "details": "Aprimoramento de detalhes e nitidez",
+      "colors": "Otimização de cores e saturação"
+    },
+    "download": "Baixar Foto Melhorada",
+    "viewComparison": "Ver Comparação"
+  },
   "errors": {
     "photoRequired": "Por favor, envie uma foto primeiro",
     "fieldsRequired": "Por favor, preencha todos os campos",

@@ -42,6 +42,11 @@ export { AITextField } from './AITextField';
 export { PlacesAutocomplete } from './PlacesAutocomplete';
 export type { PlacesAutocompleteProps, PlaceResult } from './PlacesAutocomplete';
 
+export { BeforeAfterSlider } from './BeforeAfterSlider';
+
+export { BeforeAfterModal } from './BeforeAfterModal';
+export type { PhotoComparison } from './BeforeAfterModal';
+
 export { Icon } from './Icon';
 export type { IconProps, LucideIcon } from './Icon';
 

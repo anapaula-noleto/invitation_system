@@ -3,6 +3,9 @@
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
 
+// Check if we're in mock mode (for testing without API calls)
+const IS_MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_IMAGE_API === 'true';
+
 interface EnhancePhotoResult {
   success: boolean
   imageUrls?: string[]
@@ -12,6 +15,29 @@ interface EnhancePhotoResult {
 type PhotoStyle = 'romantic' | 'classic' | 'modern' | 'artistic';
 
 export type { PhotoStyle };
+
+// Mock function that returns the same images after a delay (simulates API)
+async function mockGeneratePhotos(photosBase64: string[]): Promise<EnhancePhotoResult> {
+  // Simulate API delay (1-2 seconds per photo)
+  await new Promise(resolve => setTimeout(resolve, 1500 * photosBase64.length));
+
+  console.log('[MOCK MODE] Returning original photos as "enhanced" images');
+
+  // Return the same photos as if they were enhanced
+  const mockEnhancedPhotos = photosBase64.map(base64 => {
+    // If the base64 already has the data URI prefix, use it as-is
+    if (base64.startsWith('data:image')) {
+      return base64;
+    }
+    // Otherwise, add the prefix
+    return `data:image/jpeg;base64,${base64}`;
+  });
+
+  return {
+    success: true,
+    imageUrls: mockEnhancedPhotos,
+  };
+}
 
 const stylePrompts: Record<PhotoStyle, string> = {
   romantic: `
@@ -53,6 +79,11 @@ export async function generatePhotos(
   photosBase64: string[],
   style: PhotoStyle = 'romantic'
 ): Promise<EnhancePhotoResult> {
+  // Use mock mode if enabled (for testing without API costs)
+  if (IS_MOCK_MODE) {
+    return mockGeneratePhotos(photosBase64);
+  }
+
   try {
     const styleInstructions = stylePrompts[style] || stylePrompts.romantic;
 

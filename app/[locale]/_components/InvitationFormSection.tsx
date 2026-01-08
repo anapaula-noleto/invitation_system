@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Heart, Camera, Palette, PenLine, Wand2, Download, Image } from 'lucide-react';
+import { Heart, Camera, Palette, PenLine, Wand2, Download, Image, Eye } from 'lucide-react';
 import {
   Button,
   FormSelect,
@@ -64,6 +64,7 @@ interface InvitationFormSectionProps {
   onSubmit: (e: React.FormEvent) => void;
   onDownload: () => void;
   onUsePhotos: () => void;
+  onOpenComparison: (index: number) => void;
 }
 
 export function InvitationFormSection({
@@ -100,6 +101,7 @@ export function InvitationFormSection({
   onSubmit,
   onDownload,
   onUsePhotos,
+  onOpenComparison,
 }: InvitationFormSectionProps) {
   const t = useTranslations();
 
@@ -239,12 +241,25 @@ export function InvitationFormSection({
                 </div>
                 <div className="generated-images-grid">
                   {generatedImages.map((imageUrl, index) => (
-                    <img 
+                    <div
                       key={index}
-                      src={imageUrl} 
-                      alt={`Enhanced wedding photo ${index + 1}`} 
-                      className="generated-image"
-                    />
+                      className="generated-image-wrapper"
+                      onClick={() => onOpenComparison(index)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && onOpenComparison(index)}
+                      aria-label={`${t('comparison.viewComparison')} ${index + 1}`}
+                    >
+                      <img 
+                        src={imageUrl} 
+                        alt={`Enhanced wedding photo ${index + 1}`} 
+                        className="generated-image"
+                      />
+                      <div className="image-overlay">
+                        <Eye size={24} />
+                        <span>{t('comparison.viewComparison')}</span>
+                      </div>
+                    </div>
                   ))}
                 </div>
                 <div className="generated-actions">

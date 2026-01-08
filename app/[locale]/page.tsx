@@ -1,6 +1,6 @@
 'use client';
 
-import { LanguageSelector } from '@/app/components/ui';
+import { LanguageSelector, BeforeAfterModal } from '@/app/components/ui';
 import { useInvitationForm } from './_hooks';
 import {
   BackgroundDecoration,
@@ -65,6 +65,7 @@ export default function Home() {
             onSubmit={form.handleGenerate}
             onDownload={form.handleDownload}
             onUsePhotos={form.handleUsePhotos}
+            onOpenComparison={form.handleOpenComparison}
           />
 
           {/* Preview Section */}
@@ -73,6 +74,14 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* Before/After Comparison Modal - Rendered at page level for proper centering */}
+      <BeforeAfterModal
+        isOpen={form.isComparisonModalOpen}
+        onClose={form.handleCloseComparison}
+        photos={form.photoComparisons}
+        initialIndex={form.selectedPhotoIndex}
+      />
     </main>
   );
 }
